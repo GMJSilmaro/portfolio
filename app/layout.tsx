@@ -6,8 +6,25 @@ import { CustomCursor } from './components/CustomCursor'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Gilbert Michael Jay Silmaro - Portfolio',
+  title: 'Gilbert Michael Jay Silmaro - CV Portfolio',
   description: 'Full-Stack Developer Portfolio showcasing my projects and skills',
+  icons: {
+    icon: [
+      {
+        url: '/favicon.ico',
+        sizes: 'any',
+      },
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      }
+    ],
+    apple: {
+      url: '/apple-touch-icon.png',
+      type: 'image/png',
+      sizes: '180x180'
+    },
+  },
 }
 
 export default function RootLayout({

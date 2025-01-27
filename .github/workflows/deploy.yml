@@ -50,6 +50,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Install Sharp CLI for image conversion
+        run: npm install -g sharp-cli
+
+      - name: Generate favicons
+        run: |
+          sharp -i public/icon.svg -o public/favicon.ico --format ico
+          sharp -i public/apple-touch-icon.svg -o public/apple-touch-icon.png --format png --width 180 --height 180
+
       - name: Set Next.js telemetry disabled
         run: npx next telemetry disable
         
