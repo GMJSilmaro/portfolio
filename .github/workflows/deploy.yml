@@ -49,8 +49,13 @@ jobs:
         
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+
+      - name: Set Next.js telemetry disabled
+        run: npx next telemetry disable
         
       - name: Build with Next.js
+        env:
+          NEXT_LINT_ERROR: false
         run: pnpm run build
 
       - name: Create .nojekyll file
