@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Background } from './Background';
 import { Code, Database, Globe, Smartphone, Book, Gamepad } from 'lucide-react';
 import { Modal } from './ui/modal';
+import Image from 'next/image';
 
 interface ProjectImage {
   src: string;
@@ -32,9 +33,9 @@ export const Projects = () => {
       icon: Globe,
       color: "from-purple-500 to-cyan-500",
       images: [
-        { src: "/images/projects/einvoice-1.jpg", alt: "Dashboard View" },
-        { src: "/images/projects/einvoice-2.jpg", alt: "Invoice Processing" },
-        { src: "/images/projects/einvoice-3.jpg", alt: "Reports Interface" }
+        { src: "./images/projects/einvoice-1.jpg", alt: "Dashboard View" },
+        { src: "./images/projects/einvoice-2.jpg", alt: "Invoice Processing" },
+        { src: "./images/projects/einvoice-3.jpg", alt: "Reports Interface" }
       ]
     },
     {
@@ -45,9 +46,9 @@ export const Projects = () => {
       icon: Smartphone,
       color: "from-cyan-500 to-purple-500",
       images: [
-        { src: "/images/projects/fsms-1.jpg", alt: "Mobile App View" },
-        { src: "/images/projects/fsms-2.jpg", alt: "Web Dashboard" },
-        { src: "/images/projects/fsms-3.jpg", alt: "Service Management" }
+        { src: "./images/projects/fsms-1.jpg", alt: "Mobile App View" },
+        { src: "./images/projects/fsms-2.jpg", alt: "Web Dashboard" },
+        { src: "./images/projects/fsms-3.jpg", alt: "Service Management" }
       ]
     },
     {
@@ -58,9 +59,9 @@ export const Projects = () => {
       icon: Book,
       color: "from-purple-500 to-cyan-500",
       images: [
-        { src: "/images/projects/library-1.jpg", alt: "Library Dashboard" },
-        { src: "/images/projects/library-2.jpg", alt: "Book Catalog" },
-        { src: "/images/projects/library-3.jpg", alt: "Transaction History" }
+        { src: "./images/projects/library-1.jpg", alt: "Library Dashboard" },
+        { src: "./images/projects/library-2.jpg", alt: "Book Catalog" },
+        { src: "./images/projects/library-3.jpg", alt: "Transaction History" }
       ]
     },
     {
@@ -71,12 +72,19 @@ export const Projects = () => {
       icon: Gamepad,
       color: "from-cyan-500 to-purple-500",
       images: [
-        { src: "/images/projects/game-1.jpg", alt: "Game Menu" },
-        { src: "/images/projects/game-2.jpg", alt: "Gameplay" },
-        { src: "/images/projects/game-3.jpg", alt: "Learning Module" }
+        { src: "./images/projects/game-1.jpg", alt: "Game Menu" },
+        { src: "./images/projects/game-2.jpg", alt: "Gameplay" },
+        { src: "./images/projects/game-3.jpg", alt: "Learning Module" }
       ]
     }
   ];
+
+  // Function to get the correct image path
+  const getImagePath = (path: string) => {
+    // Remove the leading dot if it exists
+    const cleanPath = path.startsWith('./') ? path.slice(2) : path;
+    return cleanPath;
+  };
 
   return (
     <section id="projects" className="py-24 relative">
@@ -169,11 +177,15 @@ export const Projects = () => {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-cyan-500/10" />
                     {project.images[0] && (
-                      <img
-                        src={project.images[0].src}
-                        alt={project.images[0].alt}
-                        className="w-full h-full object-cover"
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={getImagePath(project.images[0].src)}
+                          alt={project.images[0].alt}
+                          fill
+                          className="object-cover"
+                          priority
+                        />
+                      </div>
                     )}
                     <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
                       <span className="text-white font-medium">View Gallery</span>
@@ -200,11 +212,14 @@ export const Projects = () => {
                   transition={{ delay: index * 0.1 }}
                   className="relative aspect-video rounded-lg overflow-hidden"
                 >
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={getImagePath(image.src)}
+                      alt={image.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <p className="absolute bottom-2 left-2 text-sm text-white">{image.alt}</p>
                 </motion.div>
