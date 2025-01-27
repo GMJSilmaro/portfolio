@@ -33,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-[#0c1b2a] text-white cursor-none`}>
+    <html lang="en" className="scroll-smooth bg-[#0c1b2a]">
+      <body className={`${inter.className} min-h-screen bg-[#0c1b2a] text-white cursor-none`}>
         <CustomCursor />
         {children}
       </body>
