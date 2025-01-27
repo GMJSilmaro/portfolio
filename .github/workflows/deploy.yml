@@ -33,17 +33,17 @@ jobs:
           
       - name: Install dependencies
         run: pnpm install
-        
+
       - name: Install image tools
         run: |
+          npm install -g sharp-cli
           sudo apt-get update -qq
           sudo apt-get install -y imagemagick --no-install-recommends
-          npm install -g sharp-cli --silent
 
       - name: Generate favicons
         run: |
-          sharp -i public/icon.svg -o public/favicon.png --format png --width 32 --height 32
-          sharp -i public/apple-touch-icon.svg -o public/apple-touch-icon.png --format png --width 180 --height 180
+          sharp -i public/icon.svg -o public/favicon.png resize 32 32
+          sharp -i public/apple-touch-icon.svg -o public/apple-touch-icon.png resize 180 180
           convert public/favicon.png public/favicon.ico
         
       - name: Build with Next.js
