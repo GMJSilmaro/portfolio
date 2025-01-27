@@ -25,21 +25,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install pnpm
+      - name: Setup pnpm and cache
         uses: pnpm/action-setup@v2
         with:
           version: 8
           run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
+        id: pnpm-install
+        
+      - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: ${{ env.STORE_PATH }}
+          path: $(pnpm store path)
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
@@ -50,13 +46,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Install Sharp CLI for image conversion
-        run: npm install -g sharp-cli
+      - name: Install image conversion tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          npm install -g sharp-cli
 
       - name: Generate favicons
         run: |
-          sharp -i public/icon.svg -o public/favicon.ico --format ico
+          # Generate PNG versions first
+          sharp -i public/icon.svg -o public/favicon.png --format png --width 32 --height 32
           sharp -i public/apple-touch-icon.svg -o public/apple-touch-icon.png --format png --width 180 --height 180
+          
+          # Convert PNG to ICO
+          convert public/favicon.png public/favicon.ico
 
       - name: Set Next.js telemetry disabled
         run: npx next telemetry disable
@@ -83,4 +86,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
