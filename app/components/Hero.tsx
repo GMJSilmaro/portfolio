@@ -76,7 +76,7 @@ export const Hero = () => {
                   languages and technologies, continually learning and growing.{' '}
                   My goal is to keep expanding my knowledge, and contributing to the development of {' '}
                   <span className="text-cyan-400 font-semibold">innovative digital solutions</span>. Specializing in modern tech stacks like {' '}
-                  <span className="text-green-400">React</span>, <span className="text-yellow-400">Node.js</span>, and <span className="text-blue-400">cloud technologies</span>, 
+                  <span className="text-cyan-400 font-semibold">React/React Native/Nextjs</span>, <span className="text-green-400 font-semibold">Node.js/Express.js</span>, <span className="text-orange-400 font-semibold">Firebase</span>, and <span className="text-blue-400 font-semibold">cloud technologies</span>, 
                   I am driven to help build impactful projects that shape the future of tech.
                 </motion.p>
 
