@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Background } from './Background';
-import { Code, Database, Globe, Smartphone, Book, Gamepad } from 'lucide-react';
+import { Code, Database, Globe, Smartphone, Book, Gamepad, Network } from 'lucide-react';
 import { Modal } from './ui/modal';
 import Image from 'next/image';
 
@@ -53,15 +53,228 @@ export const Projects = () => {
     },
     {
       title: "Field Services Management System",
-      description: "Integrated web portal and mobile app solution for field service management. Developed and implemented a comprehensive school management system and provided technical support aligned with the school's goals.",
-      tech: ["React Native", "React", "Next.js", "Firebase", "ASP.NET"],
-      features: ["Cross-platform", "Real-time Updates", "Mobile-first Design", "School Management"],
+      description: "Comprehensive web portal for managing field service operations. Features robust job scheduling, worker dispatch management, customer relationship management, and real-time service tracking. Seamlessly integrates with mobile applications for end-to-end service delivery control.",
+      tech: ["React", "Next.js", "Firebase", "Tanstack", "Bootstrap", "SAP B1"],
+      features: [
+        "Real-time Dashboard",
+        "Job Scheduling & Dispatch",
+        "Worker Management",
+        "Customer Management",
+        "Calendar Planning",
+        "Service Analytics",
+        "Mobile Integration",
+        "Task Assignment",
+        "Performance Tracking",
+        "Document Management"
+      ],
+      icon: Network,
+      color: "from-cyan-500 to-purple-500",
+      images: [
+          {
+            src: "./images/projects/fsm/fsm-login-page.png",
+            alt: "Field Service Login Page"
+          },
+          {
+            src: "./images/projects/fsm/fsm-login-authentication.png",
+            alt: "User Authentication Flow"
+          },
+          {
+            src: "./images/projects/fsm/fsm-create-job.png", 
+            alt: "Create New Service Job"
+          },
+          {
+            src: "./images/projects/fsm/fsm-create-job-2.png",
+            alt: "Service Job Creation Form"
+          },
+          {
+            src: "./images/projects/fsm/fsm-job-calendar.png",
+            alt: "Service Jobs Calendar View"
+          },
+          {
+            src: "./images/projects/fsm/fsm-job-page.png",
+            alt: "Job Details Page"
+          },
+          {
+            src: "./images/projects/fsm/fsm-view-job-details.png",
+            alt: "Detailed Job Information"
+          },
+          {
+            src: "./images/projects/fsm/fsm-create-worker.png",
+            alt: "Add New Field Service Worker"
+          },
+          {
+            src: "./images/projects/fsm/fsm-worker-dispatch.png",
+            alt: "Worker Dispatch Management"
+          },
+          {
+            src: "./images/projects/fsm/fsm-workers-page.png",
+            alt: "Field Workers Overview"
+          },
+          {
+            src: "./images/projects/fsm/fsm-customers-page.png",
+            alt: "Customer Management"
+          },
+          {
+            src: "./images/projects/fsm/fsm-view-customer-page.png",
+            alt: "Customer Details View"
+          },
+          {
+            src: "./images/projects/fsm/fsm-whatsnew-modal.png",
+            alt: "What's New Feature Modal"
+          },
+          {
+            src: "./images/projects/fsm/fsm-dashboard.png",
+            alt: "Field Service Management Dashboard"
+          }
+        ]
+    },
+    {
+      title: "Field Services Mobility App",
+      description: "Integrated web portal and mobile app solution for field service management. Streamlines field operations with real-time job tracking, digital documentation, and efficient worker management. Empowers technicians with comprehensive job management and service delivery tools.",
+      tech: ["React Native", "React", "Next.js", "Firebase", "TypeScript", "Expo", "Google API", "Tailwind CSS"],
+      features: [
+        "Cross-platform Mobile & Web",
+        "Real-time Job Tracking",
+        "Digital Signature Capture",
+        "Photo Documentation",
+        "Clock In/Out System",
+        "Job Status Management",
+        "Task Assignment",
+        "Service History",
+        "Offline Capability",
+        "Mobile-first Design"
+      ],
       icon: Smartphone,
       color: "from-cyan-500 to-purple-500",
       images: [
-        { src: "./images/projects/fsms-1.jpg", alt: "Mobile App View" },
-        { src: "./images/projects/fsms-2.jpg", alt: "Web Dashboard" },
-        { src: "./images/projects/fsms-3.jpg", alt: "Service Management" }
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-splash.png",
+          alt: "Mobile App Splash Screen"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-login.png",
+          alt: "Mobile Login Screen"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-navigation.png",
+          alt: "Navigation Menu"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-aboutapp.png",
+          alt: "About Mobile Application"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-profile.png",
+          alt: "User Profile View"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-editprofile.png",
+          alt: "Edit Profile Screen"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-settings.png",
+          alt: "App Settings"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-currentjobs.png",
+          alt: "Current Jobs Overview"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-jobdetails.png",
+          alt: "Job Details Screen"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-viewjobdetails.png",
+          alt: "Detailed Job Information"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-jobworkerservices.png",
+          alt: "Worker Services List"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-addtask.png",
+          alt: "Add New Task"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-finishtask.png",
+          alt: "Finish Task"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-jobstarted.png",
+          alt: "Job Started Status"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-startjobconfirmation.png",
+          alt: "Start Job Confirmation"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-clockin.png",
+          alt: "Clock In Screen"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-clockin2.png",
+          alt: "Clock In Confirmation"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-completejobscreen.png",
+          alt: "Complete Job Screen"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-jobcompleted.png",
+          alt: "Job Completed Status"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-jobcompleted-cannotstart.png",
+          alt: "Completed Job - Cannot Start New"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-submissionconfirmation.png",
+          alt: "Submission Confirmation"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-finalizesubmission.png",
+          alt: "Finalize Job Submission"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-customerdetails.png",
+          alt: "Customer Details"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-customersview.png",
+          alt: "Customers List View"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-customersignature.png",
+          alt: "Customer Signature Capture"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-savingsignature.png",
+          alt: "Save Signature"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-signaturemodal.png",
+          alt: "Signature Modal"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-uploadimages.png",
+          alt: "Upload Images"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-historyjobs.png",
+          alt: "Job History"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-submitservices.png",
+          alt: "Submit Services"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-terms.png",
+          alt: "Terms and Conditions"
+        },
+        {
+          src: "./images/projects/fsm-mobile/fsm-mobile-privacypolicy.png",
+          alt: "Privacy Policy"
+        }
       ]
     },
     // {
@@ -182,21 +395,21 @@ export const Projects = () => {
                   </p>
 
                   <div className="space-y-6">
-                    <div>
-                      <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-3">Technologies</h4>
-                      <div className="flex flex-wrap gap-3">
-                        {project.tech.map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className="px-4 py-2 rounded-lg text-sm font-medium bg-white/5 border border-white/10"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+                  <div>
+  <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-3">Technologies</h4>
+  <div className="flex flex-wrap gap-3">
+    {project.tech.map((tech, techIndex) => (
+      <span
+        key={techIndex}
+        className="px-4 py-2 rounded-lg text-sm font-medium bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-cyan-500/20 hover:border-purple-500/50 hover:text-white transition-all duration-300 cursor-default group"
+      >
+        {tech}
+      </span>
+    ))}
+  </div>
+</div>
 
-                    <div>
+                    {/* <div>
                       <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-3">Key Features</h4>
                       <div className="space-y-2">
                         {project.features.map((feature, featureIndex) => (
@@ -211,7 +424,42 @@ export const Projects = () => {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </div> */}
+                   <div>
+  <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-3">Key Features</h4>
+  <div className="grid grid-cols-2 gap-x-8">
+    {/* Left Column */}
+    <div className="space-y-2">
+      {project.features.slice(0, Math.ceil(project.features.length / 2)).map((feature, featureIndex) => (
+        <div
+          key={featureIndex}
+          className="flex items-center gap-2 text-gray-400 group"
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:scale-150 transition-transform duration-300" />
+          <span className="group-hover:text-white transition-colors duration-300">
+            {feature}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    {/* Right Column */}
+    <div className="space-y-2">
+      {project.features.slice(Math.ceil(project.features.length / 2)).map((feature, featureIndex) => (
+        <div
+          key={featureIndex}
+          className="flex items-center gap-2 text-gray-400 group"
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:scale-150 transition-transform duration-300" />
+          <span className="group-hover:text-white transition-colors duration-300">
+            {feature}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
                   </div>
                 </div>
 
