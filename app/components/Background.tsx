@@ -8,22 +8,22 @@ export const Background: React.FC<BackgroundProps> = ({ variant = 'hero' }) => {
   const variants = {
     hero: (
       <>
-        <div className="absolute inset-0">
+        <div className="absolute inset-1">
           {/* Base gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0c1b2a] via-[#111827] to-[#0f172a]" />
+          <div className="absolute inset-1 bg-gradient-to-br from-[#0c1b2a] via-[#111827] to-[#0f172a]" />
           
           {/* Colored gradients */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10" />
+          <div className="absolute inset-1 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10" />
           
           {/* Radial gradients for depth */}
           <div className="absolute top-0 left-0 w-3/4 h-3/4 bg-[radial-gradient(circle_at_25%_25%,_rgba(147,51,234,0.15)_0%,_transparent_50%)] animate-pulse" />
           <div className="absolute bottom-0 right-0 w-3/4 h-3/4 bg-[radial-gradient(circle_at_75%_75%,_rgba(34,211,238,0.15)_0%,_transparent_50%)] animate-pulse delay-75" />
           
           {/* Noise texture */}
-          <div className="absolute inset-0 bg-noise opacity-[0.02]" />
+          <div className="absolute inset-1 bg-noise opacity-[0.02]" />
           
           {/* Grid overlay with reduced opacity */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:24px_24px]" />
+          <div className="absolute inset-1 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:24px_24px]" />
 
           {/* Bottom blur effect with increased blur */}
           <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0c1b2a] via-[#0c1b2a]/80 to-transparent backdrop-blur-md" />

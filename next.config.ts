@@ -12,7 +12,7 @@ if (isGithubActions) {
 }
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  // output: 'export', // Comment this line out to enable API routes
   images: {
     unoptimized: true,
     domains: ['gmjsilmaro.github.io'],

@@ -25,7 +25,13 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-4xl bg-[#1a1a1a] rounded-2xl overflow-hidden border border-white/10"
+          className="relative w-full max-w-5xl max-h-[90vh] overflow-auto bg-[#1a1a1a] rounded-2xl border border-white/10
+            [&::-webkit-scrollbar]:w-2 
+            [&::-webkit-scrollbar-track]:bg-black/20 
+            [&::-webkit-scrollbar-thumb]:bg-white/20 
+            [&::-webkit-scrollbar-thumb]:rounded-full 
+            [&::-webkit-scrollbar-track]:rounded-full 
+            hover:[&::-webkit-scrollbar-thumb]:bg-white/30"
         >
           <button
             onClick={onClose}
@@ -38,4 +44,4 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       </motion.div>
     </AnimatePresence>
   );
-}; 
+};

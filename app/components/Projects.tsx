@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Background } from './Background';
 import { Code, Database, Globe, Smartphone, Book, Gamepad } from 'lucide-react';
@@ -20,22 +20,35 @@ interface Project {
   images: ProjectImage[];
 }
 
+
 export const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [enlargedImageIndex, setEnlargedImageIndex] = useState<number | null>(null);
+  const [images, setImages] = useState<ProjectImage[]>([]);
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
+  const [isEnlargedModalOpen, setIsEnlargedModalOpen] = useState(false);
 
   const projects: Project[] = [
     {
       title: "e-Invoice Middleware Web Application",
-      description: "Developed a sophisticated e-Invoice middleware system integrated with LHDN (Malaysian Tax Authority) SDK for automated tax workflows and regulatory compliance. Built a web portal for seamless digital invoice processing, featuring real-time data synchronization and comprehensive reporting capabilities. Achieved 40% improvement in processing efficiency through optimized architecture.",
+      description: "Developed an e-Invoice middleware system integrated with LHDN (Malaysian Tax Authority) for automated tax workflows and compliance. Built a web portal from scratch for digital invoice processing with real-time data sync and reporting features. With a clean modern user friendly UI easy to manage.",
       tech: ["Node.js", "Express.js", "SQL Server", "REST APIs", "LHDN SDK", "Cloud Server", "SAP B1", "GitHub", "Bootstrap"],
       features: ["Real-time Processing", "Secure Authentication", "Automated Tax Workflows", "Digital Invoice Processing", "Comprehensive Reporting", "ERP Integration"],
       icon: Globe,
       color: "from-purple-500 to-cyan-500",
       images: [
-        { src: "./images/projects/einvoice-1.jpg", alt: "Dashboard View" },
-        { src: "./images/projects/einvoice-2.jpg", alt: "Invoice Processing" },
-        { src: "./images/projects/einvoice-3.jpg", alt: "Reports Interface" }
+        { src: "./images/projects/eInvoice/einvoice-login-1.png", alt: "Login Page" },
+        { src: "./images/projects/eInvoice/einvoice-dashboard-2.png", alt: "Dashboard View" },
+        { src: "./images/projects/eInvoice/einvoice-dasdhboard-2.1.png", alt: "Dashboard View with Welcome Modal" },
+        { src: "./images/projects/eInvoice/einvoice-companyprofile-page-5.png", alt: "Company Profile Page" },
+        { src: "./images/projects/eInvoice/einvoice-ERPSAPCustomConfiguration.png", alt: "ERP SAP Custom Configuration" },
+        { src: "./images/projects/eInvoice/einvoice-HelpSupportPage.png", alt: "Help and Support Page" },
+        { src: "./images/projects/eInvoice/einvoice-inboundpage-4.png", alt: "Inbound Page" },
+        { src: "./images/projects/eInvoice/einvoice-LHDNConfigurationSettings.png", alt: "LHDN Configuration Settings" },
+        { src: "./images/projects/eInvoice/einvoice-outboundpage-3.png", alt: "Outbound Page" },
+        { src: "./images/projects/eInvoice/einvoice-profile-changepassword-settings-7.png", alt: "Profile Change Password Settings" },
+        { src: "./images/projects/eInvoice/einvoice-settingspage-6.png", alt: "Settings Page" },
+        { src: "./images/projects/eInvoice/einvoice-VideoTutorialshowtoNavigateanduseLHDNMiddlewareeInvoicePortal.png", alt: "Video Tutorial Navigation Guide" }
       ]
     },
     {
@@ -51,39 +64,75 @@ export const Projects = () => {
         { src: "./images/projects/fsms-3.jpg", alt: "Service Management" }
       ]
     },
-    {
-      title: "Library Management System",
-      description: "Built a comprehensive library management system using Laravel, Bootstrap, PHP and MySQL. The application includes features such as catalog searching, book transactions, and user account management.",
-      tech: ["Laravel", "Bootstrap", "PHP", "MySQL", "jQuery"],
-      features: ["Book Management", "User Authentication", "Transaction Tracking", "Search Functionality"],
-      icon: Book,
-      color: "from-purple-500 to-cyan-500",
-      images: [
-        { src: "./images/projects/library-1.jpg", alt: "Library Dashboard" },
-        { src: "./images/projects/library-2.jpg", alt: "Book Catalog" },
-        { src: "./images/projects/library-3.jpg", alt: "Transaction History" }
-      ]
-    },
-    {
-      title: "Educational Android Game",
-      description: "Developed an Android game for dyslexic children aged 3-5 using UNITY Engine. Created an engaging and educational gaming experience with C# as the programming language.",
-      tech: ["Unity", "C#", "Android SDK", "Game Development"],
-      features: ["Educational Content", "Child-friendly UI", "Interactive Learning", "Dyslexia Support"],
-      icon: Gamepad,
-      color: "from-cyan-500 to-purple-500",
-      images: [
-        { src: "./images/projects/game-1.jpg", alt: "Game Menu" },
-        { src: "./images/projects/game-2.jpg", alt: "Gameplay" },
-        { src: "./images/projects/game-3.jpg", alt: "Learning Module" }
-      ]
-    }
+    // {
+    //   title: "Library Management System",
+    //   description: "Built a comprehensive library management system using Laravel, Bootstrap, PHP and MySQL. The application includes features such as catalog searching, book transactions, and user account management.",
+    //   tech: ["Laravel", "Bootstrap", "PHP", "MySQL", "jQuery"],
+    //   features: ["Book Management", "User Authentication", "Transaction Tracking", "Search Functionality"],
+    //   icon: Book,
+    //   color: "from-purple-500 to-cyan-500",
+    //   images: [
+    //     { src: "./images/projects/library-1.jpg", alt: "Library Dashboard" },
+    //     { src: "./images/projects/library-2.jpg", alt: "Book Catalog" },
+    //     { src: "./images/projects/library-3.jpg", alt: "Transaction History" }
+    //   ]
+    // },
+    // {
+    //   title: "Educational Android Game",
+    //   description: "Developed an Android game for dyslexic children aged 3-5 using UNITY Engine. Created an engaging and educational gaming experience with C# as the programming language.",
+    //   tech: ["Unity", "C#", "Android SDK", "Game Development"],
+    //   features: ["Educational Content", "Child-friendly UI", "Interactive Learning", "Dyslexia Support"],
+    //   icon: Gamepad,
+    //   color: "from-cyan-500 to-purple-500",
+    //   images: [
+    //     { src: "./images/projects/game-1.jpg", alt: "Game Menu" },
+    //     { src: "./images/projects/game-2.jpg", alt: "Gameplay" },
+    //     { src: "./images/projects/game-3.jpg", alt: "Learning Module" }
+    //   ]
+    // }
   ];
+  useEffect(() => {
+    const fetchImages = async () => {
+      const response = await fetch('/api/images');
+      const data = await response.json();
+      setImages(data);
+    };
 
-  // Function to get the correct image path
+    fetchImages();
+  }, []);
   const getImagePath = (path: string) => {
-    // Remove the leading dot if it exists
     const cleanPath = path.startsWith('./') ? path.slice(2) : path;
     return cleanPath;
+  };
+
+  const handleImageClick = (index: number) => {
+    setEnlargedImageIndex(index);
+    setIsEnlargedModalOpen(true);
+  };
+
+  const handleNext = () => {
+    if (selectedProject && enlargedImageIndex !== null) {
+      const nextIndex = (enlargedImageIndex + 1) % selectedProject.images.length;
+      setEnlargedImageIndex(nextIndex);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (selectedProject && enlargedImageIndex !== null) {
+      const prevIndex = (enlargedImageIndex - 1 + selectedProject.images.length) % selectedProject.images.length;
+      setEnlargedImageIndex(prevIndex);
+    }
+  };
+
+  const handleCloseGallery = () => {
+    setIsGalleryModalOpen(false);
+    setEnlargedImageIndex(null);
+    setIsEnlargedModalOpen(false);
+  };
+
+  const handleCloseEnlarged = () => {
+    setIsEnlargedModalOpen(false);
+    setEnlargedImageIndex(null);
   };
 
   return (
@@ -167,12 +216,12 @@ export const Projects = () => {
                 </div>
 
                 <div className="order-1 lg:order-2 relative">
-                  <motion.div
+                <motion.div
                     whileHover={{ scale: 1.02 }}
                     className="relative aspect-video rounded-xl overflow-hidden border border-white/10 bg-[#1a1a1a] cursor-pointer"
                     onClick={() => {
                       setSelectedProject(project);
-                      setIsModalOpen(true);
+                      setIsGalleryModalOpen(true); // Changed from setIsModalOpen to setIsGalleryModalOpen
                     }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-cyan-500/10" />
@@ -198,41 +247,148 @@ export const Projects = () => {
         </div>
       </div>
 
-      {/* Project Gallery Modal */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        {selectedProject && (
-          <div className="p-6">
-            <h3 className="text-2xl font-bold text-white mb-6">{selectedProject.title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {selectedProject.images.map((image, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="relative aspect-video rounded-lg overflow-hidden"
-                >
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={getImagePath(image.src)}
-                      alt={image.alt}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <p className="absolute bottom-2 left-2 text-sm text-white">{image.alt}</p>
-                </motion.div>
-              ))}
-            </div>
+ {/* Project Gallery Modal */}
+{/* Project Gallery Modal */}
+<Modal isOpen={isGalleryModalOpen} onClose={handleCloseGallery}>
+  {selectedProject && (
+    <div className="w-full min-h-screen bg-[#0B1120] p-4">
+      {/* App Header */}
+      <div className="flex items-center justify-between max-w-[90rem] mx-auto mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-purple-500 p-2">
+            <Globe className="w-full h-full text-white" />
           </div>
-        )}
-      </Modal>
+          <span className="text-lg font-medium text-white">Project Gallery</span>
+        </div>
+       
+      </div>
+
+      {/* Gallery Grid */}
+      <div className="max-w-[90rem] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {selectedProject.images.map((image, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="flex flex-col gap-3 cursor-pointer"
+              onClick={() => handleImageClick(index)}
+            >
+              {/* Screenshot Container */}
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-white/5 ">
+                <Image
+                  src={getImagePath(image.src)}
+                  alt={image.alt}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              {/* Label */}
+              <span className="text-white text-center">
+                {image.alt}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+</Modal>
+    {/* Enlarged Image Modal */}
+<Modal isOpen={isEnlargedModalOpen} onClose={handleCloseEnlarged}>
+  {selectedProject && enlargedImageIndex !== null && (
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+      <div className="relative w-full h-full">
+        <Image
+          src={getImagePath(selectedProject.images[enlargedImageIndex].src)}
+          alt={selectedProject.images[enlargedImageIndex].alt}
+          fill
+          className="object-contain"
+          priority
+        />
+        <div className="absolute inset-0 flex items-center justify-between px-4">
+        <button
+  onClick={handlePrevious}
+  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 text-white p-3 rounded-full hover:bg-gray-700 transition-colors z-20 group"
+  aria-label="Previous image"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M15 19l-7-7 7-7"
+    />
+  </svg>
+</button>
+
+<button
+  onClick={handleNext}
+  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 text-white p-3 rounded-full hover:bg-gray-700 transition-colors z-20 group"
+  aria-label="Next image"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 5l7 7-7 7"
+    />
+  </svg>
+</button>
+        </div>
+        <div className="absolute bottom-0 inset-x-0 flex justify-center mb-10">
+          <p className="text-white p-4 bg-black/50 rounded-lg max-w-xl text-center">
+            {selectedProject.images[enlargedImageIndex].alt}
+          </p>
+        </div>
+        <button
+          onClick={handleCloseEnlarged}
+          className="absolute top-4 right-4 p-2 rounded-lg bg-gray-800/80 text-white hover:bg-gray-700 transition-colors z-20"
+        >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+        </button>
+      </div>
+    </div>
+  )}
+</Modal>
+
+     
+
+   
 
       {/* Bottom Divider */}
       <div className="absolute bottom-0 inset-x-0">
         <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
       </div>
     </section>
+    
   );
 }; 

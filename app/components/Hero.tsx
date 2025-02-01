@@ -70,33 +70,17 @@ export const Hero = () => {
                   transition={{ delay: 0.6 }}
                   className="text-lg text-gray-400 leading-relaxed"
                 >
-                  Passionate Full-Stack Developer with a proven track record in crafting{' '}
-                  <span className="text-cyan-400">innovative digital solutions</span>.
-                  Specializing in modern tech stacks including React, Node.js, and cloud technologies.
+                  Programming has been my passion since I was a student,
+                  and I have been honing my skills as a <span className="font-semibold text-cyan-400 mb-6">Software Engineer</span> for almost {''}{' '}
+                  <span className="font-bold text-indigo-500">4+ years</span>. During this time, I’ve immersed myself in a variety of programming 
+                  languages and technologies, continually learning and growing.{' '}
+                  My goal is to keep expanding my knowledge, and contributing to the development of {' '}
+                  <span className="text-cyan-400 font-semibold">innovative digital solutions</span>. Specializing in modern tech stacks like {' '}
+                  <span className="text-green-400">React</span>, <span className="text-yellow-400">Node.js</span>, and <span className="text-blue-400">cloud technologies</span>, 
+                  I am driven to help build impactful projects that shape the future of tech.
                 </motion.p>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 }}
-                  className="flex flex-wrap gap-4"
-                >
-                  <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-300">
-                    React/Nextjs
-                  </div>
-                  <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-300">
-                    React Native
-                  </div>
-                  <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-300">
-                    Javascript
-                  </div>
-                  <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-300">
-                    TypeScript
-                  </div>
-                  <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-300">
-                    Firebase
-                  </div>
-                </motion.div>
+           
               </div>
             </div>
           </motion.div>
