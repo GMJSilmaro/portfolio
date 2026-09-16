@@ -41,36 +41,34 @@ export const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="border-t border-white/5 py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-14 max-w-2xl">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-accent">
-            Skills
-          </p>
-          <h2 className="mb-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Technical Expertise
+    <section id="skills" className="border-t border-white/10 bg-navy-900/40 py-16 sm:py-20">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <div className="mb-10 max-w-2xl">
+          <p className="section-kicker">03 — Skills</p>
+          <h2 className="mb-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Technical Toolkit
           </h2>
           <p className="text-slate-400">
-            Tools and technologies I use to ship reliable products.
+            Languages, frameworks, and practices I use to ship reliable products.
           </p>
         </div>
 
-        <div className="mb-10 flex flex-wrap gap-2">
+        <div className="mb-8 flex flex-wrap gap-2">
           {focusAreas.map((area) => (
             <span
               key={area}
-              className="rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm text-accent-soft"
+              className="rounded-full border border-accent/35 bg-accent/10 px-3.5 py-1.5 text-sm text-accent-soft"
             >
               {area}
             </span>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {mainSkills.map((category) => (
             <div
               key={category.category}
-              className="rounded-xl border border-white/10 bg-navy-900 p-6"
+              className="rounded-2xl border border-white/10 bg-navy-900 p-5 transition-colors hover:border-accent/30 sm:p-6"
             >
               <h3 className="mb-4 text-base font-semibold text-white">
                 {category.category}
@@ -79,7 +77,7 @@ export const Skills = () => {
                 {category.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-md border border-white/10 bg-navy-800 px-3 py-1 text-sm text-slate-300"
+                    className="rounded-md border border-white/10 bg-navy-800 px-2.5 py-1 text-sm text-slate-300"
                   >
                     {skill}
                   </span>
@@ -89,15 +87,15 @@ export const Skills = () => {
           ))}
         </div>
 
-        <div className="mt-5 rounded-xl border border-white/10 bg-navy-900 p-6">
+        <div className="mt-4 rounded-2xl border border-white/10 bg-navy-900 p-5 sm:p-6">
           <h3 className="mb-4 text-base font-semibold text-white">
-            Additional Skills
+            Ways of Working
           </h3>
           <div className="flex flex-wrap gap-2">
             {softSkills.map((skill) => (
               <span
                 key={skill}
-                className="rounded-md border border-white/10 bg-navy-800 px-3 py-1 text-sm text-slate-300"
+                className="rounded-md border border-white/10 bg-navy-800 px-2.5 py-1 text-sm text-slate-300"
               >
                 {skill}
               </span>

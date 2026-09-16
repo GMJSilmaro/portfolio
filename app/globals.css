@@ -60,6 +60,19 @@ body {
   }
 }
 
+@layer utilities {
+  .bg-page-wash {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(107, 140, 206, 0.18), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(74, 111, 165, 0.12), transparent 50%),
+      linear-gradient(180deg, #0a1628 0%, #0f1c2e 100%);
+  }
+
+  .section-kicker {
+    @apply mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+}
+
 ::selection {
   background-color: rgba(107, 140, 206, 0.35);
   color: #ffffff;
