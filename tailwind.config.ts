@@ -10,19 +10,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: {
-          950: "#0a1628",
-          900: "#0f1c2e",
-          800: "#152238",
-          700: "#1a2d45",
-          600: "#243b55",
-          500: "#2d4a6a",
+        paper: {
+          DEFAULT: "#e7ebef",
+          deep: "#d5dce3",
         },
-        accent: {
-          DEFAULT: "#6b8cce",
-          muted: "#4a6fa5",
-          soft: "#8ba4d9",
+        ink: {
+          DEFAULT: "#14181f",
+          soft: "#3d4654",
+          muted: "#6b7585",
         },
+        signal: {
+          DEFAULT: "#0d6e56",
+          soft: "#17856a",
+        },
+        panel: "#f7f8fa",
+        stamp: "#9a3412",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -52,6 +54,12 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        accent: {
+          DEFAULT: "#0d6e56",
+          muted: "#17856a",
+          soft: "#17856a",
+          foreground: "hsl(var(--accent-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -59,7 +67,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        display: ["var(--font-fraunces)", "Georgia", "serif"],
+        sans: ["var(--font-sora)", "system-ui", "sans-serif"],
+        mono: ["var(--font-ibm-plex-mono)", "ui-monospace", "monospace"],
       },
     },
   },

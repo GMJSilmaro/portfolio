@@ -1,19 +1,19 @@
 'use client'
 
-import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
-import { Reveal } from './ui/reveal';
-import { techCategories, favoriteCount } from '../data/tech-stack';
+import React, { useState } from 'react'
+import { Heart } from 'lucide-react'
+import { Reveal } from './ui/reveal'
+import { favoriteCount, techCategories } from '../data/tech-stack'
 
 export const Skills = () => {
-  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
 
   const focusAreas = [
     'Technical Leadership',
     'System Integration',
     'Fullstack Development',
-    'DevOps & Deployment'
-  ];
+    'DevOps & Deployment',
+  ]
 
   const workingStyle = [
     'Technical Mentoring',
@@ -25,27 +25,26 @@ export const Skills = () => {
     'Performance Optimization',
     'Troubleshooting',
     'Technical Documentation',
-    'Stakeholder Communication'
-  ];
+    'Stakeholder Communication',
+  ]
 
   const visibleCategories = techCategories
     .map((group) => ({
       ...group,
       items: showFavoritesOnly ? group.items.filter((item) => item.favorite) : group.items,
     }))
-    .filter((group) => group.items.length > 0);
+    .filter((group) => group.items.length > 0)
 
   return (
-    <section id="skills" className="border-t border-white/10 bg-navy-900/40 py-16 sm:py-20">
-      <div className="mx-auto max-w-6xl px-5 sm:px-6">
-        <Reveal className="mb-8 max-w-2xl">
-          <p className="section-kicker">03 — Skills</p>
-          <h2 className="mb-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Tech Stack
+    <section id="skills" className="relative border-t border-[color:var(--rule)] py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:pl-28">
+        <Reveal className="mb-10 max-w-2xl">
+          <p className="dossier-kicker">03 — Stack inventory</p>
+          <h2 className="font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+            Tech stack
           </h2>
-          <p className="text-slate-400">
-            Every technology, tool, and platform I work with. The ones marked with a heart are
-            where I am most comfortable.
+          <p className="mt-3 text-base leading-relaxed text-ink-muted sm:text-lg">
+            Every technology, tool, and platform on file. Hearts mark where I am most comfortable.
           </p>
         </Reveal>
 
@@ -55,17 +54,17 @@ export const Skills = () => {
               type="button"
               onClick={() => setShowFavoritesOnly((prev) => !prev)}
               aria-pressed={showFavoritesOnly}
-              className={`group inline-flex min-h-[40px] items-center gap-2 rounded-full border px-4 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
+              className={`group inline-flex min-h-[42px] items-center gap-2 border px-4 font-mono text-xs font-medium uppercase tracking-[0.14em] transition-all duration-200 hover:-translate-y-0.5 ${
                 showFavoritesOnly
-                  ? 'border-rose-400/50 bg-rose-400/15 text-rose-200'
-                  : 'border-white/15 bg-navy-800 text-slate-300 hover:border-rose-400/40'
+                  ? 'border-rose-400/50 bg-rose-50 text-rose-700'
+                  : 'border-[color:var(--rule)] bg-white/70 text-ink-soft hover:border-rose-300'
               }`}
             >
               <Heart
-                className={`h-4 w-4 transition-all duration-300 ${
+                className={`h-3.5 w-3.5 transition-all duration-300 ${
                   showFavoritesOnly
-                    ? 'scale-110 fill-rose-400 text-rose-400'
-                    : 'text-rose-400/70 group-hover:scale-110'
+                    ? 'scale-110 fill-rose-500 text-rose-500'
+                    : 'text-rose-400 group-hover:scale-110'
                 }`}
               />
               {showFavoritesOnly ? 'Showing favourites' : `Favourites (${favoriteCount})`}
@@ -75,7 +74,7 @@ export const Skills = () => {
               {focusAreas.map((area) => (
                 <span
                   key={area}
-                  className="cursor-default rounded-full border border-accent/35 bg-accent/10 px-3.5 py-1.5 text-sm text-accent-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/70 hover:text-white"
+                  className="cursor-default border border-signal/25 bg-signal/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-signal transition-all duration-200 hover:-translate-y-0.5 hover:border-signal/50"
                 >
                   {area}
                 </span>
@@ -84,28 +83,26 @@ export const Skills = () => {
           </div>
         </Reveal>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           {visibleCategories.map((group, groupIndex) => (
-            <Reveal key={group.category} delay={groupIndex * 60}>
-              <div className="rounded-2xl border border-white/10 bg-navy-900 p-5 sm:p-6">
-                <div className="mb-5 flex items-center justify-between gap-3">
-                  <h3 className="flex items-center gap-2 text-base font-semibold text-white">
-                    <span className="h-4 w-1 rounded-full bg-accent" />
+            <Reveal key={group.category} delay={groupIndex * 50}>
+              <div className="dossier-panel p-5 sm:p-6">
+                <div className="mb-5 flex items-center justify-between gap-3 border-b border-[color:var(--rule)] pb-3">
+                  <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-ink">
+                    <span className="h-4 w-1 bg-signal" />
                     {group.category}
                   </h3>
-                  <span className="text-xs text-slate-500">{group.items.length}</span>
+                  <span className="font-mono text-[11px] text-ink-muted">{group.items.length}</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                  {group.items.map((tech, techIndex) => (
+                  {group.items.map((tech) => (
                     <div
                       key={`${group.category}-${tech.name}`}
-                      className="group/tech relative flex items-center gap-3 overflow-hidden rounded-xl border border-white/10 bg-navy-800/70 px-3 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:bg-navy-700"
-                      style={{ animationDelay: `${techIndex * 25}ms` }}
+                      className="group/tech relative flex items-center gap-3 overflow-hidden border border-[color:var(--rule)] bg-white/70 px-3 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40"
                     >
-                      {/* Brand-tinted glow on hover */}
                       <span
-                        className="pointer-events-none absolute -left-6 -top-6 h-16 w-16 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover/tech:opacity-40"
+                        className="pointer-events-none absolute -left-6 -top-6 h-16 w-16 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover/tech:opacity-30"
                         style={{ backgroundColor: tech.color }}
                         aria-hidden
                       />
@@ -115,13 +112,13 @@ export const Skills = () => {
                         style={{ color: tech.color }}
                       />
 
-                      <span className="relative min-w-0 flex-1 truncate text-sm text-slate-300 transition-colors group-hover/tech:text-white">
+                      <span className="relative min-w-0 flex-1 truncate text-sm text-ink-soft transition-colors group-hover/tech:text-ink">
                         {tech.name}
                       </span>
 
                       {tech.favorite && (
                         <Heart
-                          className="relative h-3.5 w-3.5 shrink-0 fill-rose-400 text-rose-400 transition-transform duration-300 group-hover/tech:scale-125"
+                          className="relative h-3.5 w-3.5 shrink-0 fill-rose-500 text-rose-500 transition-transform duration-300 group-hover/tech:scale-125"
                           aria-label="Most comfortable with"
                         />
                       )}
@@ -134,10 +131,10 @@ export const Skills = () => {
         </div>
 
         <Reveal delay={80}>
-          <div className="card-interactive mt-4 p-5 sm:p-6">
-            <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
-              <span className="h-4 w-1 rounded-full bg-accent" />
-              Ways of Working
+          <div className="dossier-panel mt-5 p-5 sm:p-6">
+            <h3 className="mb-4 flex items-center gap-2 font-display text-lg font-semibold text-ink">
+              <span className="h-4 w-1 bg-signal" />
+              Ways of working
             </h3>
             <div className="flex flex-wrap gap-2">
               {workingStyle.map((skill) => (
@@ -150,5 +147,5 @@ export const Skills = () => {
         </Reveal>
       </div>
     </section>
-  );
-};
+  )
+}
