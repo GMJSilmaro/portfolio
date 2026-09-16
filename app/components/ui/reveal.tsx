@@ -14,9 +14,12 @@ export const Reveal: React.FC<RevealProps> = ({ children, delay = 0, className =
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (
+      !element ||
+      typeof IntersectionObserver === 'undefined' ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       setIsVisible(true);
       return;
     }
@@ -32,7 +35,14 @@ export const Reveal: React.FC<RevealProps> = ({ children, delay = 0, className =
     );
 
     observer.observe(element);
-    return () => observer.disconnect();
+
+    // Safety net: never leave content invisible if the observer never fires.
+    const fallback = window.setTimeout(() => setIsVisible(true), 2000);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   return (

@@ -13,12 +13,16 @@ interface ProjectImage {
 
 interface Project {
   title: string;
+  period: string;
+  company: string;
   description: string;
   tech: string[];
   features: string[];
   icon: React.ComponentType<{ className?: string }>;
   images: ProjectImage[];
 }
+
+const TECH_TAG_LIMIT = 5;
 
 export const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -29,6 +33,8 @@ export const Projects = () => {
   const projects: Project[] = [
     {
       title: 'e-Invoice Middleware',
+      period: '2023 — 2026',
+      company: 'Pixelcare Consulting',
       description:
         'Middleware portal integrated with LHDN for automated tax workflows, digital invoice processing, real-time sync, and reporting — built for compliance and day-to-day ops.',
       tech: ['Node.js', 'Express.js', 'SQL Server', 'REST APIs', 'LHDN SDK', 'SAP B1', 'Bootstrap'],
@@ -58,6 +64,8 @@ export const Projects = () => {
     },
     {
       title: 'Field Services Management',
+      period: '2024 — Present',
+      company: 'Pixelcare Consulting',
       description:
         'Web portal for field operations — job scheduling, worker dispatch, CRM, calendars, and live service tracking with ERP integration.',
       tech: ['React', 'Next.js', 'Firebase', 'Tanstack', 'Bootstrap', 'SAP B1'],
@@ -91,6 +99,8 @@ export const Projects = () => {
     },
     {
       title: 'Field Services Mobile App',
+      period: '2024 — Present',
+      company: 'Pixelcare Consulting',
       description:
         'Cross-platform React Native app for technicians — live job tracking, signatures, photos, clock in/out, and offline-friendly workflows.',
       tech: ['React Native', 'Expo', 'TypeScript', 'Firebase', 'Google API', 'Tailwind CSS'],
@@ -253,11 +263,19 @@ export const Projects = () => {
                 </button>
 
                 <div className="p-5 sm:p-7">
+                  <div className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
+                    <span className="font-medium text-accent-soft">{project.period}</span>
+                    <span className="text-slate-600">|</span>
+                    <span>{project.company}</span>
+                  </div>
+
                   <div className="mb-3 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-navy-800 transition-all duration-300 group-hover:border-accent/40 group-hover:bg-navy-700">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-navy-800 transition-all duration-300 group-hover:border-accent/40 group-hover:bg-navy-700">
                       <project.icon className="h-5 w-5 text-accent" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white sm:text-2xl">{project.title}</h3>
+                    <h3 className="text-xl font-semibold text-white transition-colors group-hover:text-accent-soft sm:text-2xl">
+                      {project.title}
+                    </h3>
                   </div>
 
                   <p className="mb-5 text-sm leading-relaxed text-slate-400 transition-colors group-hover:text-slate-300 sm:text-base">
@@ -265,19 +283,6 @@ export const Projects = () => {
                   </p>
 
                   <div className="mb-5">
-                    <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                      Stack
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech) => (
-                        <span key={tech} className="chip cursor-default text-xs">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
                     <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Highlights
                     </h4>
@@ -292,6 +297,22 @@ export const Projects = () => {
                         </div>
                       ))}
                     </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 border-t border-white/5 pt-4">
+                    {project.tech.slice(0, TECH_TAG_LIMIT).map((tech) => (
+                      <span key={tech} className="chip cursor-default text-xs lowercase">
+                        {tech}
+                      </span>
+                    ))}
+                    {project.tech.length > TECH_TAG_LIMIT && (
+                      <span
+                        className="rounded-md border border-accent/30 bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent-soft"
+                        title={project.tech.slice(TECH_TAG_LIMIT).join(', ')}
+                      >
+                        +{project.tech.length - TECH_TAG_LIMIT}
+                      </span>
+                    )}
                   </div>
                 </div>
               </article>
