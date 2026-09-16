@@ -19,9 +19,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'GMJ. — Living Dossier | Gilbert Michael Jay Silmaro',
+  title: 'GMJ. — CV Studio | Gilbert Michael Jay Silmaro',
   description:
-    'Technical Lead Consultant and Software Engineer specializing in SAP Business One integration, e-Invoice compliance platforms, enterprise system integration, and fullstack web and mobile development.',
+    'Interactive CV Studio for Technical Lead Consultant Gilbert Michael Jay Silmaro — SAP Business One, e-Invoice platforms, enterprise delivery, and fullstack web & mobile.',
   icons: {
     icon: [
       {

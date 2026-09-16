@@ -1,27 +1,18 @@
 'use client'
 
 import React from 'react'
-import { Hero } from './components/Hero'
-import { About } from './components/About'
-import { Projects } from './components/Projects'
-import { Skills } from './components/Skills'
-import { Contact } from './components/Contact'
-import { Navigation } from './components/Navigation'
-import { ScrollToTop } from './components/ui/scroll-to-top'
+import { Cover } from './components/studio/Cover'
+import { StudioProvider } from './components/studio/StudioContext'
+import { StudioShell } from './components/studio/StudioShell'
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-paper text-ink">
-      <Navigation />
-      <main>
-        <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Contact />
-      </main>
-      <ScrollToTop />
-    </div>
+    <StudioProvider>
+      <div className="min-h-screen bg-ink">
+        <Cover />
+        <StudioShell />
+      </div>
+    </StudioProvider>
   )
 }
 
