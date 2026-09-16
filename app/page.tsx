@@ -7,6 +7,7 @@ import { Projects } from './components/Projects';
 import { Skills } from './components/Skills';
 import { Contact } from './components/Contact';
 import { Navigation } from './components/Navigation';
+import { ScrollToTop } from './components/ui/scroll-to-top';
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
         <Skills />
         <Contact />
       </main>
+      <ScrollToTop />
     </div>
   );
 };

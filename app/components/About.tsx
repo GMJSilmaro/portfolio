@@ -1,5 +1,6 @@
 import React from 'react';
 import { Briefcase, GraduationCap } from 'lucide-react';
+import { Reveal } from './ui/reveal';
 
 export const About = () => {
   const workExperience = [
@@ -67,7 +68,7 @@ export const About = () => {
   return (
     <section id="about" className="border-t border-white/10 bg-navy-900/40 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
-        <div className="mb-10 max-w-2xl">
+        <Reveal className="mb-10 max-w-2xl">
           <p className="section-kicker">01 — About</p>
           <h2 className="mb-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             Experience that ships
@@ -75,60 +76,64 @@ export const About = () => {
           <p className="text-slate-400">
             Education and roles that shaped how I design, build, and deliver software.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="mb-8 rounded-2xl border border-white/10 bg-navy-900 p-5 transition-colors hover:border-accent/30 sm:p-6">
-          <div className="mb-3 flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-navy-800">
-              <GraduationCap className="h-5 w-5 text-accent" />
+        <Reveal delay={80}>
+          <div className="card-interactive group mb-8 p-5 sm:p-6">
+            <div className="mb-3 flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-navy-800 transition-colors group-hover:border-accent/40 group-hover:bg-navy-700">
+                <GraduationCap className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">
+                  BS in Information Technology
+                </h3>
+                <p className="text-sm text-accent-soft">Interface Computer College</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white">
-                BS in Information Technology
-              </h3>
-              <p className="text-sm text-accent-soft">Interface Computer College</p>
-            </div>
+            <ul className="space-y-2 pl-0 sm:pl-[3.25rem]">
+              <li className="flex gap-2 text-sm text-slate-400">
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                Specialized in software development and system architecture
+              </li>
+              <li className="flex gap-2 text-sm text-slate-400">
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                Focused on modern web technologies with academic recognition
+              </li>
+            </ul>
           </div>
-          <ul className="space-y-2 pl-0 sm:pl-[3.25rem]">
-            <li className="flex gap-2 text-sm text-slate-400">
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-              Specialized in software development and system architecture
-            </li>
-            <li className="flex gap-2 text-sm text-slate-400">
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-              Focused on modern web technologies with academic recognition
-            </li>
-          </ul>
-        </div>
+        </Reveal>
 
         <div className="relative space-y-4 border-l border-white/10 pl-5 sm:pl-7">
           {workExperience.map((job, index) => (
-            <article key={index} className="relative">
-              <span className="absolute -left-[1.66rem] top-5 h-2.5 w-2.5 rounded-full border-2 border-accent bg-navy-950 sm:-left-[2.15rem]" />
-              <div className="rounded-2xl border border-white/10 bg-navy-900 p-5 transition-colors hover:border-accent/30 sm:p-6">
-                <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <div className="mb-1 flex items-center gap-2">
-                      <Briefcase className="h-4 w-4 shrink-0 text-accent" />
-                      <h3 className="text-base font-semibold text-white sm:text-lg">{job.title}</h3>
+            <Reveal key={index} delay={index * 60}>
+              <article className="group relative">
+                <span className="absolute -left-[1.66rem] top-5 h-2.5 w-2.5 rounded-full border-2 border-accent bg-navy-950 transition-transform duration-300 group-hover:scale-150 sm:-left-[2.15rem]" />
+                <div className="card-interactive p-5 sm:p-6">
+                  <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="mb-1 flex items-center gap-2">
+                        <Briefcase className="h-4 w-4 shrink-0 text-accent" />
+                        <h3 className="text-base font-semibold text-white sm:text-lg">{job.title}</h3>
+                      </div>
+                      <p className="text-sm text-slate-300">{job.company}</p>
+                      <p className="text-xs text-slate-500 sm:text-sm">{job.period}</p>
                     </div>
-                    <p className="text-sm text-slate-300">{job.company}</p>
-                    <p className="text-xs text-slate-500 sm:text-sm">{job.period}</p>
+                    <span className="rounded-full border border-white/10 bg-navy-800 px-2.5 py-1 text-xs text-slate-300 transition-colors group-hover:border-accent/40">
+                      {job.location}
+                    </span>
                   </div>
-                  <span className="rounded-full border border-white/10 bg-navy-800 px-2.5 py-1 text-xs text-slate-300">
-                    {job.location}
-                  </span>
+                  <ul className="space-y-2">
+                    {job.description.map((achievement, i) => (
+                      <li key={i} className="flex gap-2 text-sm leading-relaxed text-slate-400 transition-colors group-hover:text-slate-300">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-slate-500 transition-colors group-hover:bg-accent" />
+                        {achievement}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-2">
-                  {job.description.map((achievement, i) => (
-                    <li key={i} className="flex gap-2 text-sm leading-relaxed text-slate-400">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-slate-500" />
-                      {achievement}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>

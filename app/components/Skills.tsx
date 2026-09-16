@@ -1,4 +1,5 @@
 import React from 'react';
+import { Reveal } from './ui/reveal';
 
 export const Skills = () => {
   const mainSkills = [
@@ -43,7 +44,7 @@ export const Skills = () => {
   return (
     <section id="skills" className="border-t border-white/10 bg-navy-900/40 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
-        <div className="mb-10 max-w-2xl">
+        <Reveal className="mb-10 max-w-2xl">
           <p className="section-kicker">03 — Skills</p>
           <h2 className="mb-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             Technical Toolkit
@@ -51,57 +52,56 @@ export const Skills = () => {
           <p className="text-slate-400">
             Languages, frameworks, and practices I use to ship reliable products.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="mb-8 flex flex-wrap gap-2">
-          {focusAreas.map((area) => (
-            <span
-              key={area}
-              className="rounded-full border border-accent/35 bg-accent/10 px-3.5 py-1.5 text-sm text-accent-soft"
-            >
-              {area}
-            </span>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {mainSkills.map((category) => (
-            <div
-              key={category.category}
-              className="rounded-2xl border border-white/10 bg-navy-900 p-5 transition-colors hover:border-accent/30 sm:p-6"
-            >
-              <h3 className="mb-4 text-base font-semibold text-white">
-                {category.category}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-md border border-white/10 bg-navy-800 px-2.5 py-1 text-sm text-slate-300"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-4 rounded-2xl border border-white/10 bg-navy-900 p-5 sm:p-6">
-          <h3 className="mb-4 text-base font-semibold text-white">
-            Ways of Working
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {softSkills.map((skill) => (
+        <Reveal delay={60}>
+          <div className="mb-8 flex flex-wrap gap-2">
+            {focusAreas.map((area) => (
               <span
-                key={skill}
-                className="rounded-md border border-white/10 bg-navy-800 px-2.5 py-1 text-sm text-slate-300"
+                key={area}
+                className="cursor-default rounded-full border border-accent/35 bg-accent/10 px-3.5 py-1.5 text-sm text-accent-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/70 hover:text-white"
               >
-                {skill}
+                {area}
               </span>
             ))}
           </div>
+        </Reveal>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {mainSkills.map((category, index) => (
+            <Reveal key={category.category} delay={index * 70}>
+              <div className="card-interactive h-full p-5 sm:p-6">
+                <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
+                  <span className="h-4 w-1 rounded-full bg-accent" />
+                  {category.category}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill) => (
+                    <span key={skill} className="chip cursor-default">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
+
+        <Reveal delay={100}>
+          <div className="card-interactive mt-4 p-5 sm:p-6">
+            <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
+              <span className="h-4 w-1 rounded-full bg-accent" />
+              Ways of Working
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {softSkills.map((skill) => (
+                <span key={skill} className="chip cursor-default">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

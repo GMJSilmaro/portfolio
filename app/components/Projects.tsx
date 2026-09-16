@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Globe, Network, Smartphone, Images } from 'lucide-react';
 import { Modal } from './ui/modal';
+import { Reveal } from './ui/reveal';
 import Image from 'next/image';
 
 interface ProjectImage {
@@ -181,7 +182,7 @@ export const Projects = () => {
   return (
     <section id="projects" className="border-t border-white/10 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
-        <div className="mb-10 max-w-2xl">
+        <Reveal className="mb-10 max-w-2xl">
           <p className="section-kicker">02 — Projects</p>
           <h2 className="mb-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             Featured Work
@@ -189,80 +190,79 @@ export const Projects = () => {
           <p className="text-slate-400">
             Production products I designed and built — tap any screenshot to open the gallery.
           </p>
-        </div>
+        </Reveal>
 
         <div className="space-y-10 sm:space-y-14">
           {projects.map((project, index) => (
-            <article
-              key={project.title}
-              className="overflow-hidden rounded-2xl border border-white/10 bg-navy-900 transition-colors hover:border-accent/30"
-            >
-              <button
-                type="button"
-                onClick={() => openGallery(project)}
-                className="group relative block aspect-[16/10] w-full overflow-hidden bg-navy-800 sm:aspect-video"
-              >
-                {project.images[0] && (
-                  <Image
-                    src={getImagePath(project.images[0].src)}
-                    alt={project.images[0].alt}
-                    fill
-                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                    priority={index === 0}
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3">
-                  <span className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-navy-950/80 px-3 py-2 text-xs font-medium text-white backdrop-blur-sm sm:text-sm">
-                    <Images className="h-4 w-4 text-accent" />
-                    View gallery · {project.images.length} shots
-                  </span>
-                </div>
-              </button>
-
-              <div className="p-5 sm:p-7">
-                <div className="mb-3 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-navy-800">
-                    <project.icon className="h-5 w-5 text-accent" />
+            <Reveal key={project.title} delay={index * 80}>
+              <article className="card-interactive group overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => openGallery(project)}
+                  className="relative block aspect-[16/10] w-full overflow-hidden bg-navy-800 sm:aspect-video"
+                >
+                  {project.images[0] && (
+                    <Image
+                      src={getImagePath(project.images[0].src)}
+                      alt={project.images[0].alt}
+                      fill
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      priority={index === 0}
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-navy-950/10 to-transparent transition-opacity duration-300 group-hover:from-navy-950/60" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <span className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-navy-950/85 px-3 py-2 text-xs font-medium text-white backdrop-blur-sm transition-all duration-300 group-hover:border-accent/60 group-hover:bg-accent group-hover:text-navy-950 sm:text-sm">
+                      <Images className="h-4 w-4 text-accent transition-colors group-hover:text-navy-950" />
+                      View gallery · {project.images.length} shots
+                    </span>
                   </div>
-                  <h3 className="text-xl font-semibold text-white sm:text-2xl">{project.title}</h3>
-                </div>
+                </button>
 
-                <p className="mb-5 text-sm leading-relaxed text-slate-400 sm:text-base">
-                  {project.description}
-                </p>
+                <div className="p-5 sm:p-7">
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-navy-800 transition-all duration-300 group-hover:border-accent/40 group-hover:bg-navy-700">
+                      <project.icon className="h-5 w-5 text-accent" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-white sm:text-2xl">{project.title}</h3>
+                  </div>
 
-                <div className="mb-5">
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                    Stack
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md border border-white/10 bg-navy-800 px-2.5 py-1 text-xs text-slate-300"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                  <p className="mb-5 text-sm leading-relaxed text-slate-400 transition-colors group-hover:text-slate-300 sm:text-base">
+                    {project.description}
+                  </p>
+
+                  <div className="mb-5">
+                    <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      Stack
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tech.map((tech) => (
+                        <span key={tech} className="chip cursor-default text-xs">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      Highlights
+                    </h4>
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      {project.features.map((feature) => (
+                        <div
+                          key={feature}
+                          className="flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-white"
+                        >
+                          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-
-                <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                    Highlights
-                  </h4>
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    {project.features.map((feature) => (
-                      <div key={feature} className="flex items-center gap-2 text-sm text-slate-400">
-                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </article>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
