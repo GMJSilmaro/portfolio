@@ -8,8 +8,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Gilbert Michael Jay Silmaro - Portfolio',
-  description: 'Software Engineer & Fullstack Developer portfolio',
+  title: 'Gilbert Michael Jay Silmaro - Technical Lead Consultant',
+  description:
+    'Technical Lead Consultant and Software Engineer specializing in SAP Business One integration, e-Invoice compliance platforms, enterprise system integration, and fullstack web and mobile development.',
   icons: {
     icon: [
       {

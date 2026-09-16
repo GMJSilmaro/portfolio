@@ -4,41 +4,49 @@ import { Reveal } from './ui/reveal';
 export const Skills = () => {
   const mainSkills = [
     {
-      category: 'Programming Languages',
-      skills: ['JavaScript', 'TypeScript', 'Python', 'C#', 'PHP', 'C++']
+      category: 'Languages',
+      skills: ['TypeScript', 'JavaScript', 'C#', 'PHP', 'Python', 'SQL']
     },
     {
       category: 'Frontend & Mobile',
-      skills: ['React', 'Next.js', 'React Native', 'Angular', 'Vue.js', 'HTML5', 'CSS3', 'SASS', 'TailwindCSS', 'Bootstrap']
+      skills: ['React', 'Next.js', 'React Native', 'Expo', 'Vue.js', 'TailwindCSS', 'Bootstrap']
     },
     {
-      category: 'Backend & Database',
-      skills: ['Node.js', 'Express.js', 'Laravel', 'Symfony', 'CodeIgniter', 'Firebase', 'MySQL', 'MSSQL', 'SQLite', 'MariaDB']
+      category: 'Backend & APIs',
+      skills: ['Node.js', 'Express.js', 'ASP.NET', 'Laravel', 'REST APIs', 'OAuth', 'Webhooks']
     },
     {
-      category: 'Tools & Platforms',
-      skills: ['Git', 'Docker', 'AWS', 'Postman', 'Linux', 'VS Code', 'Figma', 'Android Studio', 'Unity', 'Unreal Engine']
+      category: 'Databases',
+      skills: ['MS-SQL', 'HANA DB', 'PostgreSQL', 'MySQL', 'Redis', 'Firebase']
+    },
+    {
+      category: 'DevOps & Infrastructure',
+      skills: ['Docker', 'Docker Compose', 'Traefik', 'GitHub Actions', 'GHCR', 'Ubuntu', 'SUSE Linux', 'Git']
+    },
+    {
+      category: 'Enterprise & Reporting',
+      skills: ['SAP B1 Service Layer', 'SAGE X3', 'NetSuite', 'LHDN SDK', 'SSRS', 'Crystal Reports', 'Power BI', 'BI360']
     }
   ];
 
   const focusAreas = [
-    'Frontend Development',
-    'Mobile Development',
-    'Backend Development',
-    'UI/UX Design'
+    'Technical Leadership',
+    'System Integration',
+    'Fullstack Development',
+    'DevOps & Deployment'
   ];
 
   const softSkills = [
-    'Problem Solving',
-    'Team Collaboration',
-    'Project Management',
+    'Technical Mentoring',
+    'Code Review',
+    'Solution Architecture',
+    'Project Delivery',
     'Agile Development',
     'Clean Code',
     'Performance Optimization',
-    'Testing & Debugging',
-    'Documentation',
-    'Version Control',
-    'CI/CD'
+    'Troubleshooting',
+    'Technical Documentation',
+    'Stakeholder Communication'
   ];
 
   return (
@@ -50,7 +58,7 @@ export const Skills = () => {
             Technical Toolkit
           </h2>
           <p className="text-slate-400">
-            Languages, frameworks, and practices I use to ship reliable products.
+            Languages, platforms, and infrastructure I use to deliver enterprise software.
           </p>
         </Reveal>
 

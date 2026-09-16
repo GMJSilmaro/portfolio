@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Globe, Network, Smartphone, Images } from 'lucide-react';
+import { Globe, Network, Smartphone, Images, FileCheck2, Boxes } from 'lucide-react';
 import { Modal } from './ui/modal';
 import { Reveal } from './ui/reveal';
 import Image from 'next/image';
@@ -142,6 +142,39 @@ export const Projects = () => {
     }
   ];
 
+  const enterpriseWork = [
+    {
+      title: 'Pinnacle e-Invoice Middleware',
+      period: '2023 — 2026',
+      clientCount: '9 enterprise clients',
+      icon: FileCheck2,
+      summary:
+        'Designed and delivered an e-Invoice middleware platform connecting customer systems to government e-Invoicing platforms and service providers, then supported it in production across multiple client rollouts.',
+      scope: [
+        'Invoice generation, submission, validation, status tracking, and document delivery',
+        'UBL, XML, and JSON generation validated against LHDN e-Invoicing rules',
+        'OAuth flows with access and refresh token handling, secure credentials, webhooks, and API monitoring',
+        'Enterprise integrations over REST APIs, database links, and scheduled middleware processes'
+      ],
+      sectors: ['Manufacturing', 'F&B', 'Engineering', 'Media', 'Insurance', 'Automotive', 'Trading']
+    },
+    {
+      title: 'SAP Business One Projects',
+      period: '2024 — Present',
+      clientCount: '3 enterprise clients',
+      icon: Boxes,
+      summary:
+        'Led technical design and development of SAP Business One integrated applications, covering business processes, integrations, APIs, and custom solutions as Technical Lead Consultant.',
+      scope: [
+        'SAP B1 Service Layer integrations across sales, purchasing, inventory, warehouse, and finance',
+        'Integrations to web portals, mobile applications, POS systems, and third-party services',
+        'Field Service Management solutions with service orders, scheduling, technicians, and inventory',
+        'Stock movements, goods issue and receipt, branch allocation, and SAP synchronization'
+      ],
+      sectors: ['Technology', 'Retail & Distribution', 'M&E Engineering']
+    }
+  ];
+
   const getImagePath = (path: string) => (path.startsWith('./') ? path.slice(2) : path);
 
   const openGallery = (project: Project) => {
@@ -262,6 +295,70 @@ export const Projects = () => {
                   </div>
                 </div>
               </article>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal className="mb-8 mt-16 max-w-2xl">
+          <h3 className="mb-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Enterprise Delivery
+          </h3>
+          <p className="text-slate-400">
+            Long-running platform work delivered for enterprise clients across Malaysia, Singapore,
+            and other markets. Client names are withheld under confidentiality.
+          </p>
+        </Reveal>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {enterpriseWork.map((work, index) => (
+            <Reveal key={work.title} delay={index * 80}>
+              <div className="card-interactive group h-full p-5 sm:p-7">
+                <div className="mb-4 flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-navy-800 transition-all duration-300 group-hover:border-accent/40 group-hover:bg-navy-700">
+                      <work.icon className="h-5 w-5 text-accent" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-white">{work.title}</h4>
+                      <p className="text-xs text-slate-500">{work.period}</p>
+                    </div>
+                  </div>
+                  <span className="shrink-0 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium text-accent-soft">
+                    {work.clientCount}
+                  </span>
+                </div>
+
+                <p className="mb-5 text-sm leading-relaxed text-slate-400 transition-colors group-hover:text-slate-300">
+                  {work.summary}
+                </p>
+
+                <div className="mb-5">
+                  <h5 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    Scope
+                  </h5>
+                  <ul className="space-y-2">
+                    {work.scope.map((item) => (
+                      <li key={item} className="flex gap-2 text-sm text-slate-400">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h5 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    Sectors Served
+                  </h5>
+                  <div className="flex flex-wrap gap-2">
+                    {work.sectors.map((sector) => (
+                      <span key={sector} className="chip cursor-default text-xs">
+                        {sector}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </Reveal>
           ))}
         </div>

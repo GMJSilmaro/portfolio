@@ -1,66 +1,103 @@
 import React from 'react';
-import { Briefcase, GraduationCap } from 'lucide-react';
+import { Briefcase, GraduationCap, UserRound } from 'lucide-react';
 import { Reveal } from './ui/reveal';
 
 export const About = () => {
   const workExperience = [
     {
+      title: 'Technical Lead Consultant',
+      company: 'Pixelcare Consulting',
+      location: 'Remote',
+      period: '2026 — Present',
+      description: [
+        'Lead and coordinate software development across multiple concurrent client projects',
+        'Provide technical guidance, mentoring, and code review for the development team',
+        'Design scalable web and mobile applications and enterprise system integrations',
+        'Manage Docker-based environments, Traefik routing, SSL, and Ubuntu/Linux deployments',
+        'Implement CI/CD pipelines with GitHub Actions and container workflows via GHCR',
+        'Operate production databases and services including PostgreSQL and Redis',
+        'Review system architecture, security, performance, and infrastructure requirements'
+      ]
+    },
+    {
       title: 'Software Engineer',
       company: 'Pixelcare Consulting',
       location: 'Remote',
-      period: 'Dec 2023 — Present',
+      period: '2023 — 2026',
       description: [
-        'Built FSM Field Management System portal with mobility using Next.js, React Native Expo, and Firebase',
-        'Shipped e-Invoice middleware with LHDN SDK for tax compliance and digital invoicing',
-        'Migrated a legacy system into a production ASP.NET web application'
+        'Built a Field Service Management System for scheduling, dispatch, worker and customer management',
+        'Built a technician mobile app with job tracking, digital signatures, photo documentation, and clock in/out',
+        'Developed e-Invoice middleware integrating LHDN with enterprise systems for digital invoicing',
+        'Developed REST APIs and integrated third-party services and enterprise platforms',
+        'Worked across Next.js, React, React Native, Node.js, Firebase, TypeScript, SQL, SAP B1, and the LHDN SDK',
+        'Prepared technical documentation and supported users through system implementation'
+      ]
+    },
+    {
+      title: 'Web Developer',
+      company: 'Blue Ocean Data Solutions',
+      location: 'On-site',
+      period: '2023',
+      description: [
+        'Migrated and modernized legacy applications into production ASP.NET web applications',
+        'Implemented authentication, data management, reporting, dashboards, and business workflows',
+        'Performed system testing, debugging, troubleshooting, and performance optimization'
       ]
     },
     {
       title: 'Fullstack Developer',
-      company: 'EonBiz Technology',
+      company: 'Eonbotz Technology',
       location: 'On-site',
-      period: 'Aug 2021 — Oct 2023',
+      period: '2021 — 2023',
       description: [
-        'Delivered school management systems, student portal, and parents portal in C#',
-        'Led and mentored a web development team through delivery timelines',
-        'Produced documentation and kept projects on schedule'
+        'Developed school management systems, student portals, and parent portals using C#',
+        'Built and maintained fullstack web applications from business requirements',
+        'Led and mentored web developers through project implementation',
+        'Planned development tasks, monitored delivery timelines, and prepared documentation'
       ]
     },
     {
       title: 'Freelance Developer',
       company: 'Self-Employed',
       location: 'Remote',
-      period: 'Nov 2023 — Dec 2023',
+      period: '2023',
       description: [
-        'Built a Laravel 10 TALL-stack app with fingerprint biometric scanning',
-        'Added events, profiles, and report generation workflows'
+        'Developed a Laravel 10 TALL-stack application with fingerprint biometric scanning',
+        'Implemented event and user profile management features',
+        'Built report generation and reporting workflows end to end'
       ]
     },
     {
       title: 'Freelance Developer',
       company: 'Caravan & 1Export',
       location: 'Remote',
-      period: 'Jan 2021 — Jun 2021',
+      period: '2021',
       description: [
-        'Crafted landing and login experiences with Laravel and Vue.js'
+        'Developed and maintained web applications using Laravel and Vue.js',
+        'Designed responsive landing pages and login interfaces',
+        'Communicated directly with clients on requirements and changes'
       ]
     },
     {
       title: 'Game Developer',
       company: 'Self-Employed',
       location: 'Remote',
-      period: 'Jun 2017 — May 2018',
+      period: '2017 — 2018',
       description: [
-        'Developed an Android learning game for dyslexic children with Unity, Firebase, and C#'
+        'Developed an Android educational game for children with dyslexia',
+        'Built game mechanics and interactive learning activities using Unity and C#',
+        'Integrated Firebase for application data and backend functionality'
       ]
     },
     {
       title: 'Graphic Designer',
       company: 'Love Radio Davao',
       location: 'On-site',
-      period: 'Oct 2015 — May 2017',
+      period: '2015',
       description: [
-        'Produced posters and social graphics aligned with brand guidelines'
+        'Produced posters and social graphics aligned with brand guidelines',
+        'Designed layouts for events, promotions, and social media posts',
+        'Coordinated with DJs, sales, and station management on design requirements'
       ]
     }
   ];
@@ -74,11 +111,29 @@ export const About = () => {
             Experience that ships
           </h2>
           <p className="text-slate-400">
-            Education and roles that shaped how I design, build, and deliver software.
+            A decade of design and engineering, now focused on leading enterprise software delivery.
           </p>
         </Reveal>
 
-        <Reveal delay={80}>
+        <Reveal delay={60}>
+          <div className="card-interactive group mb-4 p-5 sm:p-6">
+            <div className="mb-3 flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-navy-800 transition-colors group-hover:border-accent/40 group-hover:bg-navy-700">
+                <UserRound className="h-5 w-5 text-accent" />
+              </div>
+              <h3 className="pt-2 text-lg font-semibold text-white">Professional Summary</h3>
+            </div>
+            <p className="text-sm leading-relaxed text-slate-400 sm:pl-[3.25rem]">
+              Technical Lead Consultant and Software Engineer with experience across software
+              development, system integration, and enterprise solutions. I work end to end on
+              fullstack applications, SAP Business One integration, e-Invoice systems, API
+              development, databases, Docker, and CI/CD — leading technical projects, resolving
+              complex system issues, and delivering solutions businesses depend on.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={100}>
           <div className="card-interactive group mb-8 p-5 sm:p-6">
             <div className="mb-3 flex items-start gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-navy-800 transition-colors group-hover:border-accent/40 group-hover:bg-navy-700">
@@ -88,7 +143,7 @@ export const About = () => {
                 <h3 className="text-lg font-semibold text-white">
                   BS in Information Technology
                 </h3>
-                <p className="text-sm text-accent-soft">Interface Computer College</p>
+                <p className="text-sm text-accent-soft">Interface Computer College · 2021</p>
               </div>
             </div>
             <ul className="space-y-2 pl-0 sm:pl-[3.25rem]">
@@ -106,7 +161,7 @@ export const About = () => {
 
         <div className="relative space-y-4 border-l border-white/10 pl-5 sm:pl-7">
           {workExperience.map((job, index) => (
-            <Reveal key={index} delay={index * 60}>
+            <Reveal key={`${job.company}-${job.period}`} delay={index * 60}>
               <article className="group relative">
                 <span className="absolute -left-[1.66rem] top-5 h-2.5 w-2.5 rounded-full border-2 border-accent bg-navy-950 transition-transform duration-300 group-hover:scale-150 sm:-left-[2.15rem]" />
                 <div className="card-interactive p-5 sm:p-6">

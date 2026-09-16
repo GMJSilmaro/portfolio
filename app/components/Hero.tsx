@@ -1,14 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
-import { ArrowRight, ArrowDown } from 'lucide-react';
+import { ArrowRight, ArrowDown, Download } from 'lucide-react';
 
 export const Hero = () => {
-  const techChips = ['React', 'Next.js', 'React Native', 'Node.js', 'Firebase', 'TypeScript'];
+  const techChips = ['Next.js', 'React Native', 'Node.js', 'SAP B1', 'Docker', 'TypeScript'];
 
   const stats = [
-    { value: '4+', label: 'Years Exp.' },
-    { value: '3', label: 'Featured Apps' },
-    { value: 'Web+Mobile', label: 'Stack Focus' },
+    { value: '5+', label: 'Years Exp.' },
+    { value: '12+', label: 'Enterprise Clients' },
+    { value: 'Lead', label: 'Technical Role' },
   ];
 
   return (
@@ -45,7 +45,7 @@ export const Hero = () => {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
               <span className="text-xs font-medium tracking-wide text-accent-soft">
-                Available for projects
+                Available for consulting
               </span>
             </div>
 
@@ -61,16 +61,18 @@ export const Hero = () => {
               className="animate-fade-up mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-400 sm:text-sm"
               style={{ animationDelay: '180ms' }}
             >
-              Software Engineer · Fullstack Developer
+              Technical Lead Consultant · Software Engineer
             </p>
 
             <p
               className="animate-fade-up mx-auto mb-7 max-w-lg text-base leading-relaxed text-slate-400 sm:text-lg md:mx-0"
               style={{ animationDelay: '240ms' }}
             >
-              I build reliable web and mobile products end to end — from polished UI to solid APIs —
-              with <span className="font-medium text-white">4+ years</span> shipping production systems
-              for businesses.
+              I lead technical delivery for enterprise software —{' '}
+              <span className="font-medium text-white">SAP Business One</span> integrations,
+              e-Invoice compliance platforms, and Dockerised deployments — with{' '}
+              <span className="font-medium text-white">5+ years</span> building web and mobile
+              systems that businesses run on daily.
             </p>
 
             <div
@@ -85,8 +87,17 @@ export const Hero = () => {
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
               </a>
               <a
+                href="./Gilbert-Michael-Jay-Silmaro-CV.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex min-h-[46px] items-center justify-center gap-2 rounded-lg border border-white/20 px-6 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-white/5"
+              >
+                <Download className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5" />
+                Download CV
+              </a>
+              <a
                 href="#contact"
-                className="inline-flex min-h-[46px] items-center justify-center rounded-lg border border-white/20 px-6 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-white/5"
+                className="inline-flex min-h-[46px] items-center justify-center rounded-lg px-4 text-sm font-semibold text-slate-300 transition-colors duration-200 hover:text-accent"
               >
                 Contact Me
               </a>
@@ -134,8 +145,8 @@ export const Hero = () => {
                 priority
               />
               <div className="absolute inset-x-0 bottom-0 translate-y-1 bg-gradient-to-t from-navy-950/90 to-transparent p-5 transition-transform duration-500 group-hover:translate-y-0">
-                <p className="text-sm font-medium text-white">Fullstack Developer</p>
-                <p className="text-xs text-slate-300">React · Next.js · React Native</p>
+                <p className="text-sm font-medium text-white">Technical Lead Consultant</p>
+                <p className="text-xs text-slate-300">SAP B1 · Next.js · React Native</p>
               </div>
             </div>
           </div>
