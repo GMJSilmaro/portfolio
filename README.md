@@ -1,4 +1,4 @@
-# GMJ. — Living Dossier
+# GMJ. — Living Dossier / CV Studio
 
 An interactive online CV for **Gilbert Michael Jay Silmaro** — Technical Lead Consultant & Software Engineer.
 
@@ -7,25 +7,24 @@ An interactive online CV for **Gilbert Michael Jay Silmaro** — Technical Lead 
 - Site: [https://gmjsilmaro.dev](https://gmjsilmaro.dev)
 - GitHub Pages: [https://gmjsilmaro.github.io/portfolio/](https://gmjsilmaro.github.io/portfolio/)
 
-## What's different
+## Experience
 
-This is not a generic sectioned portfolio template. It is framed as a **Living Dossier**:
+This is not a stacked marketing page. It is a **CV Studio**:
 
-- Cover with brand-first hero
-- Subject file & career log
-- Case files for shipped products
-- Stack inventory with tech icons
-- Clearance / contact
+1. **Cover** — cinematic full-bleed entrance
+2. **Identity rail** — portrait, contacts, CV download (desktop)
+3. **Chapters** — Profile · Career · Work · Stack (mode views, not cloned sections)
 
-## Tech stack
+Tech stack icons remain in the Stack chapter with favourites filtering.
+
+## Tech
 
 - Next.js 15 (static export)
 - React 19
 - Tailwind CSS
 - TypeScript
-- Framer Motion / CSS motion
-- react-icons (tech brand icons)
-- GitHub Actions (deploy)
+- react-icons
+- GitHub Actions
 
 ## Local development
 
@@ -34,16 +33,9 @@ pnpm install
 pnpm dev
 ```
 
-Do not run a second build/start if the site is already serving locally.
-
 ## Usage rights
 
-This portfolio is personal work and intellectual property.
-
-- Permission required for use, reproduction, or modification
-- No commercial use without permission
-- Attribution required if permitted to use
-- No redistribution without permission
+Personal work — permission required for use, reproduction, or modification. No commercial use or redistribution without permission.
 
 ## Contact
 

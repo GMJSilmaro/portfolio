@@ -19,29 +19,29 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
-    version: '1.0.0',
+    version: '1.1.0',
     date: '09.16.26',
-    title: 'Living Dossier',
+    title: 'CV Studio',
     notes: [
       {
         type: 'feature',
-        text: 'A brand-new Living Dossier experience — your portfolio now reads like an interactive professional CV, not a generic website.',
+        text: 'Your portfolio is now a CV Studio — enter from a cinematic cover, then move through Profile, Career, Work, and Stack like chapters of a living résumé.',
       },
       {
         type: 'feature',
-        text: 'Sticky chapter rail and clear sections for Cover, Subject, Cases, Stack, and Clearance so visitors can navigate your story instantly.',
+        text: 'Desktop identity rail keeps your portrait, contacts, and CV download in view while you browse each chapter.',
       },
       {
         type: 'feature',
-        text: 'Project case files with exhibit galleries, plus the full tech stack with icons and favourites filter.',
+        text: 'Work opens as a case viewer with exhibits; Stack is an interactive icon wall with favourites and category filters.',
       },
       {
         type: 'improvement',
-        text: 'Fresh paper-and-ink look with expressive typography, smoother motion, and a calmer reading flow on phone and desktop.',
+        text: 'Premium paper-and-ink presentation with sharper photography, clearer hierarchy, and layouts built for reading — not a generic scrolling website.',
       },
       {
-        type: 'improvement',
-        text: 'Contact clearance opens your email client with the message ready to send.',
+        type: 'fix',
+        text: 'Replaced the earlier look-alike section layout so the experience finally matches a full portfolio revamp.',
       },
     ],
   },
