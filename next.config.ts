@@ -1,24 +1,12 @@
 import type { NextConfig } from "next";
 
-const isGithubActions = process.env.GITHUB_ACTIONS || false;
-
-let assetPrefix = '';
-let basePath = '';
-
-if (isGithubActions) {
-  const repo = process.env.GITHUB_REPOSITORY?.replace(/.*?\//, '');
-  assetPrefix = `/${repo}/`;
-  basePath = `/${repo}`;
-}
-
+// Served from the root of the custom domain (gmjsilmaro.dev), so no basePath
+// or assetPrefix. Adding one would make /_next assets 404.
 const nextConfig: NextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
-    domains: ['gmjsilmaro.github.io'],
   },
-  assetPrefix: assetPrefix,
-  basePath: basePath,
   trailingSlash: true,
   eslint: {
     ignoreDuringBuilds: true,
