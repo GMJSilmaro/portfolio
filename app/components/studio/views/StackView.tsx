@@ -31,7 +31,7 @@ export function StackView() {
       <div className="border-b border-[color:var(--rule)] px-6 py-8 sm:px-10 sm:py-10">
         <Reveal>
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Stack</p>
-          <h2 className="mt-3 max-w-xl font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+          <h2 className="mt-3 max-w-xl font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
             Tools on the bench.
           </h2>
           <p className="mt-3 max-w-lg text-ink-muted">

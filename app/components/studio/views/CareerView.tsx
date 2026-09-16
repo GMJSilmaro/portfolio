@@ -11,7 +11,7 @@ export function CareerView() {
     <div className="px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
       <Reveal className="mb-10 max-w-2xl">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Career</p>
-        <h2 className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+        <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
           A continuous record of roles and delivery.
         </h2>
       </Reveal>
@@ -31,7 +31,7 @@ export function CareerView() {
               >
                 <span className="font-mono text-sm text-signal sm:text-base">{year}</span>
                 <div>
-                  <h3 className="font-display text-xl font-semibold text-ink sm:text-2xl">
+                  <h3 className="font-display text-xl font-medium text-ink sm:text-2xl">
                     {job.role}
                   </h3>
                   <p className="mt-1 text-sm text-ink-muted">

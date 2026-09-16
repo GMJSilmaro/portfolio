@@ -53,16 +53,16 @@ export function StudioShell() {
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 border-b border-[color:var(--rule)] bg-paper/95 backdrop-blur-md lg:hidden">
         <div className="flex items-center justify-between px-4 py-3">
-          <a href="#cover" className="font-display text-lg font-semibold text-ink">
+          <a href="#cover" className="font-display text-lg font-medium text-ink">
             GMJ<span className="text-signal">.</span>
           </a>
           <a
-            href="./Gilbert-Michael-Jay-Silmaro-CV.pdf"
+            href="./gmj-silmaro-resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted"
           >
-            CV PDF
+            Resume
           </a>
         </div>
         <div className="flex overflow-x-auto border-t border-[color:var(--rule)]">
@@ -104,7 +104,7 @@ export function StudioShell() {
 
       {/* Mobile identity strip */}
       <div className="border-t border-[color:var(--rule)] bg-[#f4f6f8] px-5 py-8 lg:hidden">
-        <p className="font-display text-2xl font-semibold text-ink">
+        <p className="font-display text-2xl font-medium text-ink">
           Gilbert Michael Jay Silmaro
         </p>
         <p className="mt-2 text-sm text-ink-muted">

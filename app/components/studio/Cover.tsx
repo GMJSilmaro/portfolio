@@ -42,7 +42,7 @@ export function Cover() {
 
           <div>
             <h1
-              className="animate-fade-up font-display text-[clamp(4.5rem,18vw,9rem)] font-semibold leading-[0.82] tracking-[-0.04em] text-paper"
+              className="animate-fade-up font-display text-[clamp(4.5rem,18vw,9rem)] font-medium leading-[0.82] tracking-[-0.04em] text-paper"
               style={{ animationDelay: '140ms' }}
             >
               GMJ
@@ -76,12 +76,12 @@ export function Cover() {
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
             <a
-              href="./Gilbert-Michael-Jay-Silmaro-CV.pdf"
+              href="./gmj-silmaro-resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-[52px] items-center border border-white/25 px-6 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-paper/80 transition-colors hover:border-paper hover:text-paper"
             >
-              Download PDF
+              Download resume
             </a>
           </div>
         </div>

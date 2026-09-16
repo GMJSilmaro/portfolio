@@ -22,14 +22,14 @@ export function IdentityRail() {
           <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-signal-soft">
             Technical Lead
           </p>
-          <p className="mt-1 font-display text-2xl font-semibold leading-none text-paper">
+          <p className="mt-1 font-display text-2xl font-medium leading-none text-paper">
             GMJ<span className="text-signal">.</span>
           </p>
         </div>
       </div>
 
       <div className="flex flex-1 flex-col px-5 py-6">
-        <p className="font-display text-xl font-semibold leading-snug text-ink">
+        <p className="font-display text-xl font-medium leading-snug text-ink">
           Gilbert Michael Jay Silmaro
         </p>
         <p className="mt-2 text-sm leading-relaxed text-ink-muted">
@@ -55,7 +55,7 @@ export function IdentityRail() {
                   <span className="font-mono text-[10px] tracking-[0.18em] text-signal">
                     {item.code}
                   </span>
-                  <span className="font-display text-lg font-semibold tracking-tight">
+                  <span className="font-display text-lg font-medium tracking-tight">
                     {item.label}
                   </span>
                 </span>
@@ -89,13 +89,13 @@ export function IdentityRail() {
             GitHub
           </a>
           <a
-            href="./Gilbert-Michael-Jay-Silmaro-CV.pdf"
+            href="./gmj-silmaro-resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 bg-ink font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-paper transition-colors hover:bg-signal"
           >
             <Download className="h-3.5 w-3.5" />
-            CV PDF
+            Download resume
           </a>
         </div>
       </div>
