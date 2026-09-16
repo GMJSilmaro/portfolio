@@ -1,5 +1,6 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
 export const Navigation = () => {
@@ -17,7 +18,7 @@ export const Navigation = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -39,7 +40,6 @@ export const Navigation = () => {
       });
     }, options);
 
-    // Observe all sections
     navItems.forEach(({ sectionId }) => {
       const element = document.getElementById(sectionId);
       if (element) observer.observe(element);
@@ -64,29 +64,27 @@ export const Navigation = () => {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
+      <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-[#0c1b2a]/80 backdrop-blur-lg' : 'bg-transparent'
+          isScrolled
+            ? 'border-b border-white/5 bg-navy-950/90 backdrop-blur-md'
+            : 'bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <nav className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <a 
-              href="#hero" 
+        <div className="mx-auto max-w-6xl px-6">
+          <nav className="flex h-16 items-center justify-between">
+            <a
+              href="#hero"
               onClick={(e) => {
                 e.preventDefault();
                 handleNavClick('#hero');
               }}
-              className="text-xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text"
+              className="text-sm font-semibold tracking-wide text-white"
             >
-              My Portfolio
+              GMJ<span className="text-accent">.</span>
             </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden items-center gap-8 md:flex">
               {navItems.map((item) => (
                 <a
                   key={item.name}
@@ -95,40 +93,36 @@ export const Navigation = () => {
                     e.preventDefault();
                     handleNavClick(item.href);
                   }}
-                  className={`text-gray-300 hover:text-white transition-colors relative group py-2 ${
-                    activeSection === item.sectionId ? 'text-white' : ''
+                  className={`relative py-2 text-sm transition-colors ${
+                    activeSection === item.sectionId
+                      ? 'text-white'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   {item.name}
-                  <span 
-                    className={`absolute bottom-0 left-0 h-px bg-gradient-to-r from-purple-500 to-cyan-500 transition-all duration-300 ${
-                      activeSection === item.sectionId ? 'w-full' : 'w-0 group-hover:w-full'
-                    }`} 
+                  <span
+                    className={`absolute bottom-0 left-0 h-px bg-accent transition-all duration-300 ${
+                      activeSection === item.sectionId ? 'w-full' : 'w-0'
+                    }`}
                   />
                 </a>
               ))}
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-gray-300 hover:text-white transition-colors"
+              className="text-slate-300 transition-colors hover:text-white md:hidden"
+              aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </nav>
         </div>
-      </motion.header>
+      </header>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed inset-0 z-40 md:hidden pt-20 bg-[#0c1b2a]/95 backdrop-blur-lg"
-        >
-          <nav className="flex flex-col items-center gap-6 p-6">
+        <div className="fixed inset-0 z-40 bg-navy-950/98 pt-16 md:hidden">
+          <nav className="flex flex-col items-center gap-6 p-8">
             {navItems.map((item) => (
               <a
                 key={item.name}
@@ -137,16 +131,18 @@ export const Navigation = () => {
                   e.preventDefault();
                   handleNavClick(item.href);
                 }}
-                className={`text-lg text-gray-300 hover:text-white transition-colors ${
-                  activeSection === item.sectionId ? 'text-white' : ''
+                className={`text-base transition-colors ${
+                  activeSection === item.sectionId
+                    ? 'text-white'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 {item.name}
               </a>
             ))}
           </nav>
-        </motion.div>
+        </div>
       )}
     </>
   );
-}; 
+};

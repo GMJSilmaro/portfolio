@@ -1,13 +1,15 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { CustomCursor } from './components/CustomCursor'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
-  title: 'Gilbert Michael Jay Silmaro - CV Portfolio',
-  description: 'Full-Stack Developer Portfolio showcasing my projects and skills',
+  title: 'Gilbert Michael Jay Silmaro - Portfolio',
+  description: 'Software Engineer & Fullstack Developer portfolio',
   icons: {
     icon: [
       {
@@ -33,9 +35,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth bg-[#0c1b2a]">
-      <body className={`${inter.className} min-h-screen bg-[#0c1b2a] text-white cursor-none`}>
-        <CustomCursor />
+    <html lang="en" className="scroll-smooth">
+      <body className={`${inter.variable} font-sans min-h-screen bg-navy-950 text-white antialiased`}>
         {children}
       </body>
     </html>

@@ -10,13 +10,15 @@ import { Navigation } from './components/Navigation';
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0c1b2a] via-[#111827] to-[#0f172a] text-white selection:bg-purple-500/30 selection:text-white">
+    <div className="min-h-screen bg-navy-950 text-white">
       <Navigation />
-      <Hero />
-      <About />
-      <Projects />
-      <Skills />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <Projects />
+        <Skills />
+        <Contact />
+      </main>
     </div>
   );
 };
