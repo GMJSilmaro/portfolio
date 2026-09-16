@@ -8,7 +8,7 @@ export function ProfileView() {
     <div className="mx-auto max-w-3xl px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
       <Reveal>
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Profile</p>
-        <h2 className="mt-3 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-6xl">
+        <h2 className="mt-3 font-display text-4xl font-medium leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-6xl">
           I lead technical delivery for software businesses depend on.
         </h2>
       </Reveal>
@@ -29,7 +29,7 @@ export function ProfileView() {
             { value: 'Lead', label: 'Current seat' },
           ].map((stat) => (
             <div key={stat.label} className="bg-panel px-4 py-6 sm:px-6">
-              <p className="font-display text-3xl font-semibold text-ink sm:text-4xl">{stat.value}</p>
+              <p className="font-display text-3xl font-medium text-ink sm:text-4xl">{stat.value}</p>
               <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-muted">
                 {stat.label}
               </p>
@@ -44,7 +44,7 @@ export function ProfileView() {
             <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted">
               Education
             </p>
-            <h3 className="mt-3 font-display text-2xl font-semibold text-ink">
+            <h3 className="mt-3 font-display text-2xl font-medium text-ink">
               BS Information Technology
             </h3>
             <p className="mt-2 text-sm text-ink-muted">Interface Computer College · 2021</p>

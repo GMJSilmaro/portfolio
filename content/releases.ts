@@ -19,7 +19,7 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
-    version: '1.1.0',
+    version: '1.1.1',
     date: '09.16.26',
     title: 'CV Studio',
     notes: [
@@ -29,7 +29,7 @@ export const releases: Release[] = [
       },
       {
         type: 'feature',
-        text: 'Desktop identity rail keeps your portrait, contacts, and CV download in view while you browse each chapter.',
+        text: 'Desktop identity rail keeps your portrait, contacts, and resume download in view while you browse each chapter.',
       },
       {
         type: 'feature',
@@ -37,7 +37,11 @@ export const releases: Release[] = [
       },
       {
         type: 'improvement',
-        text: 'Premium paper-and-ink presentation with sharper photography, clearer hierarchy, and layouts built for reading — not a generic scrolling website.',
+        text: 'Headlines use a cleaner modern typeface instead of the heavy bold serif.',
+      },
+      {
+        type: 'improvement',
+        text: 'Download now serves a new public personal resume — the old company CV file was removed.',
       },
       {
         type: 'fix',

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { Fraunces, Sora, IBM_Plex_Mono } from 'next/font/google'
+import { Manrope, Sora, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 
-const fraunces = Fraunces({
+const manrope = Manrope({
   subsets: ['latin'],
-  variable: '--font-fraunces',
+  variable: '--font-manrope',
 })
 
 const sora = Sora({
@@ -49,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${fraunces.variable} ${sora.variable} ${ibmPlexMono.variable} font-sans min-h-screen bg-paper text-ink antialiased`}
+        className={`${manrope.variable} ${sora.variable} ${ibmPlexMono.variable} font-sans min-h-screen bg-paper text-ink antialiased`}
       >
         {children}
       </body>

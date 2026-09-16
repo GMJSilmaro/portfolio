@@ -24,7 +24,7 @@ export function WorkView() {
       <div className="border-b border-[color:var(--rule)] lg:w-72 lg:shrink-0 lg:border-b-0 lg:border-r">
         <div className="px-6 py-8 sm:px-8">
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Work</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-ink">Cases</h2>
+          <h2 className="mt-3 font-display text-3xl font-medium text-ink">Cases</h2>
         </div>
         <div className="flex gap-2 overflow-x-auto px-4 pb-4 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0 lg:pb-0">
           {projects.map((item, index) => {
@@ -43,7 +43,7 @@ export function WorkView() {
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-signal">
                   {item.caseId}
                 </p>
-                <p className="mt-1 font-display text-lg font-semibold leading-snug text-ink">
+                <p className="mt-1 font-display text-lg font-medium leading-snug text-ink">
                   {item.title}
                 </p>
                 <p className="mt-1 font-mono text-[10px] text-ink-muted">{item.period}</p>
@@ -79,7 +79,7 @@ export function WorkView() {
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-muted">
             {project.company} · {project.period}
           </p>
-          <h3 className="mt-2 font-display text-3xl font-semibold text-ink sm:text-4xl">
+          <h3 className="mt-2 font-display text-3xl font-medium text-ink sm:text-4xl">
             {project.title}
           </h3>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg">
@@ -125,7 +125,7 @@ export function WorkView() {
                     {work.caseId}
                   </p>
                   <div>
-                    <h4 className="font-display text-xl font-semibold text-ink">{work.title}</h4>
+                    <h4 className="font-display text-xl font-medium text-ink">{work.title}</h4>
                     <p className="mt-1 text-sm text-ink-muted">
                       {work.period} · {work.clientCount}
                     </p>
@@ -143,7 +143,7 @@ export function WorkView() {
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-signal">
             {project.caseId} · Exhibits
           </p>
-          <h3 className="mt-1 font-display text-2xl font-semibold text-ink">{project.title}</h3>
+          <h3 className="mt-1 font-display text-2xl font-medium text-ink">{project.title}</h3>
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {project.images.map((image, index) => (
               <button

@@ -67,7 +67,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        display: ["var(--font-fraunces)", "Georgia", "serif"],
+        display: ["var(--font-manrope)", "system-ui", "sans-serif"],
         sans: ["var(--font-sora)", "system-ui", "sans-serif"],
         mono: ["var(--font-ibm-plex-mono)", "ui-monospace", "monospace"],
       },
