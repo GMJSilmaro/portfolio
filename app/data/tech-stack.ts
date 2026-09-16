@@ -46,7 +46,7 @@ import { DiMsqlServer } from 'react-icons/di';
 export interface Tech {
   name: string;
   icon: IconType;
-  /** Brand colour tuned for legibility on the navy background. */
+  /** Brand colour tuned for legibility on the paper dossier background. */
   color: string;
   /** Marks the stack I am most comfortable working in. */
   favorite?: boolean;
@@ -73,9 +73,9 @@ export const techCategories: TechCategory[] = [
     category: 'Frontend & Mobile',
     items: [
       { name: 'React', icon: SiReact, color: '#61DAFB', favorite: true },
-      { name: 'Next.js', icon: SiNextdotjs, color: '#E6EDF7', favorite: true },
+      { name: 'Next.js', icon: SiNextdotjs, color: '#111111', favorite: true },
       { name: 'React Native', icon: SiReact, color: '#61DAFB', favorite: true },
-      { name: 'Expo', icon: SiExpo, color: '#E6EDF7' },
+      { name: 'Expo', icon: SiExpo, color: '#4630EB' },
       { name: 'Tailwind CSS', icon: SiTailwindcss, color: '#38BDF8', favorite: true },
       { name: 'Vue.js', icon: SiVuedotjs, color: '#4FC08D' },
       { name: 'Bootstrap', icon: SiBootstrap, color: '#9B7BD4' },
@@ -85,7 +85,7 @@ export const techCategories: TechCategory[] = [
     category: 'Backend & APIs',
     items: [
       { name: 'Node.js', icon: SiNodedotjs, color: '#6CC24A', favorite: true },
-      { name: 'Express.js', icon: SiExpress, color: '#E6EDF7', favorite: true },
+      { name: 'Express.js', icon: SiExpress, color: '#404040', favorite: true },
       { name: 'ASP.NET', icon: SiDotnet, color: '#9B7BF7' },
       { name: 'Laravel', icon: SiLaravel, color: '#FF5B47' },
       { name: 'REST APIs', icon: SiOpenapiinitiative, color: '#8BC34A', favorite: true },
@@ -112,7 +112,7 @@ export const techCategories: TechCategory[] = [
       { name: 'GitHub Actions', icon: SiGithubactions, color: '#4C9AFF', favorite: true },
       { name: 'Git', icon: SiGit, color: '#F05032', favorite: true },
       { name: 'Traefik', icon: SiTraefikproxy, color: '#37B7D0' },
-      { name: 'GHCR', icon: SiGithub, color: '#E6EDF7' },
+      { name: 'GHCR', icon: SiGithub, color: '#24292F' },
       { name: 'Ubuntu', icon: SiUbuntu, color: '#E95420' },
       { name: 'SUSE Linux', icon: SiSuse, color: '#4FD18B' },
     ],

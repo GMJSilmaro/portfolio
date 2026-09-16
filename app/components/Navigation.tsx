@@ -1,181 +1,189 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { Menu, X, Mail } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
+import { Menu, X } from 'lucide-react'
+
+const chapters = [
+  { id: 'hero', label: 'Cover', code: '00' },
+  { id: 'about', label: 'Subject', code: '01' },
+  { id: 'projects', label: 'Cases', code: '02' },
+  { id: 'skills', label: 'Stack', code: '03' },
+  { id: 'contact', label: 'Clearance', code: '04' },
+] as const
 
 export const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  const navItems = [
-    { name: 'Home', href: '#hero', sectionId: 'hero' },
-    { name: 'About', href: '#about', sectionId: 'about' },
-    { name: 'Projects', href: '#projects', sectionId: 'projects' },
-    { name: 'Skills', href: '#skills', sectionId: 'skills' },
-    { name: 'Contact', href: '#contact', sectionId: 'contact' }
-  ];
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('hero')
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = window.scrollY;
-      const height = document.documentElement.scrollHeight - window.innerHeight;
-      setIsScrolled(scrolled > 40);
-      setScrollProgress(height > 0 ? Math.min(scrolled / height, 1) : 0);
-    };
+      const scrolled = window.scrollY
+      const height = document.documentElement.scrollHeight - window.innerHeight
+      setIsScrolled(scrolled > 40)
+      setScrollProgress(height > 0 ? Math.min(scrolled / height, 1) : 0)
+    }
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
+        })
       },
-      { rootMargin: '-45% 0px', threshold: 0 }
-    );
+      { rootMargin: '-42% 0px', threshold: 0 }
+    )
 
-    navItems.forEach(({ sectionId }) => {
-      const element = document.getElementById(sectionId);
-      if (element) observer.observe(element);
-    });
+    chapters.forEach(({ id }) => {
+      const element = document.getElementById(id)
+      if (element) observer.observe(element)
+    })
 
-    return () => observer.disconnect();
-  }, []);
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsMobileMenuOpen(false);
-    };
+      if (e.key === 'Escape') setIsMobileMenuOpen(false)
+    }
 
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, []);
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [])
 
-  const handleNavClick = (href: string) => {
-    setIsMobileMenuOpen(false);
-    const element = document.getElementById(href.replace('#', ''));
-    if (element) element.scrollIntoView({ behavior: 'smooth' });
-  };
+  const handleNavClick = (id: string) => {
+    setIsMobileMenuOpen(false)
+    const element = document.getElementById(id)
+    if (element) element.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-300 ${
-        isScrolled || isMobileMenuOpen
-          ? 'border-b border-white/10 bg-navy-950/95 backdrop-blur-md'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="mx-auto max-w-6xl px-5 sm:px-6">
-        <nav className="flex h-16 items-center justify-between">
+    <>
+      <header
+        className={`fixed left-0 right-0 top-0 z-[110] transition-all duration-300 ${
+          isScrolled || isMobileMenuOpen
+            ? 'border-b border-[color:var(--rule)] bg-paper/90 backdrop-blur-md'
+            : 'bg-transparent'
+        }`}
+      >
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-6 lg:pl-28">
           <a
             href="#hero"
             onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('#hero');
+              e.preventDefault()
+              handleNavClick('hero')
             }}
-            className="group text-base font-semibold tracking-wide text-white"
+            className="group font-display text-xl font-semibold tracking-tight text-ink"
           >
             GMJ
-            <span className="text-accent transition-all duration-300 group-hover:tracking-widest">
+            <span className="text-signal transition-all duration-300 group-hover:tracking-[0.35em]">
               .
             </span>
           </a>
 
-          <div className="hidden items-center gap-1 md:flex">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item.href);
-                }}
-                className={`relative rounded-md px-3 py-2 text-sm transition-colors duration-200 ${
-                  activeSection === item.sectionId
-                    ? 'text-white'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {item.name}
-                <span
-                  className={`absolute bottom-1 left-3 h-px bg-accent transition-all duration-300 ${
-                    activeSection === item.sectionId ? 'right-3' : 'right-full'
-                  }`}
-                />
-              </a>
-            ))}
+          <div className="hidden items-center gap-6 md:flex">
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-ink-muted">
+              Dossier · GMJ-2026
+            </p>
             <a
               href="#contact"
               onClick={(e) => {
-                e.preventDefault();
-                handleNavClick('#contact');
+                e.preventDefault()
+                handleNavClick('contact')
               }}
-              className="ml-3 rounded-md bg-accent px-3.5 py-2 text-sm font-medium text-navy-950 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/25"
+              className="inline-flex min-h-[40px] items-center border border-ink bg-ink px-4 font-mono text-xs font-medium uppercase tracking-[0.16em] text-paper transition-all duration-200 hover:-translate-y-0.5 hover:bg-signal hover:border-signal"
             >
-              Hire Me
+              Open Clearance
             </a>
           </div>
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-white transition-colors hover:bg-white/5 active:scale-95 md:hidden"
+            className="flex h-10 w-10 items-center justify-center border border-[color:var(--rule)] text-ink transition-colors hover:border-signal/40 md:hidden"
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMobileMenuOpen}
           >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
+        </div>
+
+        <div
+          className="h-0.5 origin-left bg-signal transition-transform duration-150 ease-out"
+          style={{ transform: `scaleX(${scrollProgress})` }}
+        />
+
+        <div
+          className={`overflow-hidden border-b border-[color:var(--rule)] bg-paper/98 transition-[max-height,opacity] duration-300 md:hidden ${
+            isMobileMenuOpen ? 'max-h-[28rem] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <nav className="space-y-1 px-4 py-3">
+            {chapters.map((chapter) => (
+              <a
+                key={chapter.id}
+                href={`#${chapter.id}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleNavClick(chapter.id)
+                }}
+                className={`flex min-h-[44px] items-center gap-3 px-3 font-medium transition-colors ${
+                  activeSection === chapter.id
+                    ? 'bg-white text-ink'
+                    : 'text-ink-soft active:bg-white/70'
+                }`}
+              >
+                <span className="w-6 font-mono text-[11px] text-signal">{chapter.code}</span>
+                {chapter.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      {/* Desktop chapter rail */}
+      <aside className="pointer-events-none fixed bottom-8 left-6 top-24 z-[100] hidden w-16 flex-col justify-between lg:flex">
+        <nav className="pointer-events-auto flex flex-col gap-3">
+          {chapters.map((chapter) => {
+            const active = activeSection === chapter.id
+            return (
+              <a
+                key={chapter.id}
+                href={`#${chapter.id}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleNavClick(chapter.id)
+                }}
+                className="group flex items-center gap-3"
+                aria-current={active ? 'true' : undefined}
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full border transition-all duration-300 ${
+                    active
+                      ? 'animate-rail-pulse border-signal bg-signal'
+                      : 'border-ink/25 bg-transparent group-hover:border-signal'
+                  }`}
+                />
+                <span
+                  className={`origin-left font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 ${
+                    active
+                      ? 'translate-x-0 text-ink opacity-100'
+                      : '-translate-x-1 text-ink-muted opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
+                  }`}
+                >
+                  {chapter.label}
+                </span>
+              </a>
+            )
+          })}
         </nav>
-      </div>
-
-      {/* Scroll progress */}
-      <div
-        className="h-px origin-left bg-accent transition-transform duration-150 ease-out"
-        style={{ transform: `scaleX(${scrollProgress})` }}
-      />
-
-      {/* Compact mobile dropdown */}
-      <div
-        className={`overflow-hidden border-b border-white/10 bg-navy-950/98 backdrop-blur-md transition-[max-height,opacity] duration-300 ease-out md:hidden ${
-          isMobileMenuOpen ? 'max-h-[26rem] opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <nav className="px-4 pb-4 pt-1">
-          {navItems.map((item, index) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(item.href);
-              }}
-              className={`flex min-h-[44px] items-center gap-3 rounded-lg px-3 text-[15px] font-medium transition-colors ${
-                activeSection === item.sectionId
-                  ? 'bg-navy-800 text-white'
-                  : 'text-slate-300 active:bg-navy-800'
-              }`}
-            >
-              <span className="w-5 text-[11px] text-accent">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              {item.name}
-            </a>
-          ))}
-
-          <a
-            href="mailto:gmjsilmaro03@gmail.com"
-            className="mt-3 flex min-h-[44px] items-center justify-center gap-2 rounded-lg bg-accent text-sm font-semibold text-navy-950 active:scale-[0.99]"
-          >
-            <Mail className="h-4 w-4" />
-            Email Me
-          </a>
-        </nav>
-      </div>
-    </header>
-  );
-};
+        <div className="pointer-events-none h-24 w-px self-start bg-gradient-to-b from-signal/50 to-transparent ml-[4px]" />
+      </aside>
+    </>
+  )
+}

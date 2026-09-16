@@ -1,32 +1,55 @@
-# My Portfolio Website
+# GMJ. — Living Dossier
 
-A modern, responsive portfolio website built with Next.js, React, and TailwindCSS.
+An interactive online CV for **Gilbert Michael Jay Silmaro** — Technical Lead Consultant & Software Engineer.
 
-## 🚀 Live Demo
-Visit the live portfolio at: [https://gmjsilmaro.github.io/portfolio/](https://gmjsilmaro.github.io/portfolio/)
+## Live
 
-## ⚠️ Usage Rights
+- Site: [https://gmjsilmaro.dev](https://gmjsilmaro.dev)
+- GitHub Pages: [https://gmjsilmaro.github.io/portfolio/](https://gmjsilmaro.github.io/portfolio/)
 
-This portfolio is my personal work and intellectual property. While the code is publicly visible:
+## What's different
 
-- ✋ **Permission Required**: Any use, reproduction, or modification requires explicit written permission
-- 🚫 **No Commercial Use**: Not for commercial purposes without permission
-- 📝 **Attribution**: Must credit the original author if permitted to use
-- 🔒 **No Redistribution**: Cannot be redistributed without permission
+This is not a generic sectioned portfolio template. It is framed as a **Living Dossier**:
 
-## 🛠️ Tech Stack
+- Cover with brand-first hero
+- Subject file & career log
+- Case files for shipped products
+- Stack inventory with tech icons
+- Clearance / contact
 
-- Next.js
-- React
-- TailwindCSS
+## Tech stack
+
+- Next.js 15 (static export)
+- React 19
+- Tailwind CSS
 - TypeScript
-- GitHub Actions (CI/CD)
+- Framer Motion / CSS motion
+- react-icons (tech brand icons)
+- GitHub Actions (deploy)
 
-## 📧 Contact
+## Local development
 
-For permissions or inquiries, please contact me at:
+```bash
+pnpm install
+pnpm dev
+```
+
+Do not run a second build/start if the site is already serving locally.
+
+## Usage rights
+
+This portfolio is personal work and intellectual property.
+
+- Permission required for use, reproduction, or modification
+- No commercial use without permission
+- Attribution required if permitted to use
+- No redistribution without permission
+
+## Contact
+
 - GitHub: [@gmjsilmaro](https://github.com/gmjsilmaro)
+- Email: gmjsilmaro03@gmail.com
 
-## ©️ License
+## License
 
-All Rights Reserved - Gilbert Michael Jay Silmaro
+All Rights Reserved — Gilbert Michael Jay Silmaro
