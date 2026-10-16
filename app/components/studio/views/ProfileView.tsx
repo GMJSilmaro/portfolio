@@ -5,7 +5,7 @@ import { Reveal } from '../../ui/reveal'
 
 export function ProfileView() {
   return (
-    <div className="stage-pad max-w-3xl">
+    <div className="stage-pad w-full max-w-3xl xl:max-w-4xl">
       <Reveal>
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Profile</p>
         <h2 className="mt-3 max-w-[22ch] font-display text-4xl font-medium leading-[1.12] tracking-tight text-ink sm:text-5xl lg:text-[3.15rem]">

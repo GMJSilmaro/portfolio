@@ -17,12 +17,12 @@ export function IdentityRail() {
       style={{ overflowY }}
     >
       <aside className="flex min-h-0 flex-1 flex-col border-r border-[color:var(--rule)] bg-[#f4f6f8]">
-        <div className="relative h-36 w-full shrink-0 overflow-hidden bg-ink xl:h-40">
+        <div className="relative aspect-[4/5] max-h-44 w-full shrink-0 overflow-hidden bg-ink xl:max-h-48">
           <Image
             src="./images/Profile.jpg"
             alt="Gilbert Michael Jay Silmaro"
             fill
-            className="object-cover object-[58%_12%]"
+            className="object-cover object-[50%_12%]"
             sizes="320px"
             priority
           />

@@ -72,7 +72,7 @@ export function WorkView() {
           </button>
         </Reveal>
 
-        <div className="stage-pad max-w-3xl">
+        <div className="stage-pad w-full max-w-3xl xl:max-w-4xl">
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-muted">
             {project.company} · {project.period}
           </p>

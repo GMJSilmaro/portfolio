@@ -66,9 +66,9 @@ export const Modal: React.FC<ModalProps> = ({
       const dialog = dialogRef.current
       if (!dialog) return
 
-      const focusable = Array.from(
-        dialog.querySelectorAll<HTMLElement>(FOCUSABLE)
-      ).filter((el) => !el.hasAttribute('disabled') && el.tabIndex !== -1)
+      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+        (el) => !el.hasAttribute('disabled') && el.tabIndex !== -1
+      )
 
       if (focusable.length === 0) {
         event.preventDefault()
@@ -111,72 +111,74 @@ export const Modal: React.FC<ModalProps> = ({
       : 'border-[color:var(--rule)] bg-panel text-ink'
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6">
+    <>
       <button
         type="button"
         aria-label="Close dialog backdrop"
-        className="absolute inset-0 bg-ink/75 backdrop-blur-sm"
+        className="fixed inset-0 z-[9998] bg-ink/80 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={labelId}
-        tabIndex={-1}
-        className={`relative flex max-h-[min(92dvh,900px)] w-full max-w-5xl flex-col overflow-hidden rounded-lg border shadow-[0_24px_80px_-32px_rgba(0,0,0,0.55)] outline-none ${shell}`}
-      >
-        <header
-          className={`flex shrink-0 items-start justify-between gap-4 border-b px-4 py-3 sm:px-5 ${
-            tone === 'ink' ? 'border-white/10' : 'border-[color:var(--rule)] bg-white/70'
-          }`}
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 pointer-events-none sm:p-5">
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={labelId}
+          tabIndex={-1}
+          className={`pointer-events-auto flex max-h-[min(90vh,90dvh)] w-full max-w-4xl flex-col overflow-hidden rounded-lg border shadow-[0_24px_80px_-32px_rgba(0,0,0,0.55)] outline-none ${shell}`}
         >
-          <div className="min-w-0 pr-2">
-            {subtitle ? (
-              <p
-                className={`font-mono text-[10px] uppercase tracking-[0.22em] ${
-                  tone === 'ink' ? 'text-signal-soft' : 'text-signal'
-                }`}
-              >
-                {subtitle}
-              </p>
-            ) : null}
-            {title ? (
-              <h2
-                id={titleId}
-                className={`truncate font-display text-lg font-medium sm:text-xl ${
-                  tone === 'ink' ? 'text-paper' : 'text-ink'
-                }`}
-              >
-                {title}
-              </h2>
-            ) : (
-              <span className="sr-only" id={titleId}>
-                Dialog
-              </span>
-            )}
-          </div>
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            className={`flex h-10 w-10 shrink-0 items-center justify-center border transition-colors ${
-              tone === 'ink'
-                ? 'border-white/20 text-paper hover:border-white/50'
-                : 'border-[color:var(--rule)] bg-white text-ink hover:border-signal/40'
+          <header
+            className={`flex shrink-0 items-start justify-between gap-4 border-b px-4 py-3 sm:px-5 ${
+              tone === 'ink' ? 'border-white/10' : 'border-[color:var(--rule)] bg-white/80'
             }`}
-            aria-label="Close"
           >
-            <X className="h-5 w-5" />
-          </button>
-        </header>
+            <div className="min-w-0 pr-2">
+              {subtitle ? (
+                <p
+                  className={`font-mono text-[10px] uppercase tracking-[0.22em] ${
+                    tone === 'ink' ? 'text-signal-soft' : 'text-signal'
+                  }`}
+                >
+                  {subtitle}
+                </p>
+              ) : null}
+              {title ? (
+                <h2
+                  id={titleId}
+                  className={`truncate font-display text-lg font-medium sm:text-xl ${
+                    tone === 'ink' ? 'text-paper' : 'text-ink'
+                  }`}
+                >
+                  {title}
+                </h2>
+              ) : (
+                <span className="sr-only" id={titleId}>
+                  Dialog
+                </span>
+              )}
+            </div>
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center border transition-colors ${
+                tone === 'ink'
+                  ? 'border-white/20 text-paper hover:border-white/50'
+                  : 'border-[color:var(--rule)] bg-white text-ink hover:border-signal/40'
+              }`}
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </header>
 
-        <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain">
-          {children}
+          <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain">
+            {children}
+          </div>
         </div>
       </div>
-    </div>,
+    </>,
     document.body
   )
 }
