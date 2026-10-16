@@ -25,7 +25,7 @@ export function ProfileView() {
           </Reveal>
         </div>
 
-        <Reveal delay={120}>
+        {/* <Reveal delay={120}>
           <figure className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden bg-ink lg:max-w-none">
             <Image
               src="./images/Profile.jpg"
@@ -35,7 +35,7 @@ export function ProfileView() {
               className="object-cover object-[42%_12%]"
             />
           </figure>
-        </Reveal>
+        </Reveal> */}
       </div>
 
       <Reveal delay={160}>
