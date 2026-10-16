@@ -15,6 +15,11 @@
   --rule: rgba(20, 24, 31, 0.1);
   --rule-strong: rgba(20, 24, 31, 0.18);
   --stamp: #9a3412;
+  --dossier-max: 90rem;
+  --dossier-rail: 15rem;
+  --dossier-gap: 1.5rem;
+  --dossier-pad: 2rem;
+  --dossier-pad-lg: 3rem;
 }
 
 html {
@@ -64,19 +69,23 @@ body {
   body {
     @apply bg-background text-foreground antialiased;
   }
+
+  :focus-visible {
+    outline: 2px solid var(--signal-soft);
+    outline-offset: 3px;
+  }
 }
 
 @layer utilities {
-  /* Shared chapter gutters — keeps Profile / Career / Work / Stack aligned */
-  .stage-pad {
-    @apply px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12;
+  /* Shared chapter gutters — 32px, 48px from the desktop breakpoint */
+  .dossier-pad {
+    padding: var(--dossier-pad);
   }
 
-  .bg-dossier-wash {
-    background:
-      radial-gradient(ellipse 90% 55% at 12% -10%, rgba(13, 110, 86, 0.12), transparent 52%),
-      radial-gradient(ellipse 70% 45% at 100% 8%, rgba(61, 70, 84, 0.08), transparent 48%),
-      linear-gradient(165deg, #eef2f5 0%, #e3e8ed 48%, #dfe6ec 100%);
+  @media (min-width: 1024px) {
+    .dossier-pad {
+      padding: var(--dossier-pad-lg);
+    }
   }
 
   .bg-dossier-grain {
@@ -86,25 +95,8 @@ body {
     mix-blend-mode: multiply;
   }
 
-  .bg-chapter-grid {
-    background-image:
-      linear-gradient(to right, rgba(20, 24, 31, 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(20, 24, 31, 0.045) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 75% 65% at 40% 20%, black, transparent 78%);
-    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 40% 20%, black, transparent 78%);
-  }
-
   .dossier-kicker {
     @apply mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-signal;
-  }
-
-  .dossier-panel {
-    @apply border border-[color:var(--rule)] bg-panel;
-  }
-
-  .dossier-rule {
-    @apply border-[color:var(--rule)];
   }
 
   .chip {
@@ -115,29 +107,8 @@ body {
     @apply border-signal/40 text-ink;
   }
 
-  .link-underline {
-    @apply relative;
-  }
-
-  .link-underline::after {
-    content: '';
-    @apply absolute -bottom-0.5 left-0 h-px w-0 bg-signal transition-all duration-300;
-  }
-
-  .link-underline:hover::after {
-    @apply w-full;
-  }
-
   .animate-fade-up {
     animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .animate-dossier-stamp {
-    animation: stampIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .animate-rail-pulse {
-    animation: railPulse 2.4s ease-in-out infinite;
   }
 }
 
@@ -152,31 +123,8 @@ body {
   }
 }
 
-@keyframes stampIn {
-  from {
-    opacity: 0;
-    transform: rotate(-12deg) scale(1.15);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(-8deg) scale(1);
-  }
-}
-
-@keyframes railPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(13, 110, 86, 0.35);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(13, 110, 86, 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up,
-  .animate-dossier-stamp,
-  .animate-rail-pulse {
+  .animate-fade-up {
     animation: none;
   }
 }

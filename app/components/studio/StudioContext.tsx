@@ -13,6 +13,10 @@ interface StudioContextValue {
 
 const StudioContext = createContext<StudioContextValue | null>(null)
 
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 export function useStudio() {
   const ctx = useContext(StudioContext)
   if (!ctx) throw new Error('useStudio must be used within StudioProvider')
@@ -26,17 +30,24 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   const enter = useCallback(() => {
     setEntered(true)
     window.requestAnimationFrame(() => {
-      document.getElementById('studio')?.scrollIntoView({ behavior: 'smooth' })
+      document.getElementById('studio')?.scrollIntoView({
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+        block: 'start',
+      })
     })
   }, [])
 
   const setMode = useCallback((next: StudioMode) => {
     setModeState(next)
-    // Keep chapter switches on the document scroller; offset past any sticky chrome.
     const stage = document.getElementById('studio-stage')
     if (!stage) return
-    const top = stage.getBoundingClientRect().top + window.scrollY - 8
-    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+    const nav = document.getElementById('chapter-nav')
+    const navHeight = nav ? nav.getBoundingClientRect().height : 0
+    const top = stage.getBoundingClientRect().top + window.scrollY - navHeight - 12
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    })
   }, [])
 
   const value = useMemo(

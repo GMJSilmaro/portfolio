@@ -19,25 +19,29 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
-    version: '1.1.4',
+    version: '1.2.0',
     date: '10.16.26',
-    title: 'Layout, hero, and gallery fixes',
+    title: 'Editorial living dossier',
     notes: [
       {
-        type: 'fix',
-        text: 'Hero portrait framing shows your face properly — no more over-zoomed crop — while the intro and buttons stay readable.',
-      },
-      {
-        type: 'fix',
-        text: 'Chapter gutters are consistent, so the empty band between the left rail and content is gone across Profile, Career, Work, and Stack.',
-      },
-      {
-        type: 'fix',
-        text: 'Exhibit gallery opens centered over the full screen through a portal, with a locked background, Escape, and focus restore.',
+        type: 'feature',
+        text: 'The living dossier now reads as one editorial CV — cover, profile, career, selected work, project detail, and tools — with the same chapters and your real projects.',
       },
       {
         type: 'improvement',
-        text: 'Gallery thumbnails keep screenshot proportions in a 1 / 2 / 3 column grid, and the sidebar only scrolls when it needs to.',
+        text: 'Your portrait, chapter navigation, and each section sit in a calmer layout that stays readable on phone, tablet, and desktop.',
+      },
+      {
+        type: 'improvement',
+        text: 'Selected work opens as balanced previews, and each project keeps its screenshots, description, and gallery.',
+      },
+      {
+        type: 'improvement',
+        text: 'Tools on the bench use compact tiles you can filter and favourite without the page stretching sideways.',
+      },
+      {
+        type: 'fix',
+        text: 'Moving between chapters no longer interrupts normal scrolling, and project details stay easy to close on a small screen.',
       },
     ],
   },

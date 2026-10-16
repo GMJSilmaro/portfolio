@@ -3,9 +3,35 @@
 import React, { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+
+let scrollLocks = 0
+let savedOverflow = ''
+let savedPaddingRight = ''
+
+function acquireScrollLock() {
+  if (scrollLocks === 0) {
+    savedOverflow = document.body.style.overflow
+    savedPaddingRight = document.body.style.paddingRight
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth
+    document.body.style.overflow = 'hidden'
+    if (scrollbar > 0) {
+      document.body.style.paddingRight = `${scrollbar}px`
+    }
+  }
+  scrollLocks += 1
+
+  return () => {
+    scrollLocks = Math.max(0, scrollLocks - 1)
+    if (scrollLocks === 0) {
+      document.body.style.overflow = savedOverflow
+      document.body.style.paddingRight = savedPaddingRight
+    }
+  }
+}
 
 interface ModalProps {
   isOpen: boolean
@@ -16,6 +42,7 @@ interface ModalProps {
   /** Dark shell for image lightbox */
   tone?: 'panel' | 'ink'
   labelledBy?: string
+  panelClassName?: string
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -26,6 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
   subtitle,
   tone = 'panel',
   labelledBy,
+  panelClassName,
 }) => {
   const [mounted, setMounted] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -41,20 +69,20 @@ export const Modal: React.FC<ModalProps> = ({
     if (!isOpen) return
 
     previousFocus.current = document.activeElement as HTMLElement | null
-
-    const scrollbar = window.innerWidth - document.documentElement.clientWidth
-    const previousOverflow = document.body.style.overflow
-    const previousPaddingRight = document.body.style.paddingRight
-    document.body.style.overflow = 'hidden'
-    if (scrollbar > 0) {
-      document.body.style.paddingRight = `${scrollbar}px`
-    }
+    const releaseLock = acquireScrollLock()
 
     const focusInitial = window.requestAnimationFrame(() => {
       closeRef.current?.focus()
     })
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      const dialog = dialogRef.current
+      if (!dialog) return
+
+      const dialogs = document.querySelectorAll('[role="dialog"]')
+      const top = dialogs[dialogs.length - 1]
+      if (top !== dialog) return
+
       if (event.key === 'Escape') {
         event.preventDefault()
         onClose()
@@ -63,12 +91,9 @@ export const Modal: React.FC<ModalProps> = ({
 
       if (event.key !== 'Tab') return
 
-      const dialog = dialogRef.current
-      if (!dialog) return
-
-      const focusable = Array.from(
-        dialog.querySelectorAll<HTMLElement>(FOCUSABLE)
-      ).filter((el) => !el.hasAttribute('disabled') && el.tabIndex !== -1)
+      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+        (el) => !el.hasAttribute('disabled') && el.tabIndex !== -1
+      )
 
       if (focusable.length === 0) {
         event.preventDefault()
@@ -96,8 +121,7 @@ export const Modal: React.FC<ModalProps> = ({
     return () => {
       window.cancelAnimationFrame(focusInitial)
       window.removeEventListener('keydown', handleKeyDown)
-      document.body.style.overflow = previousOverflow
-      document.body.style.paddingRight = previousPaddingRight
+      releaseLock()
       previousFocus.current?.focus?.()
     }
   }, [isOpen, onClose])
@@ -125,11 +149,15 @@ export const Modal: React.FC<ModalProps> = ({
         aria-modal="true"
         aria-labelledby={labelId}
         tabIndex={-1}
-        className={`relative flex max-h-[min(92dvh,900px)] w-full max-w-5xl flex-col overflow-hidden rounded-lg border shadow-[0_24px_80px_-32px_rgba(0,0,0,0.55)] outline-none ${shell}`}
+        className={cn(
+          'relative flex max-h-[min(92dvh,900px)] w-full min-w-0 max-w-5xl flex-col overflow-hidden rounded-sm border shadow-[0_24px_80px_-32px_rgba(0,0,0,0.55)] outline-none',
+          shell,
+          panelClassName
+        )}
       >
         <header
           className={`flex shrink-0 items-start justify-between gap-4 border-b px-4 py-3 sm:px-5 ${
-            tone === 'ink' ? 'border-white/10' : 'border-[color:var(--rule)] bg-white/70'
+            tone === 'ink' ? 'border-white/10' : 'border-[color:var(--rule)] bg-white/80'
           }`}
         >
           <div className="min-w-0 pr-2">
@@ -145,7 +173,7 @@ export const Modal: React.FC<ModalProps> = ({
             {title ? (
               <h2
                 id={titleId}
-                className={`truncate font-display text-lg font-medium sm:text-xl ${
+                className={`font-display text-lg font-medium leading-snug sm:text-xl ${
                   tone === 'ink' ? 'text-paper' : 'text-ink'
                 }`}
               >
@@ -161,7 +189,7 @@ export const Modal: React.FC<ModalProps> = ({
             ref={closeRef}
             type="button"
             onClick={onClose}
-            className={`flex h-10 w-10 shrink-0 items-center justify-center border transition-colors ${
+            className={`flex h-11 w-11 shrink-0 items-center justify-center border transition-colors ${
               tone === 'ink'
                 ? 'border-white/20 text-paper hover:border-white/50'
                 : 'border-[color:var(--rule)] bg-white text-ink hover:border-signal/40'
