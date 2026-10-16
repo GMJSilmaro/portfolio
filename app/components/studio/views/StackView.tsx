@@ -28,7 +28,7 @@ export function StackView() {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="border-b border-[color:var(--rule)] px-6 py-8 sm:px-10 sm:py-10">
+      <div className="border-b border-[color:var(--rule)] px-6 py-8 sm:px-8 sm:py-10 lg:px-10">
         <Reveal>
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Stack</p>
           <h2 className="mt-3 max-w-xl font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">

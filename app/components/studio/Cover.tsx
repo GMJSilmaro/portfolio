@@ -11,7 +11,7 @@ export function Cover() {
   return (
     <section
       id="cover"
-      className="relative flex min-h-[72svh] items-end overflow-hidden bg-ink text-paper sm:min-h-[68svh] lg:min-h-[64svh]"
+      className="relative flex min-h-[56svh] items-end overflow-hidden bg-ink text-paper sm:min-h-[52svh] lg:min-h-[48svh]"
     >
       <div className="absolute inset-0">
         <Image
@@ -19,15 +19,15 @@ export function Cover() {
           alt="Gilbert Michael Jay Silmaro"
           fill
           priority
-          className="object-cover object-[50%_18%] scale-105"
+          className="object-cover object-[50%_22%]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/88 to-ink/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/20" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.07] mix-blend-overlay bg-dossier-grain" />
       </div>
 
-      <div className="relative z-10 w-full px-6 pb-8 pt-16 sm:px-10 sm:pb-10 sm:pt-20 lg:px-16 lg:pb-12">
-        <div className="flex max-w-4xl flex-col gap-5 sm:gap-6">
+      <div className="relative z-10 w-full px-6 pb-7 pt-12 sm:px-10 sm:pb-9 sm:pt-14 lg:px-12 lg:pb-10">
+        <div className="flex max-w-4xl flex-col gap-4 sm:gap-5">
           <div className="animate-fade-up flex items-center gap-4" style={{ animationDelay: '80ms' }}>
             <span className="inline-flex items-center gap-2 border border-white/20 bg-white/5 px-3 py-1.5 backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_12px_rgba(23,133,106,0.8)]" />
@@ -42,20 +42,20 @@ export function Cover() {
 
           <div>
             <h1
-              className="animate-fade-up font-display text-[clamp(3.75rem,14vw,7rem)] font-medium leading-[0.82] tracking-[-0.04em] text-paper"
+              className="animate-fade-up font-display text-[clamp(3.25rem,12vw,6rem)] font-medium leading-[0.86] tracking-[-0.04em] text-paper"
               style={{ animationDelay: '140ms' }}
             >
               GMJ
               <span className="text-signal">.</span>
             </h1>
             <p
-              className="animate-fade-up mt-4 max-w-xl font-display text-xl leading-tight text-paper/90 sm:text-2xl"
+              className="animate-fade-up mt-3 max-w-xl font-display text-lg leading-tight text-paper/90 sm:text-xl"
               style={{ animationDelay: '200ms' }}
             >
               Gilbert Michael Jay Silmaro
             </p>
             <p
-              className="animate-fade-up mt-3 max-w-lg text-sm leading-relaxed text-paper/55 sm:text-base"
+              className="animate-fade-up mt-2.5 max-w-lg text-sm leading-relaxed text-paper/55"
               style={{ animationDelay: '260ms' }}
             >
               Technical Lead Consultant. Enterprise software, SAP B1, e-Invoice platforms,
@@ -64,13 +64,13 @@ export function Cover() {
           </div>
 
           <div
-            className="animate-fade-up flex flex-wrap items-center gap-3 sm:gap-4"
+            className="animate-fade-up flex flex-wrap items-center gap-3"
             style={{ animationDelay: '320ms' }}
           >
             <button
               type="button"
               onClick={enter}
-              className="group inline-flex min-h-[48px] items-center gap-3 bg-paper px-6 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-all duration-300 hover:bg-signal hover:text-paper"
+              className="group inline-flex min-h-[44px] items-center gap-3 bg-paper px-5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-all duration-300 hover:bg-signal hover:text-paper"
             >
               Enter CV
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -79,7 +79,7 @@ export function Cover() {
               href="./gmj-silmaro-resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[48px] items-center border border-white/25 px-5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-paper/80 transition-colors hover:border-paper hover:text-paper"
+              className="inline-flex min-h-[44px] items-center border border-white/25 px-5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-paper/80 transition-colors hover:border-paper hover:text-paper"
             >
               Download resume
             </a>
@@ -88,7 +88,7 @@ export function Cover() {
       </div>
 
       <div
-        className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 rotate-90 origin-center sm:block lg:right-10"
+        className="pointer-events-none absolute right-8 top-1/2 hidden -translate-y-1/2 rotate-90 origin-center sm:block lg:right-12"
         aria-hidden
       >
         <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-paper/30">

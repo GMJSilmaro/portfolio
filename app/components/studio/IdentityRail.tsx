@@ -9,8 +9,8 @@ export function IdentityRail() {
   const { mode, setMode } = useStudio()
 
   return (
-    <aside className="flex h-full flex-col border-r border-[color:var(--rule)] bg-[#f4f6f8]">
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-ink">
+    <aside className="flex min-h-[100svh] flex-col border-r border-[color:var(--rule)] bg-[#f4f6f8]">
+      <div className="relative h-44 w-full shrink-0 overflow-hidden bg-ink xl:h-52">
         <Image
           src="./images/Profile.jpg"
           alt="Gilbert Michael Jay Silmaro"
@@ -18,25 +18,25 @@ export function IdentityRail() {
           className="object-cover object-[50%_18%]"
           priority
         />
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/50 to-transparent p-5 pt-16">
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/50 to-transparent p-4 pt-12">
           <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-signal-soft">
             Technical Lead
           </p>
-          <p className="mt-1 font-display text-2xl font-medium leading-none text-paper">
+          <p className="mt-1 font-display text-xl font-medium leading-none text-paper">
             GMJ<span className="text-signal">.</span>
           </p>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col px-5 py-6">
-        <p className="font-display text-xl font-medium leading-snug text-ink">
+      <div className="flex flex-1 flex-col px-4 py-5">
+        <p className="font-display text-lg font-medium leading-snug text-ink">
           Gilbert Michael Jay Silmaro
         </p>
-        <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+        <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
           5+ years · 12+ enterprise clients · Pixelcare Consulting
         </p>
 
-        <nav className="mt-8 space-y-1" aria-label="CV chapters">
+        <nav className="mt-6 space-y-0.5" aria-label="CV chapters">
           {(Object.keys(MODE_META) as StudioMode[]).map((key) => {
             const item = MODE_META[key]
             const active = mode === key
@@ -45,22 +45,22 @@ export function IdentityRail() {
                 key={key}
                 type="button"
                 onClick={() => setMode(key)}
-                className={`group flex w-full items-baseline justify-between gap-3 border-l-2 px-3 py-2.5 text-left transition-all duration-200 ${
+                className={`group flex w-full items-baseline justify-between gap-2 border-l-2 px-3 py-2 text-left transition-all duration-200 ${
                   active
                     ? 'border-signal bg-white text-ink'
                     : 'border-transparent text-ink-muted hover:border-ink/20 hover:bg-white/60 hover:text-ink'
                 }`}
               >
-                <span className="flex items-baseline gap-3">
+                <span className="flex items-baseline gap-2.5">
                   <span className="font-mono text-[10px] tracking-[0.18em] text-signal">
                     {item.code}
                   </span>
-                  <span className="font-display text-lg font-medium tracking-tight">
+                  <span className="font-display text-base font-medium tracking-tight">
                     {item.label}
                   </span>
                 </span>
                 <span
-                  className={`font-mono text-[10px] uppercase tracking-[0.14em] transition-opacity ${
+                  className={`font-mono text-[9px] uppercase tracking-[0.12em] transition-opacity ${
                     active ? 'opacity-100' : 'opacity-0 group-hover:opacity-60'
                   }`}
                 >
@@ -71,13 +71,13 @@ export function IdentityRail() {
           })}
         </nav>
 
-        <div className="mt-auto space-y-3 border-t border-[color:var(--rule)] pt-5">
+        <div className="mt-auto space-y-2.5 border-t border-[color:var(--rule)] pt-4">
           <a
             href="mailto:gmjsilmaro03@gmail.com"
             className="flex items-center gap-2 text-sm text-ink-soft transition-colors hover:text-signal"
           >
-            <Mail className="h-3.5 w-3.5" />
-            gmjsilmaro03@gmail.com
+            <Mail className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">gmjsilmaro03@gmail.com</span>
           </a>
           <a
             href="https://github.com/GMJSilmaro"
@@ -85,7 +85,7 @@ export function IdentityRail() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-ink-soft transition-colors hover:text-signal"
           >
-            <Github className="h-3.5 w-3.5" />
+            <Github className="h-3.5 w-3.5 shrink-0" />
             GitHub
           </a>
           <a

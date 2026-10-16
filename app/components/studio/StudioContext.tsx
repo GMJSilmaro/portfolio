@@ -32,8 +32,11 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
 
   const setMode = useCallback((next: StudioMode) => {
     setModeState(next)
-    // Stage no longer owns its own scrollbar — reset to the stage top in the page.
-    document.getElementById('studio-stage')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    // Keep chapter switches on the document scroller; offset past any sticky chrome.
+    const stage = document.getElementById('studio-stage')
+    if (!stage) return
+    const top = stage.getBoundingClientRect().top + window.scrollY - 8
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
   }, [])
 
   const value = useMemo(

@@ -19,17 +19,18 @@
 
 html {
   background-color: var(--paper);
-  overscroll-behavior: none;
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+  /* Avoid overflow-x:hidden here — with overflow-y:visible it computes to
+     overflow-y:auto and stacks a second vertical scrollbar on body. */
+  overflow-x: clip;
+  overscroll-behavior-y: none;
 }
 
 body {
   background-color: var(--paper);
-  overscroll-behavior: none;
   min-height: 100vh;
   color: var(--ink);
-  overflow-x: hidden;
+  overflow-x: clip;
+  overscroll-behavior-y: none;
 }
 
 @layer base {
