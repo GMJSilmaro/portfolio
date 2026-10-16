@@ -86,16 +86,18 @@ export function StudioShell() {
         </div>
       </div>
 
-      <div className="lg:grid lg:h-[100svh] lg:grid-cols-[20rem_1fr]">
-        <div className="hidden h-full overflow-y-auto lg:block">
-          <IdentityRail />
+      {/*
+        Single page scroll: sticky rail + flowing stage.
+        Avoid nested overflow-y on the stage (that caused dual scrollbars).
+      */}
+      <div className="lg:grid lg:grid-cols-[20rem_1fr]">
+        <div className="hidden lg:block">
+          <div className="sticky top-0 max-h-[100svh] overflow-y-auto overscroll-contain">
+            <IdentityRail />
+          </div>
         </div>
 
-        <div
-          id="studio-stage"
-          className="min-h-[100svh] overflow-y-auto lg:h-[100svh]"
-          key={mode}
-        >
+        <div id="studio-stage" className="min-h-[100svh]" key={mode}>
           <div className="animate-fade-up">
             <Stage />
           </div>

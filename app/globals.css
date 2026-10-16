@@ -21,6 +21,7 @@ html {
   background-color: var(--paper);
   overscroll-behavior: none;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -28,6 +29,7 @@ body {
   overscroll-behavior: none;
   min-height: 100vh;
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 @layer base {
