@@ -28,7 +28,7 @@ export function StackView() {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="border-b border-[color:var(--rule)] px-6 py-8 sm:px-8 sm:py-10 lg:px-10">
+      <div className="stage-pad border-b border-[color:var(--rule)] !pb-6 sm:!pb-8">
         <Reveal>
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Stack</p>
           <h2 className="mt-3 max-w-xl font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
@@ -71,8 +71,8 @@ export function StackView() {
         </div>
       </div>
 
-      <div className="relative flex-1 p-4 sm:p-6">
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7">
+      <div className="relative flex-1 px-5 py-5 sm:px-6 sm:py-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
           {items.map((tech) => {
             const key = `${tech.category}-${tech.name}`
             const isHot = hovered === key
