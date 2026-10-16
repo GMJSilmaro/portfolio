@@ -30,7 +30,7 @@ function Stage() {
 function StudioFooter() {
   return (
     <footer className="border-t border-[color:var(--rule)] bg-[#f4f6f8]">
-      <div className="flex flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
+      <div className="stage-pad flex flex-col gap-4 !py-6 sm:flex-row sm:items-center sm:justify-between sm:!py-7">
         <div>
           <p className="font-display text-lg font-medium text-ink">
             GMJ<span className="text-signal">.</span> Living Dossier
@@ -64,7 +64,7 @@ function StudioFooter() {
           </a>
         </div>
       </div>
-      <div className="border-t border-[color:var(--rule)] px-5 py-4 sm:px-8 lg:px-10">
+      <div className="border-t border-[color:var(--rule)] px-5 py-3 sm:px-6 lg:px-8">
         <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted">
           © {new Date().getFullYear()} Gilbert Michael Jay Silmaro · All rights reserved
         </p>
@@ -79,6 +79,9 @@ export function StudioShell() {
   useEffect(() => {
     if (!entered) return
     const onKey = (e: KeyboardEvent) => {
+      // Don't steal keys while a dialog is open
+      if (document.querySelector('[aria-modal="true"]')) return
+
       const order: StudioMode[] = ['profile', 'career', 'work', 'stack']
       const index = order.indexOf(mode)
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -95,11 +98,11 @@ export function StudioShell() {
   }, [entered, mode, setMode])
 
   return (
-    <section id="studio" className="min-h-[100svh] scroll-mt-0 bg-paper">
-      {/* Mobile top bar */}
+    <section id="studio" className="min-h-[100svh] bg-paper">
+      {/* Compact mobile chapter nav — does not consume stage width on desktop */}
       <div className="sticky top-0 z-40 border-b border-[color:var(--rule)] bg-paper/95 backdrop-blur-md lg:hidden">
-        <div className="flex items-center justify-between px-4 py-3">
-          <a href="#cover" className="font-display text-lg font-medium text-ink">
+        <div className="flex items-center justify-between gap-3 px-4 py-2.5">
+          <a href="#cover" className="font-display text-base font-medium text-ink">
             GMJ<span className="text-signal">.</span>
           </a>
           <a
@@ -111,7 +114,7 @@ export function StudioShell() {
             Resume
           </a>
         </div>
-        <div className="flex overflow-x-auto border-t border-[color:var(--rule)]">
+        <div className="flex border-t border-[color:var(--rule)]">
           {(Object.keys(MODE_META) as StudioMode[]).map((key) => {
             const active = mode === key
             return (
@@ -119,10 +122,8 @@ export function StudioShell() {
                 key={key}
                 type="button"
                 onClick={() => setMode(key)}
-                className={`min-w-[5.5rem] flex-1 px-3 py-3 font-mono text-[10px] uppercase tracking-[0.16em] transition-colors ${
-                  active
-                    ? 'bg-ink text-paper'
-                    : 'bg-transparent text-ink-muted'
+                className={`min-w-0 flex-1 px-1 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors ${
+                  active ? 'bg-ink text-paper' : 'bg-transparent text-ink-muted'
                 }`}
               >
                 {MODE_META[key].label}
@@ -132,18 +133,12 @@ export function StudioShell() {
         </div>
       </div>
 
-      {/*
-        One document scroll only. Sticky rail must NOT use overflow-y:auto —
-        that traps the mouse wheel when the cursor is over the left column.
-      */}
-      <div className="lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] xl:grid-cols-[19rem_minmax(0,1fr)]">
+      <div className="lg:grid lg:grid-cols-[16.5rem_minmax(0,1fr)] xl:grid-cols-[17.5rem_minmax(0,1fr)]">
         <div className="hidden lg:block">
-          <div className="sticky top-0 self-start">
-            <IdentityRail />
-          </div>
+          <IdentityRail />
         </div>
 
-        <div id="studio-stage" className="min-w-0" key={mode}>
+        <div id="studio-stage" className="min-w-0 bg-paper" key={mode}>
           <div className="animate-fade-up">
             <Stage />
           </div>

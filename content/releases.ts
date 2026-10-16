@@ -19,21 +19,25 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
-    version: '1.1.3',
+    version: '1.1.4',
     date: '10.16.26',
-    title: 'Scroll and layout polish',
+    title: 'Layout, hero, and gallery fixes',
     notes: [
       {
         type: 'fix',
-        text: 'Mouse wheel scrolling feels normal again — the left rail no longer traps the scroll, and the duplicate scrollbar is gone.',
+        text: 'Hero portrait framing shows your face properly — no more over-zoomed crop — while the intro and buttons stay readable.',
       },
       {
         type: 'fix',
-        text: 'Closed the empty gap between the left identity rail and the chapter text so content sits flush beside the rail.',
+        text: 'Chapter gutters are consistent, so the empty band between the left rail and content is gone across Profile, Career, Work, and Stack.',
+      },
+      {
+        type: 'fix',
+        text: 'Exhibit gallery opens centered over the full screen through a portal, with a locked background, Escape, and focus restore.',
       },
       {
         type: 'improvement',
-        text: 'Added a real footer on desktop and mobile, shortened the cover, and kept chapter titles from getting clipped at the top.',
+        text: 'Gallery thumbnails keep screenshot proportions in a 1 / 2 / 3 column grid, and the sidebar only scrolls when it needs to.',
       },
     ],
   },

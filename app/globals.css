@@ -67,6 +67,11 @@ body {
 }
 
 @layer utilities {
+  /* Shared chapter gutters — keeps Profile / Career / Work / Stack aligned */
+  .stage-pad {
+    @apply px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12;
+  }
+
   .bg-dossier-wash {
     background:
       radial-gradient(ellipse 90% 55% at 12% -10%, rgba(13, 110, 86, 0.12), transparent 52%),

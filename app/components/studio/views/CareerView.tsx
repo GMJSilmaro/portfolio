@@ -8,7 +8,7 @@ export function CareerView() {
   const [openIndex, setOpenIndex] = useState(0)
 
   return (
-    <div className="px-6 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-12">
+    <div className="stage-pad">
       <Reveal className="mb-10 max-w-2xl">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-signal">Career</p>
         <h2 className="mt-3 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
