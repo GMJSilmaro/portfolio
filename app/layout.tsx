@@ -47,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <body
         className={`${manrope.variable} ${sora.variable} ${ibmPlexMono.variable} font-sans min-h-screen bg-paper text-ink antialiased`}
       >

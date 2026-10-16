@@ -19,17 +19,21 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
-    version: '1.1.2',
+    version: '1.1.3',
     date: '10.16.26',
-    title: 'Smoother browsing',
+    title: 'Scroll and layout polish',
     notes: [
       {
         type: 'fix',
-        text: 'Removed the double scrollbar so the page scrolls cleanly in one motion.',
+        text: 'Mouse wheel scrolling feels normal again — the left rail no longer traps the scroll, and the duplicate scrollbar is gone.',
+      },
+      {
+        type: 'fix',
+        text: 'Closed the empty gap between the left identity rail and the chapter text so content sits flush beside the rail.',
       },
       {
         type: 'improvement',
-        text: 'Shortened the cover so you reach the CV chapters faster without losing the entrance feel.',
+        text: 'Added a real footer on desktop and mobile, shortened the cover, and kept chapter titles from getting clipped at the top.',
       },
     ],
   },

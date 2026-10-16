@@ -27,6 +27,52 @@ function Stage() {
   }
 }
 
+function StudioFooter() {
+  return (
+    <footer className="border-t border-[color:var(--rule)] bg-[#f4f6f8]">
+      <div className="flex flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
+        <div>
+          <p className="font-display text-lg font-medium text-ink">
+            GMJ<span className="text-signal">.</span> Living Dossier
+          </p>
+          <p className="mt-1 text-sm text-ink-muted">
+            Technical Lead Consultant · Available for consulting
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href="mailto:gmjsilmaro03@gmail.com"
+            className="inline-flex min-h-[40px] items-center bg-ink px-4 font-mono text-[11px] uppercase tracking-[0.16em] text-paper"
+          >
+            Email
+          </a>
+          <a
+            href="https://github.com/GMJSilmaro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[40px] items-center border border-[color:var(--rule)] px-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink"
+          >
+            GitHub
+          </a>
+          <a
+            href="./gmj-silmaro-resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[40px] items-center border border-[color:var(--rule)] px-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink"
+          >
+            Resume
+          </a>
+        </div>
+      </div>
+      <div className="border-t border-[color:var(--rule)] px-5 py-4 sm:px-8 lg:px-10">
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted">
+          © {new Date().getFullYear()} Gilbert Michael Jay Silmaro · All rights reserved
+        </p>
+      </div>
+    </footer>
+  )
+}
+
 export function StudioShell() {
   const { mode, setMode, entered } = useStudio()
 
@@ -49,7 +95,7 @@ export function StudioShell() {
   }, [entered, mode, setMode])
 
   return (
-    <section id="studio" className="min-h-[100svh] bg-paper">
+    <section id="studio" className="min-h-[100svh] scroll-mt-0 bg-paper">
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 border-b border-[color:var(--rule)] bg-paper/95 backdrop-blur-md lg:hidden">
         <div className="flex items-center justify-between px-4 py-3">
@@ -87,51 +133,24 @@ export function StudioShell() {
       </div>
 
       {/*
-        Single page scroll: sticky rail + flowing stage.
-        Avoid nested overflow-y on the stage (that caused dual scrollbars).
+        One document scroll only. Sticky rail must NOT use overflow-y:auto —
+        that traps the mouse wheel when the cursor is over the left column.
       */}
-      <div className="lg:grid lg:grid-cols-[20rem_1fr]">
+      <div className="lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] xl:grid-cols-[19rem_minmax(0,1fr)]">
         <div className="hidden lg:block">
-          <div className="sticky top-0 max-h-[100svh] overflow-y-auto overscroll-contain">
+          <div className="sticky top-0 self-start">
             <IdentityRail />
           </div>
         </div>
 
-        <div id="studio-stage" className="min-h-[100svh]" key={mode}>
+        <div id="studio-stage" className="min-w-0" key={mode}>
           <div className="animate-fade-up">
             <Stage />
           </div>
         </div>
       </div>
 
-      {/* Mobile identity strip */}
-      <div className="border-t border-[color:var(--rule)] bg-[#f4f6f8] px-5 py-8 lg:hidden">
-        <p className="font-display text-2xl font-medium text-ink">
-          Gilbert Michael Jay Silmaro
-        </p>
-        <p className="mt-2 text-sm text-ink-muted">
-          Technical Lead Consultant · Available for consulting
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <a
-            href="mailto:gmjsilmaro03@gmail.com"
-            className="inline-flex min-h-[44px] items-center bg-ink px-4 font-mono text-[11px] uppercase tracking-[0.16em] text-paper"
-          >
-            Email
-          </a>
-          <a
-            href="https://github.com/GMJSilmaro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[44px] items-center border border-[color:var(--rule)] px-4 font-mono text-[11px] uppercase tracking-[0.16em] text-ink"
-          >
-            GitHub
-          </a>
-        </div>
-        <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted">
-          © {new Date().getFullYear()} GMJ · Living Dossier
-        </p>
-      </div>
+      <StudioFooter />
     </section>
   )
 }
