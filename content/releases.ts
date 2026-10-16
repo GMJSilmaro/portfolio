@@ -19,6 +19,21 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: '1.1.2',
+    date: '10.16.26',
+    title: 'Smoother browsing',
+    notes: [
+      {
+        type: 'fix',
+        text: 'Removed the double scrollbar so the page scrolls cleanly in one motion.',
+      },
+      {
+        type: 'improvement',
+        text: 'Shortened the cover so you reach the CV chapters faster without losing the entrance feel.',
+      },
+    ],
+  },
+  {
     version: '1.1.1',
     date: '09.16.26',
     title: 'CV Studio',

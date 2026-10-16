@@ -32,7 +32,8 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
 
   const setMode = useCallback((next: StudioMode) => {
     setModeState(next)
-    document.getElementById('studio-stage')?.scrollTo({ top: 0, behavior: 'smooth' })
+    // Stage no longer owns its own scrollbar — reset to the stage top in the page.
+    document.getElementById('studio-stage')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [])
 
   const value = useMemo(

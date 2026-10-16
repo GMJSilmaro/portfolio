@@ -8,7 +8,7 @@ import { StudioShell } from './components/studio/StudioShell'
 const Home = () => {
   return (
     <StudioProvider>
-      <div className="min-h-screen bg-ink">
+      <div className="bg-ink">
         <Cover />
         <StudioShell />
       </div>
