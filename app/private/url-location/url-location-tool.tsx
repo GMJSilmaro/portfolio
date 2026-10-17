@@ -1,42 +1,19 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { signOut } from 'next-auth/react'
+import { parseUrlLocationClues } from '@/lib/parse-url-location'
+import {
+  resolveHostGeoClient,
+  type HostGeoResult,
+} from '@/lib/resolve-host-geo-client'
+import type { UrlParseResult } from '@/lib/parse-url-location'
 
-type AnalyzeResult = {
-  analyzedAt: string
-  disclaimer: string
-  url: {
-    href: string
-    protocol: string
-    hostname: string
-    pathname: string
-    searchParams: Record<string, string>
-    coordinates: Array<{
-      source: string
-      latitude: number
-      longitude: number
-      note?: string
-    }>
-    placeHints: Array<{ source: string; value: string; note?: string }>
-    warnings: string[]
-  }
-  hostGeo: {
-    hostname: string
-    resolvedAddresses: string[]
-    primaryIp: string | null
-    city: string | null
-    region: string | null
-    country: string | null
-    timezone: string | null
-    coordinates: { latitude: number; longitude: number } | null
-    locationUnavailable: boolean
-    source: string
-    notes: string[]
-  } | null
+type Analysis = {
+  url: UrlParseResult
+  hostGeo: HostGeoResult | null
 }
 
-function formatIpLocation(geo: NonNullable<AnalyzeResult['hostGeo']>): string {
+function formatIpLocation(geo: HostGeoResult): string {
   if (geo.locationUnavailable) return 'Unavailable'
   const parts = [geo.city, geo.region, geo.country].filter(Boolean)
   return parts.length ? parts.join(', ') : 'Unavailable'
@@ -44,7 +21,7 @@ function formatIpLocation(geo: NonNullable<AnalyzeResult['hostGeo']>): string {
 
 export function UrlLocationTool() {
   const [url, setUrl] = useState('')
-  const [result, setResult] = useState<AnalyzeResult | null>(null)
+  const [result, setResult] = useState<Analysis | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
 
@@ -55,60 +32,40 @@ export function UrlLocationTool() {
 
     startTransition(async () => {
       try {
-        const res = await fetch('/api/analyze-url', {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url }),
-        })
+        const parsed = parseUrlLocationClues(url)
+        let hostGeo: HostGeoResult | null = null
 
-        if (res.status === 401) {
-          setError('Session expired. Sign in again.')
-          return
-        }
-        if (res.status === 429) {
-          setError('Rate limited. Wait a moment and try again.')
-          return
+        const skipDns =
+          parsed.protocol === 'geo' ||
+          !parsed.hostname ||
+          parsed.hostname === 'localhost' ||
+          parsed.hostname.endsWith('.localhost')
+
+        if (!skipDns) {
+          hostGeo = await resolveHostGeoClient(parsed.hostname)
         }
 
-        const data = await res.json()
-        if (!res.ok) {
-          setError(
-            typeof data.error === 'string' ? data.error : 'Analysis failed.',
-          )
-          return
-        }
-
-        setResult(data as AnalyzeResult)
-      } catch {
-        setError('Network error while analyzing the URL.')
+        setResult({ url: parsed, hostGeo })
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Analysis failed.')
       }
     })
   }
 
   return (
     <main className="bg-dossier-grain min-h-screen">
-      <div className="mx-auto max-w-dossier dossier-pad pb-16">
-        <div className="mb-8 flex flex-wrap items-start justify-between gap-4 border-b border-[color:var(--rule)] pb-6">
-          <div>
-            <p className="dossier-kicker">Private · noindex · owner only</p>
-            <h1 className="font-display text-[clamp(1.75rem,3vw,2.5rem)] font-medium tracking-tight text-ink">
-              URL location
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">
-              Paste a link for cybersecurity review. We extract coordinates and
-              place clues already present in the URL, then resolve the host to
-              an approximate IP location. Nothing is logged to a database — this
-              is analysis, not visit tracking.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => signOut({ callbackUrl: '/private/login' })}
-            className="border border-[color:var(--rule-strong)] bg-panel px-3 py-2 text-sm text-ink hover:border-stamp"
-          >
-            Sign out
-          </button>
+      <div className="mx-auto max-w-[72rem] dossier-pad pb-16">
+        <div className="mb-8 border-b border-[color:var(--rule)] pb-6">
+          <p className="dossier-kicker">Private · noindex · unlisted</p>
+          <h1 className="font-display text-[clamp(1.75rem,3vw,2.5rem)] font-medium tracking-tight text-ink">
+            URL location
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">
+            Paste a link for cybersecurity review. Coordinates and place clues
+            are read from the URL string in your browser. Host location uses
+            public DNS/geo lookups from your browser only — this site does not
+            log pastes, and this page is not linked from the public CV.
+          </p>
         </div>
 
         <form
@@ -141,7 +98,7 @@ export function UrlLocationTool() {
               {pending ? 'Analyzing…' : 'Analyze URL'}
             </button>
             <p className="text-xs text-ink-muted">
-              Server-side only · owner session required · no public tracking
+              Client-side only · not in public navigation
             </p>
           </div>
         </form>
@@ -171,7 +128,10 @@ export function UrlLocationTool() {
         {result ? (
           <div className="mt-8 space-y-8">
             <p className="text-xs leading-relaxed text-ink-muted">
-              {result.disclaimer}
+              Cybersecurity analysis aid only. URL-embedded coordinates and IP
+              geolocation are approximate clues — not exact addresses, not
+              identity proof, and not authorization to access third-party
+              systems.
             </p>
 
             <section>
@@ -179,8 +139,8 @@ export function UrlLocationTool() {
                 URL-embedded location clues
               </h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Parsed only from the string you pasted — no request is made to
-                the target site for this section.
+                Parsed only from the string you pasted — no request to the
+                target site for this section.
               </p>
 
               {result.url.warnings.length > 0 ? (
@@ -204,7 +164,9 @@ export function UrlLocationTool() {
                   <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
                     Host
                   </dt>
-                  <dd className="mt-1 font-mono text-ink">{result.url.hostname}</dd>
+                  <dd className="mt-1 font-mono text-ink">
+                    {result.url.hostname}
+                  </dd>
                 </div>
                 <div>
                   <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
@@ -272,13 +234,15 @@ export function UrlLocationTool() {
                 Approximate host IP location
               </h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Distinct from URL-embedded coordinates. Based on DNS → IP → local
-                GeoLite lookup of the hostname.
+                Distinct from URL-embedded coordinates. DNS via Cloudflare
+                DNS-over-HTTPS, then approximate geo via ipwho.is — both from
+                your browser.
               </p>
 
               {!result.hostGeo ? (
                 <p className="mt-3 text-sm text-ink-soft">
-                  Host geo skipped for this URL type (e.g. geo: URI or localhost).
+                  Host geo skipped for this URL type (e.g. geo: URI or
+                  localhost).
                 </p>
               ) : (
                 <dl className="mt-4 grid gap-3 border border-[color:var(--rule)] bg-panel p-5 text-sm sm:grid-cols-2">
@@ -306,7 +270,7 @@ export function UrlLocationTool() {
                   </div>
                   <div>
                     <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                      Timezone (GeoLite)
+                      Timezone
                     </dt>
                     <dd className="mt-1 text-ink">
                       {result.hostGeo.timezone || '—'}
@@ -314,7 +278,7 @@ export function UrlLocationTool() {
                   </div>
                   <div>
                     <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                      GeoLite coordinates
+                      Approx. coordinates
                     </dt>
                     <dd className="mt-1 font-mono text-ink">
                       {result.hostGeo.coordinates
@@ -347,6 +311,12 @@ export function UrlLocationTool() {
             </section>
           </div>
         ) : null}
+
+        <p className="mt-10 text-center text-xs text-ink-muted">
+          <a href="/" className="underline-offset-2 hover:underline">
+            ← Back to CV Studio
+          </a>
+        </p>
       </div>
     </main>
   )

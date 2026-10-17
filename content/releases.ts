@@ -25,11 +25,11 @@ export const releases: Release[] = [
     notes: [
       {
         type: 'feature',
-        text: 'Owner-only URL location tooling now lives in a separate private admin app — paste a link to extract URL-embedded coordinates and approximate host IP location for cybersecurity review — without changing the public CV Studio.',
+        text: 'An unlisted /private/url-location page lets you paste a link and review URL-embedded coordinates plus approximate host IP location for cybersecurity review — without changing the public CV Studio chapters.',
       },
       {
         type: 'improvement',
-        text: 'The public portfolio stays on GitHub Pages as a static export; the private admin deploys separately and stays out of public navigation and search indexing.',
+        text: 'The helper ships with the same GitHub Pages deploy, stays out of public navigation, and is marked noindex. Analysis runs in the browser; pastes are not logged by this site.',
       },
     ],
   },
