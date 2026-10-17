@@ -35,6 +35,10 @@ export const releases: Release[] = [
         type: 'fix',
         text: 'URL location text and controls are readable again on phones — the page no longer applied the faint grain overlay opacity to the whole screen.',
       },
+      {
+        type: 'improvement',
+        text: 'Host analysis now shows network reputation signals (VPN/proxy, CDN/anycast, hosting) from ASN/org heuristics plus ipwho.is flags when available — still cannot reveal a true location behind a VPN.',
+      },
     ],
   },
   {

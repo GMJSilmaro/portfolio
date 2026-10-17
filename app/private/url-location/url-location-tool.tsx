@@ -6,6 +6,7 @@ import {
   resolveHostGeoClient,
   type HostGeoResult,
 } from '@/lib/resolve-host-geo-client'
+import { signalLabel } from '@/lib/network-reputation'
 import type { UrlParseResult } from '@/lib/parse-url-location'
 
 type Analysis = {
@@ -251,68 +252,131 @@ export function UrlLocationTool() {
                   localhost).
                 </p>
               ) : (
-                <dl className="mt-4 grid gap-3 border border-[color:var(--rule)] bg-panel p-5 text-sm sm:grid-cols-2">
-                  <div>
-                    <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                      Resolved IP
-                    </dt>
-                    <dd className="mt-1 font-mono text-ink">
-                      {result.hostGeo.primaryIp || '—'}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                      Approx. location
-                    </dt>
-                    <dd className="mt-1 text-ink">
-                      {formatIpLocation(result.hostGeo)}
-                      <span className="mt-1 block text-xs text-ink-muted">
-                        Source: {result.hostGeo.source}
-                        {result.hostGeo.locationUnavailable
-                          ? ' · unavailable'
-                          : ''}
-                      </span>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                      Timezone
-                    </dt>
-                    <dd className="mt-1 text-ink">
-                      {result.hostGeo.timezone || '—'}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                      Approx. coordinates
-                    </dt>
-                    <dd className="mt-1 font-mono text-ink">
-                      {result.hostGeo.coordinates
-                        ? `${result.hostGeo.coordinates.latitude.toFixed(4)}, ${result.hostGeo.coordinates.longitude.toFixed(4)}`
-                        : '—'}
-                    </dd>
-                  </div>
-                  {result.hostGeo.resolvedAddresses.length > 1 ? (
-                    <div className="sm:col-span-2">
-                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                        All resolved addresses
-                      </dt>
-                      <dd className="mt-1 font-mono text-xs text-ink-soft">
-                        {result.hostGeo.resolvedAddresses.join(', ')}
-                      </dd>
+                <>
+                  {result.hostGeo.reputation ? (
+                    <div
+                      className={`mt-4 border p-4 sm:p-5 ${
+                        result.hostGeo.reputation.geoTrust === 'untrusted'
+                          ? 'border-stamp/40 bg-stamp/5'
+                          : result.hostGeo.reputation.geoTrust === 'limited'
+                            ? 'border-signal/30 bg-signal/5'
+                            : 'border-[color:var(--rule)] bg-panel'
+                      }`}
+                    >
+                      <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        Network reputation · {result.hostGeo.reputation.confidence}{' '}
+                        confidence
+                      </p>
+                      <p className="mt-2 text-sm font-medium text-ink">
+                        {result.hostGeo.reputation.summary}
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {result.hostGeo.reputation.signals.map((signal) => (
+                          <span
+                            key={signal}
+                            className="border border-[color:var(--rule-strong)] bg-paper px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-ink-soft"
+                          >
+                            {signalLabel(signal)}
+                          </span>
+                        ))}
+                      </div>
+                      <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-ink-muted">
+                        {result.hostGeo.reputation.reasons.map((reason) => (
+                          <li key={reason}>{reason}</li>
+                        ))}
+                      </ul>
                     </div>
                   ) : null}
-                  <div className="sm:col-span-2">
-                    <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                      Notes
-                    </dt>
-                    <dd className="mt-1 space-y-1 text-xs text-ink-muted">
-                      {result.hostGeo.notes.map((note) => (
-                        <p key={note}>{note}</p>
-                      ))}
-                    </dd>
-                  </div>
-                </dl>
+
+                  <dl className="mt-4 grid gap-3 border border-[color:var(--rule)] bg-panel p-4 text-sm sm:grid-cols-2 sm:p-5">
+                    <div>
+                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        Resolved IP
+                      </dt>
+                      <dd className="mt-1 font-mono text-ink">
+                        {result.hostGeo.primaryIp || '—'}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        Approx. location
+                        {result.hostGeo.reputation?.geoTrust === 'untrusted'
+                          ? ' · untrusted'
+                          : result.hostGeo.reputation?.geoTrust === 'limited'
+                            ? ' · limited'
+                            : ''}
+                      </dt>
+                      <dd className="mt-1 text-ink">
+                        {formatIpLocation(result.hostGeo)}
+                        <span className="mt-1 block text-xs text-ink-muted">
+                          Source: {result.hostGeo.source}
+                          {result.hostGeo.locationUnavailable
+                            ? ' · unavailable'
+                            : ''}
+                        </span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        ASN / org
+                      </dt>
+                      <dd className="mt-1 text-ink">
+                        {result.hostGeo.asn != null
+                          ? `AS${result.hostGeo.asn}`
+                          : '—'}
+                        {result.hostGeo.org ? (
+                          <span className="mt-1 block text-xs text-ink-soft">
+                            {result.hostGeo.org}
+                          </span>
+                        ) : null}
+                        {result.hostGeo.isp &&
+                        result.hostGeo.isp !== result.hostGeo.org ? (
+                          <span className="mt-1 block text-xs text-ink-muted">
+                            ISP: {result.hostGeo.isp}
+                          </span>
+                        ) : null}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        Timezone
+                      </dt>
+                      <dd className="mt-1 text-ink">
+                        {result.hostGeo.timezone || '—'}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        Approx. coordinates
+                      </dt>
+                      <dd className="mt-1 font-mono text-ink">
+                        {result.hostGeo.coordinates
+                          ? `${result.hostGeo.coordinates.latitude.toFixed(4)}, ${result.hostGeo.coordinates.longitude.toFixed(4)}`
+                          : '—'}
+                      </dd>
+                    </div>
+                    {result.hostGeo.resolvedAddresses.length > 1 ? (
+                      <div className="sm:col-span-2">
+                        <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                          All resolved addresses
+                        </dt>
+                        <dd className="mt-1 font-mono text-xs text-ink-soft">
+                          {result.hostGeo.resolvedAddresses.join(', ')}
+                        </dd>
+                      </div>
+                    ) : null}
+                    <div className="sm:col-span-2">
+                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        Notes
+                      </dt>
+                      <dd className="mt-1 space-y-1 text-xs text-ink-muted">
+                        {result.hostGeo.notes.map((note) => (
+                          <p key={note}>{note}</p>
+                        ))}
+                      </dd>
+                    </div>
+                  </dl>
+                </>
               )}
             </section>
           </div>
