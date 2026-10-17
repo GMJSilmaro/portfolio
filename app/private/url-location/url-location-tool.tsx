@@ -53,14 +53,20 @@ export function UrlLocationTool() {
   }
 
   return (
-    <main className="bg-dossier-grain min-h-screen">
-      <div className="mx-auto max-w-[72rem] dossier-pad pb-16">
+    <main className="relative min-h-screen bg-paper text-ink">
+      {/* Grain is a decorative overlay only — never on the content root
+          (`.bg-dossier-grain` sets opacity: 0.035 and would wash out text). */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-dossier-grain"
+        aria-hidden
+      />
+      <div className="relative mx-auto max-w-[72rem] dossier-pad pb-16">
         <div className="mb-8 border-b border-[color:var(--rule)] pb-6">
           <p className="dossier-kicker">Private · noindex · unlisted</p>
           <h1 className="font-display text-[clamp(1.75rem,3vw,2.5rem)] font-medium tracking-tight text-ink">
             URL location
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-base">
             Paste a link for cybersecurity review. Coordinates and place clues
             are read from the URL string in your browser. Host location uses
             public DNS/geo lookups from your browser only — this site does not
@@ -70,7 +76,7 @@ export function UrlLocationTool() {
 
         <form
           onSubmit={onSubmit}
-          className="border border-[color:var(--rule)] bg-panel p-5"
+          className="border border-[color:var(--rule)] bg-panel p-4 sm:p-5"
         >
           <label className="block space-y-2">
             <span className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink-muted">
@@ -86,14 +92,14 @@ export function UrlLocationTool() {
               required
               maxLength={2048}
               placeholder="https://maps.example.com/@14.5995,120.9842,12z"
-              className="w-full border border-[color:var(--rule-strong)] bg-paper px-3 py-2.5 font-mono text-sm text-ink outline-none focus:border-signal"
+              className="min-h-11 w-full border border-[color:var(--rule-strong)] bg-paper px-3 py-2.5 font-mono text-sm text-ink outline-none placeholder:text-ink-muted/70 focus:border-signal"
             />
           </label>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <button
               type="submit"
               disabled={pending || !url.trim()}
-              className="bg-signal px-4 py-2.5 text-sm font-medium text-white hover:bg-signal-soft disabled:opacity-60"
+              className="min-h-11 bg-signal px-4 py-2.5 text-sm font-medium text-white hover:bg-signal-soft disabled:opacity-60"
             >
               {pending ? 'Analyzing…' : 'Analyze URL'}
             </button>

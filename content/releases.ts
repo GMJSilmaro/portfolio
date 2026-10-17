@@ -31,6 +31,10 @@ export const releases: Release[] = [
         type: 'improvement',
         text: 'The helper ships with the same GitHub Pages deploy, stays out of public navigation, and is marked noindex. Analysis runs in the browser; pastes are not logged by this site.',
       },
+      {
+        type: 'fix',
+        text: 'URL location text and controls are readable again on phones — the page no longer applied the faint grain overlay opacity to the whole screen.',
+      },
     ],
   },
   {
