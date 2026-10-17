@@ -1,32 +1,31 @@
-import { prisma } from '@/lib/db'
+type Bucket = { count: number; resetAt: number }
 
-const WINDOW_MS = 15 * 60 * 1000
-const MAX_FAILURES = 8
+const buckets = new Map<string, Bucket>()
 
-/** Returns true when this IP should be blocked from further login attempts. */
-export async function isLoginRateLimited(clientIp: string): Promise<boolean> {
-  const since = new Date(Date.now() - WINDOW_MS)
-  const failures = await prisma.loginAttempt.count({
-    where: {
-      clientIp,
-      success: false,
-      createdAt: { gte: since },
-    },
-  })
-  return failures >= MAX_FAILURES
-}
+/**
+ * Simple in-memory sliding window. Fine for a single-owner private tool;
+ * resets when the serverless isolate recycles.
+ */
+export function consumeRateLimit(
+  key: string,
+  limit: number,
+  windowMs: number,
+): { ok: true } | { ok: false; retryAfterSec: number } {
+  const now = Date.now()
+  const existing = buckets.get(key)
 
-export async function recordLoginAttempt(
-  clientIp: string,
-  success: boolean,
-): Promise<void> {
-  await prisma.loginAttempt.create({
-    data: { clientIp, success },
-  })
+  if (!existing || existing.resetAt <= now) {
+    buckets.set(key, { count: 1, resetAt: now + windowMs })
+    return { ok: true }
+  }
 
-  // Opportunistic cleanup of old attempts (keep ~24h).
-  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000)
-  await prisma.loginAttempt.deleteMany({
-    where: { createdAt: { lt: cutoff } },
-  })
+  if (existing.count >= limit) {
+    return {
+      ok: false,
+      retryAfterSec: Math.max(1, Math.ceil((existing.resetAt - now) / 1000)),
+    }
+  }
+
+  existing.count += 1
+  return { ok: true }
 }

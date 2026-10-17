@@ -17,7 +17,7 @@ export default async function LoginPage({
 }) {
   const session = await getOwnerSession()
   if (session) {
-    redirect('/private/login-activity')
+    redirect('/private/url-location')
   }
 
   const params = await searchParams
@@ -25,7 +25,7 @@ export default async function LoginPage({
     params.callbackUrl?.startsWith('/private/') &&
     !params.callbackUrl.startsWith('//')
       ? params.callbackUrl
-      : '/private/login-activity'
+      : '/private/url-location'
 
   return (
     <main className="bg-dossier-grain min-h-screen">
@@ -35,7 +35,7 @@ export default async function LoginPage({
           GMJ. admin
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-          Sign in with your owner account. Registration is disabled. This area
+          Cybersecurity URL location tool. Registration is disabled. This area
           is not linked from the public portfolio.
         </p>
         <LoginForm callbackUrl={callbackUrl} error={params.error} />

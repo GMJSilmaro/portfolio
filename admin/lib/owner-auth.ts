@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server'
 
 export type OwnerSession = {
   email: string
-  lastLoginActivityId: string | null
 }
 
 /** Server-side owner gate. Unlisted URLs are not access control. */
@@ -22,13 +21,7 @@ export async function requireOwner(): Promise<
     }
   }
 
-  return {
-    ok: true,
-    session: {
-      email,
-      lastLoginActivityId: session?.user?.lastLoginActivityId ?? null,
-    },
-  }
+  return { ok: true, session: { email } }
 }
 
 export async function getOwnerSession(): Promise<OwnerSession | null> {

@@ -21,11 +21,11 @@ export const releases: Release[] = [
   {
     version: '1.3.0',
     date: '10.17.26',
-    title: 'Private login activity',
+    title: 'Private URL location tool',
     notes: [
       {
         type: 'feature',
-        text: 'Owner-only login activity now lives in a separate private admin app — successful sign-ins, approximate IP location, and optional device coordinates — without changing the public CV Studio.',
+        text: 'Owner-only URL location tooling now lives in a separate private admin app — paste a link to extract URL-embedded coordinates and approximate host IP location for cybersecurity review — without changing the public CV Studio.',
       },
       {
         type: 'improvement',

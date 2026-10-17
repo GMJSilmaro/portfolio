@@ -23,7 +23,3 @@ export function getOwnerPasswordHash(): string {
 export function getAuthSecret(): string {
   return required('AUTH_SECRET')
 }
-
-export function getCronSecret(): string | undefined {
-  return process.env.CRON_SECRET
-}

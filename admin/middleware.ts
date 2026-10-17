@@ -8,12 +8,7 @@ export async function middleware(request: NextRequest) {
   const isLoginPage =
     pathname === '/private/login' || pathname === '/private/login/'
   const isPrivatePage = pathname.startsWith('/private/') && !isLoginPage
-  const isProtectedApi = pathname.startsWith('/api/login-activity')
-
-  // Cron uses a shared secret instead of a session cookie (handled in route).
-  if (pathname.startsWith('/api/cron/')) {
-    return NextResponse.next()
-  }
+  const isProtectedApi = pathname.startsWith('/api/analyze-url')
 
   if (!isPrivatePage && !isProtectedApi) {
     return NextResponse.next()
@@ -43,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/private/:path*', '/api/login-activity/:path*', '/api/cron/:path*'],
+  matcher: ['/private/:path*', '/api/analyze-url'],
 }

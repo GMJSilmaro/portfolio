@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Verifies the owner gate rejects unauthenticated access to the dashboard
- * and login-activity APIs. Does not require a live database.
+ * Verifies the owner gate rejects unauthenticated access to the URL tool
+ * and analyze API. Does not require a live database.
  */
 import { getToken } from 'next-auth/jwt'
 
@@ -18,15 +18,13 @@ function assert(condition, message) {
   }
 }
 
-/**
- * Mirrors admin/middleware.ts — keep in sync when changing the gate.
- */
+/** Mirrors admin/middleware.ts — keep in sync when changing the gate. */
 async function ownerGate(url) {
   const pathname = new URL(url).pathname
   const isLoginPage =
     pathname === '/private/login' || pathname === '/private/login/'
   const isPrivatePage = pathname.startsWith('/private/') && !isLoginPage
-  const isProtectedApi = pathname.startsWith('/api/login-activity')
+  const isProtectedApi = pathname.startsWith('/api/analyze-url')
 
   if (!isPrivatePage && !isProtectedApi) {
     return { status: 200 }
@@ -59,19 +57,14 @@ async function ownerGate(url) {
 async function run() {
   const cases = [
     {
-      url: 'http://localhost/api/login-activity',
+      url: 'http://localhost/api/analyze-url',
       expectStatus: 401,
-      label: 'GET /api/login-activity without session → 401',
+      label: 'POST /api/analyze-url without session → 401',
     },
     {
-      url: 'http://localhost/api/login-activity/abc/device-location',
-      expectStatus: 401,
-      label: 'device-location API without session → 401',
-    },
-    {
-      url: 'http://localhost/private/login-activity',
+      url: 'http://localhost/private/url-location',
       expectStatus: 307,
-      label: 'dashboard without session → redirect to login',
+      label: 'URL tool without session → redirect to login',
     },
     {
       url: 'http://localhost/private/login',

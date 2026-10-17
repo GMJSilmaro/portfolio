@@ -3,9 +3,7 @@ import Credentials from 'next-auth/providers/credentials'
 import { compare } from 'bcryptjs'
 import { z } from 'zod'
 import { getOwnerEmail, getOwnerPasswordHash } from '@/lib/env'
-import { observeClient } from '@/lib/client-info'
-import { isLoginRateLimited, recordLoginAttempt } from '@/lib/rate-limit'
-import { recordSuccessfulLogin } from '@/lib/login-activity'
+import { consumeRateLimit } from '@/lib/rate-limit'
 
 const credentialsSchema = z.object({
   email: z.string().email().max(320),
@@ -28,11 +26,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null
         }
 
-        const observation = observeClient(
-          request ?? new Request('http://localhost'),
-        )
-        if (await isLoginRateLimited(observation.clientIp)) {
-          await recordLoginAttempt(observation.clientIp, false)
+        const ip =
+          request?.headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim() ||
+          request?.headers.get('x-real-ip')?.trim() ||
+          'unknown'
+
+        const limited = consumeRateLimit(`login:${ip}`, 8, 15 * 60 * 1000)
+        if (!limited.ok) {
           return null
         }
 
@@ -42,21 +42,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           parsed.data.password,
           getOwnerPasswordHash(),
         )
-        const emailOk = email === ownerEmail
 
-        if (!emailOk || !passwordOk) {
-          await recordLoginAttempt(observation.clientIp, false)
+        if (email !== ownerEmail || !passwordOk) {
           return null
         }
-
-        await recordLoginAttempt(observation.clientIp, true)
-        const activity = await recordSuccessfulLogin(observation)
 
         return {
           id: 'owner',
           email: ownerEmail,
           name: 'Owner',
-          lastLoginActivityId: activity.id,
         }
       },
     }),
@@ -70,23 +64,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
+      if (user?.email) {
         token.email = user.email
-        token.lastLoginActivityId =
-          (user as { lastLoginActivityId?: string }).lastLoginActivityId ?? null
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.email = token.email as string
-        session.user.lastLoginActivityId =
-          (token.lastLoginActivityId as string | null | undefined) ?? null
       }
       return session
-    },
-    async authorized({ auth: session }) {
-      return !!session?.user?.email
     },
   },
   trustHost: true,

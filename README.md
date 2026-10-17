@@ -28,9 +28,9 @@ Tech stack icons remain in the Stack chapter with favourites filtering.
 
 ## Private admin (separate deploy)
 
-Owner-only login activity lives in [`admin/`](./admin/) as a **separate** Next.js app for Vercel (Auth.js + Postgres). The public site on GitHub Pages stays a static export — UI, chapters, and navigation are unchanged, and the admin URL is not linked from the public nav or sitemap.
+Owner-only **URL location** tooling lives in [`admin/`](./admin/) as a **separate** Next.js app for Vercel (Auth.js + local GeoLite). Paste a link to extract URL-embedded coordinates/place clues and approximate host IP location for cybersecurity review. The public site on GitHub Pages stays a static export — UI, chapters, and navigation are unchanged, and the admin URL is not linked from the public nav or sitemap.
 
-See [admin/README.md](./admin/README.md) for setup, env vars, Neon/Postgres, and Vercel cron.
+See [admin/README.md](./admin/README.md) for setup and env vars.
 
 ## Local development
 
