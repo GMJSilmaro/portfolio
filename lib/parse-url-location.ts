@@ -119,7 +119,7 @@ function tryParsePair(raw: string): { lat: number; lng: number } | null {
 
 /**
  * Extract location clues already present in the URL string.
- * Does not contact the target host and is not visitor tracking.
+ * Pure client-side — does not contact the target host.
  */
 export function parseUrlLocationClues(rawInput: string): UrlParseResult {
   const warnings: string[] = []
@@ -198,7 +198,11 @@ export function parseUrlLocationClues(rawInput: string): UrlParseResult {
       const pair = tryParsePair(value)
       if (pair) {
         pushCoord(coordinates, `query:${key}`, pair.lat, pair.lng)
-      } else if (PLACE_KEYS.has(lower) && value.trim() && !/^\d+(\.\d+)?$/.test(value)) {
+      } else if (
+        PLACE_KEYS.has(lower) &&
+        value.trim() &&
+        !/^\d+(\.\d+)?$/.test(value)
+      ) {
         placeHints.push({
           source: `query:${key}`,
           value: value.slice(0, 200),
@@ -233,10 +237,14 @@ export function parseUrlLocationClues(rawInput: string): UrlParseResult {
     }
   })
 
-  // Path segments that look like "City-Name" place tokens (heuristic only).
   const segments = url.pathname.split('/').filter(Boolean)
   for (const segment of segments) {
-    const decoded = decodeURIComponent(segment)
+    let decoded = segment
+    try {
+      decoded = decodeURIComponent(segment)
+    } catch {
+      // keep raw segment
+    }
     const pair = tryParsePair(decoded)
     if (pair) {
       pushCoord(coordinates, 'path segment', pair.lat, pair.lng)
@@ -249,7 +257,6 @@ export function parseUrlLocationClues(rawInput: string): UrlParseResult {
         decoded,
       )
     ) {
-      // Skip pure technical segments; keep plausible place-like tokens lightly.
       if (/[-_]/.test(decoded) || /^[A-Z][a-z]+/.test(decoded)) {
         placeHints.push({
           source: 'path segment',
