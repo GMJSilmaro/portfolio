@@ -19,6 +19,21 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: '1.3.0',
+    date: '10.17.26',
+    title: 'Private URL location tool',
+    notes: [
+      {
+        type: 'feature',
+        text: 'Owner-only URL location tooling now lives in a separate private admin app — paste a link to extract URL-embedded coordinates and approximate host IP location for cybersecurity review — without changing the public CV Studio.',
+      },
+      {
+        type: 'improvement',
+        text: 'The public portfolio stays on GitHub Pages as a static export; the private admin deploys separately and stays out of public navigation and search indexing.',
+      },
+    ],
+  },
+  {
     version: '1.2.0',
     date: '10.16.26',
     title: 'Editorial living dossier',

@@ -26,11 +26,23 @@ Tech stack icons remain in the Stack chapter with favourites filtering.
 - react-icons
 - GitHub Actions
 
+## Private admin (separate deploy)
+
+Owner-only **URL location** tooling lives in [`admin/`](./admin/) as a **separate** Next.js app for Vercel (Auth.js + local GeoLite). Paste a link to extract URL-embedded coordinates/place clues and approximate host IP location for cybersecurity review. The public site on GitHub Pages stays a static export — UI, chapters, and navigation are unchanged, and the admin URL is not linked from the public nav or sitemap.
+
+See [admin/README.md](./admin/README.md) for setup and env vars.
+
 ## Local development
 
 ```bash
 pnpm install
 pnpm dev
+```
+
+Admin app (separate):
+
+```bash
+cd admin && pnpm install && pnpm dev
 ```
 
 ## Usage rights
