@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useMemo, useState, useTransition } from 'react'
 import { parseUrlLocationClues } from '@/lib/parse-url-location'
 import {
   resolveHostGeoClient,
@@ -8,6 +8,10 @@ import {
 } from '@/lib/resolve-host-geo-client'
 import { signalLabel } from '@/lib/network-reputation'
 import { formatAnalysisSummary } from '@/lib/format-analysis-summary'
+import {
+  languageIpMismatchNote,
+  readBrowserSignals,
+} from '@/lib/browser-signals'
 import type { UrlParseResult } from '@/lib/parse-url-location'
 
 type Analysis = {
@@ -40,6 +44,13 @@ export function UrlLocationTool() {
   const [error, setError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const [copied, setCopied] = useState(false)
+  const browserSignals = useMemo(() => readBrowserSignals(), [])
+  const mismatchNote = result?.hostGeo
+    ? languageIpMismatchNote(
+        browserSignals.languageRegion,
+        result.hostGeo.countryCode,
+      )
+    : null
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -79,6 +90,8 @@ export function UrlLocationTool() {
       result.url,
       result.hostGeo,
       result.analyzedAt,
+      browserSignals,
+      mismatchNote,
     )
     try {
       await navigator.clipboard.writeText(text)
@@ -102,11 +115,37 @@ export function UrlLocationTool() {
             URL location
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-base">
-            Paste a suspicious link to extract coordinates from the URL and
-            approximate host IP location (with VPN/CDN warnings). Copy the
-            summary for your evidence notes.
+            Paste a suspicious link for URL clues and host IP/VPN signals. Also
+            shows this browser&apos;s language/timezone — the same class of
+            Accept-Language vs IP mismatch sites use to suspect VPNs.
           </p>
         </div>
+
+        <aside className="mb-6 border border-[color:var(--rule)] bg-panel p-4 text-sm sm:p-5">
+          <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+            This browser (Accept-Language class signals)
+          </p>
+          <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div>
+              <dt className="text-xs text-ink-muted">Languages</dt>
+              <dd className="mt-1 font-mono text-ink">
+                {browserSignals.languages.join(', ') || '—'}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs text-ink-muted">Timezone</dt>
+              <dd className="mt-1 font-mono text-ink">
+                {browserSignals.timezone || '—'}
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-3 text-xs leading-relaxed text-ink-muted">
+            Platforms also use VPN/proxy IP databases (including cloud VMs),
+            cookie IDs across sessions, and email &quot;unsubscribe&quot; links
+            clicked off-VPN. We do not set tracking cookies or send probe
+            emails from this page.
+          </p>
+        </aside>
 
         <form
           onSubmit={onSubmit}
@@ -282,13 +321,23 @@ export function UrlLocationTool() {
                 Host IP location
               </h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Approximate server/edge location. VPN/CDN → treat as untrusted.
+                Approximate server/edge location. VPN/CDN/cloud → treat as
+                untrusted. Commercial VPN IP lists often flag the same ranges.
               </p>
 
               {!result.hostGeo ? (
                 <p className="mt-3 text-sm text-ink-soft">Skipped for this URL.</p>
               ) : (
                 <>
+                  {mismatchNote ? (
+                    <p
+                      className="mt-4 border border-stamp/40 bg-stamp/5 px-4 py-3 text-sm text-ink"
+                      role="status"
+                    >
+                      {mismatchNote}
+                    </p>
+                  ) : null}
+
                   {result.hostGeo.reputation ? (
                     <div
                       className={`mt-4 border p-4 sm:p-5 ${

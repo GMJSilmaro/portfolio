@@ -1,11 +1,14 @@
 import type { UrlParseResult } from '@/lib/parse-url-location'
 import type { HostGeoResult } from '@/lib/resolve-host-geo-client'
+import type { BrowserSignals } from '@/lib/browser-signals'
 
 /** Plain-text summary for clipboard / evidence notes. */
 export function formatAnalysisSummary(
   url: UrlParseResult,
   hostGeo: HostGeoResult | null,
   analyzedAtIso: string,
+  browser?: BrowserSignals,
+  mismatchNote?: string | null,
 ): string {
   const manila = new Intl.DateTimeFormat('en-PH', {
     timeZone: 'Asia/Manila',
@@ -19,6 +22,16 @@ export function formatAnalysisSummary(
     `URL: ${url.href}`,
     `Host: ${url.hostname}`,
   ]
+
+  if (browser) {
+    lines.push(
+      `Browser languages: ${browser.languages.join(', ') || '—'}`,
+      `Browser timezone: ${browser.timezone || '—'}`,
+    )
+  }
+  if (mismatchNote) {
+    lines.push(`Language/IP note: ${mismatchNote}`)
+  }
 
   if (url.coordinates.length) {
     lines.push('URL coordinates:')

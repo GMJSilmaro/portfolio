@@ -43,6 +43,10 @@ export const releases: Release[] = [
         type: 'improvement',
         text: 'URL location now copies a Manila-timestamped evidence summary, opens map links for coordinates, and resolves IPv4 plus IPv6 with broader Maps URL parsing.',
       },
+      {
+        type: 'improvement',
+        text: 'Shows this browser’s language/timezone and flags Accept-Language-style region vs host-IP country mismatches — the same class of VPN hint many sites use.',
+      },
     ],
   },
   {

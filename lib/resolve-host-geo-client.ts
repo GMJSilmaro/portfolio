@@ -10,6 +10,8 @@ export type HostGeoResult = {
   city: string | null
   region: string | null
   country: string | null
+  /** ISO country code when available (e.g. CA, AL, PH). */
+  countryCode: string | null
   timezone: string | null
   coordinates: { latitude: number; longitude: number } | null
   locationUnavailable: boolean
@@ -31,7 +33,7 @@ export async function resolveHostGeoClient(
   hostname: string,
 ): Promise<HostGeoResult> {
   const notes: string[] = [
-    'IP location is approximate. CDNs, anycast, VPNs, and hosting regions often differ from the real operator.',
+    'IP location is approximate. CDNs, anycast, VPNs, cloud VMs, and hosting ranges are often listed in commercial VPN/proxy databases.',
     'This is not an exact address and is not proof of identity.',
     'VPN/proxy detection is heuristic — it cannot reveal a true location behind a VPN.',
     'Lookups run in your browser via public DNS/geo APIs — nothing is stored by this site.',
@@ -102,6 +104,7 @@ export async function resolveHostGeoClient(
       city: geo.city,
       region: geo.region,
       country: geo.country,
+      countryCode: geo.countryCode,
       timezone: geo.timezone,
       coordinates: geo.coordinates,
       locationUnavailable: !(geo.city || geo.region || geo.country),
@@ -162,6 +165,7 @@ async function lookupIpwho(ip: string): Promise<{
   city: string | null
   region: string | null
   country: string | null
+  countryCode: string | null
   timezone: string | null
   coordinates: { latitude: number; longitude: number } | null
   asn: number | null
@@ -181,6 +185,7 @@ async function lookupIpwho(ip: string): Promise<{
     city?: string
     region?: string
     country?: string
+    country_code?: string
     timezone?: { id?: string } | string
     latitude?: number
     longitude?: number
@@ -215,6 +220,7 @@ async function lookupIpwho(ip: string): Promise<{
     city: data.city || null,
     region: data.region || null,
     country: data.country || null,
+    countryCode: data.country_code?.toUpperCase() || null,
     timezone,
     coordinates,
     asn: typeof data.connection?.asn === 'number' ? data.connection.asn : null,
@@ -245,6 +251,7 @@ function empty(
     city: null,
     region: null,
     country: null,
+    countryCode: null,
     timezone: null,
     coordinates: null,
     locationUnavailable: true,
