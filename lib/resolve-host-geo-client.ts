@@ -1,3 +1,8 @@
+import {
+  classifyNetworkReputation,
+  type NetworkReputation,
+} from '@/lib/network-reputation'
+
 export type HostGeoResult = {
   hostname: string
   resolvedAddresses: string[]
@@ -10,14 +15,17 @@ export type HostGeoResult = {
   locationUnavailable: boolean
   source: string
   notes: string[]
+  asn: number | null
+  org: string | null
+  isp: string | null
+  reputation: NetworkReputation | null
 }
 
-const IPV4 =
-  /^(?:\d{1,3}\.){3}\d{1,3}$/
+const IPV4 = /^(?:\d{1,3}\.){3}\d{1,3}$/
 
 /**
- * Browser-side hostname → IP (Cloudflare DNS-over-HTTPS) → approximate geo (ipwho.is).
- * Used only because the portfolio is a static GitHub Pages export (no server).
+ * Browser-side hostname → IP (Cloudflare DNS-over-HTTPS) → approximate geo (ipwho.is)
+ * plus VPN/proxy/CDN heuristics. Static Pages friendly — no API keys.
  */
 export async function resolveHostGeoClient(
   hostname: string,
@@ -25,6 +33,7 @@ export async function resolveHostGeoClient(
   const notes: string[] = [
     'IP location is approximate. CDNs, anycast, VPNs, and hosting regions often differ from the real operator.',
     'This is not an exact address and is not proof of identity.',
+    'VPN/proxy detection is heuristic — it cannot reveal a true location behind a VPN.',
     'Lookups run in your browser via public DNS/geo APIs — nothing is stored by this site.',
   ]
 
@@ -50,7 +59,11 @@ export async function resolveHostGeoClient(
     try {
       addresses = await resolveDnsA(normalized)
     } catch {
-      return empty(normalized, notes, 'DNS lookup failed — host could not be resolved.')
+      return empty(
+        normalized,
+        notes,
+        'DNS lookup failed — host could not be resolved.',
+      )
     }
   }
 
@@ -67,19 +80,18 @@ export async function resolveHostGeoClient(
     const geo = await lookupIpwho(primaryIp)
     if (!geo) {
       return {
-        hostname: normalized,
+        ...empty(normalized, notes, 'No geolocation match for this IP.'),
         resolvedAddresses: addresses,
         primaryIp,
-        city: null,
-        region: null,
-        country: null,
-        timezone: null,
-        coordinates: null,
-        locationUnavailable: true,
-        source: 'unavailable',
-        notes: [...notes, 'No geolocation match for this IP.'],
       }
     }
+
+    const reputation = classifyNetworkReputation({
+      asn: geo.asn,
+      org: geo.org,
+      isp: geo.isp,
+      apiFlags: geo.apiFlags,
+    })
 
     return {
       hostname: normalized,
@@ -93,20 +105,20 @@ export async function resolveHostGeoClient(
       locationUnavailable: !(geo.city || geo.region || geo.country),
       source: 'ipwho.is',
       notes,
+      asn: geo.asn,
+      org: geo.org,
+      isp: geo.isp,
+      reputation,
     }
   } catch {
     return {
-      hostname: normalized,
+      ...empty(
+        normalized,
+        notes,
+        'Geolocation request failed or was blocked.',
+      ),
       resolvedAddresses: addresses,
       primaryIp,
-      city: null,
-      region: null,
-      country: null,
-      timezone: null,
-      coordinates: null,
-      locationUnavailable: true,
-      source: 'unavailable',
-      notes: [...notes, 'Geolocation request failed or was blocked.'],
     }
   }
 }
@@ -138,6 +150,15 @@ async function lookupIpwho(ip: string): Promise<{
   country: string | null
   timezone: string | null
   coordinates: { latitude: number; longitude: number } | null
+  asn: number | null
+  org: string | null
+  isp: string | null
+  apiFlags: {
+    vpn: boolean | null
+    proxy: boolean | null
+    tor: boolean | null
+    hosting: boolean | null
+  }
 } | null> {
   const res = await fetch(`https://ipwho.is/${encodeURIComponent(ip)}`)
   if (!res.ok) return null
@@ -149,6 +170,17 @@ async function lookupIpwho(ip: string): Promise<{
     timezone?: { id?: string } | string
     latitude?: number
     longitude?: number
+    connection?: {
+      asn?: number
+      org?: string
+      isp?: string
+    }
+    security?: {
+      vpn?: boolean
+      proxy?: boolean
+      tor?: boolean
+      hosting?: boolean
+    }
   }
   if (data.success === false) return null
 
@@ -171,6 +203,19 @@ async function lookupIpwho(ip: string): Promise<{
     country: data.country || null,
     timezone,
     coordinates,
+    asn: typeof data.connection?.asn === 'number' ? data.connection.asn : null,
+    org: data.connection?.org || null,
+    isp: data.connection?.isp || null,
+    apiFlags: {
+      vpn: typeof data.security?.vpn === 'boolean' ? data.security.vpn : null,
+      proxy:
+        typeof data.security?.proxy === 'boolean' ? data.security.proxy : null,
+      tor: typeof data.security?.tor === 'boolean' ? data.security.tor : null,
+      hosting:
+        typeof data.security?.hosting === 'boolean'
+          ? data.security.hosting
+          : null,
+    },
   }
 }
 
@@ -191,5 +236,9 @@ function empty(
     locationUnavailable: true,
     source: 'unavailable',
     notes: [...notes, extra],
+    asn: null,
+    org: null,
+    isp: null,
+    reputation: null,
   }
 }
