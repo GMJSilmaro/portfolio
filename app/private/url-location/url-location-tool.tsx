@@ -7,11 +7,16 @@ import {
   type HostGeoResult,
 } from '@/lib/resolve-host-geo-client'
 import { signalLabel } from '@/lib/network-reputation'
+import {
+  assessUrlSecurity,
+  type SecurityAssessment,
+} from '@/lib/security-assessment'
 import type { UrlParseResult } from '@/lib/parse-url-location'
 
 type Analysis = {
   url: UrlParseResult
   hostGeo: HostGeoResult | null
+  security: SecurityAssessment
 }
 
 function formatIpLocation(geo: HostGeoResult): string {
@@ -46,7 +51,8 @@ export function UrlLocationTool() {
           hostGeo = await resolveHostGeoClient(parsed.hostname)
         }
 
-        setResult({ url: parsed, hostGeo })
+        const security = assessUrlSecurity(parsed, hostGeo)
+        setResult({ url: parsed, hostGeo, security })
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Analysis failed.')
       }
@@ -68,10 +74,10 @@ export function UrlLocationTool() {
             URL location
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-base">
-            Paste a link for cybersecurity review. Coordinates and place clues
-            are read from the URL string in your browser. Host location uses
-            public DNS/geo lookups from your browser only — this site does not
-            log pastes, and this page is not linked from the public CV.
+            Paste a link for cybersecurity review. When a host looks like
+            VPN/proxy/CDN, IP city is marked unusable — we cannot recover a real
+            end-user location. The tool then leans on compensating signals
+            (URL clues, ASN/org, protocol/host risks). Nothing is logged here.
           </p>
         </div>
 
@@ -140,6 +146,72 @@ export function UrlLocationTool() {
               identity proof, and not authorization to access third-party
               systems.
             </p>
+
+            <section>
+              <h2 className="font-display text-xl font-medium text-ink">
+                Security assessment
+              </h2>
+              <p className="mt-1 text-sm text-ink-soft">
+                Risk is heuristic for personal review. VPN detection raises a
+                hard geo limitation instead of inventing a fake “true”
+                location.
+              </p>
+
+              <div className="mt-4 grid gap-3 border border-[color:var(--rule)] bg-panel p-4 sm:grid-cols-3 sm:p-5">
+                <div>
+                  <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                    Risk score
+                  </p>
+                  <p className="mt-1 font-display text-2xl font-medium text-ink">
+                    {result.security.riskScore}
+                    <span className="ml-2 text-sm font-sans font-normal uppercase tracking-[0.12em] text-ink-muted">
+                      {result.security.riskLabel}
+                    </span>
+                  </p>
+                </div>
+                <div className="sm:col-span-2">
+                  <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                    IP geo usable for attribution?
+                  </p>
+                  <p className="mt-1 text-sm text-ink">
+                    {result.security.geoUsable
+                      ? 'Possibly — still approximate, never identity proof.'
+                      : 'No — VPN/proxy/CDN/hosting limitation applies. Use compensating checks.'}
+                  </p>
+                </div>
+              </div>
+
+              {result.security.findings.length > 0 ? (
+                <ul className="mt-4 divide-y divide-[color:var(--rule)] border border-[color:var(--rule)] bg-panel">
+                  {result.security.findings.map((finding) => (
+                    <li key={finding.id} className="px-4 py-3">
+                      <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        {finding.severity}
+                      </p>
+                      <p className="mt-1 text-sm font-medium text-ink">
+                        {finding.title}
+                      </p>
+                      <p className="mt-1 text-sm text-ink-soft">{finding.detail}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-4 text-sm text-ink-soft">
+                  No elevated findings from built-in heuristics.
+                </p>
+              )}
+
+              <div className="mt-4 border border-[color:var(--rule)] bg-panel p-4 sm:p-5">
+                <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                  Compensating checks when geo is limited
+                </p>
+                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm text-ink-soft">
+                  {result.security.compensatingChecks.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </section>
 
             <section>
               <h2 className="font-display text-xl font-medium text-ink">
