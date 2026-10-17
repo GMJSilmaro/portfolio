@@ -10,6 +10,8 @@ export type HostGeoResult = {
   city: string | null
   region: string | null
   country: string | null
+  /** ISO country code when available (e.g. CA, AL, PH). */
+  countryCode: string | null
   timezone: string | null
   coordinates: { latitude: number; longitude: number } | null
   locationUnavailable: boolean
@@ -31,7 +33,7 @@ export async function resolveHostGeoClient(
   hostname: string,
 ): Promise<HostGeoResult> {
   const notes: string[] = [
-    'IP location is approximate. CDNs, anycast, VPNs, and hosting regions often differ from the real operator.',
+    'IP location is approximate. CDNs, anycast, VPNs, cloud VMs (including AWS EC2), and hosting ranges are often listed in commercial VPN/proxy databases — some services deny access for that alone.',
     'This is not an exact address and is not proof of identity.',
     'VPN/proxy detection is heuristic — it cannot reveal a true location behind a VPN.',
     'Lookups run in your browser via public DNS/geo APIs — nothing is stored by this site.',
@@ -57,7 +59,7 @@ export async function resolveHostGeoClient(
     addresses = [normalized]
   } else {
     try {
-      addresses = await resolveDnsA(normalized)
+      addresses = await resolveDnsAddresses(normalized)
     } catch {
       return empty(
         normalized,
@@ -68,10 +70,12 @@ export async function resolveHostGeoClient(
   }
 
   if (addresses.length === 0) {
-    return empty(normalized, notes, 'No A records returned from DNS.')
+    return empty(normalized, notes, 'No A/AAAA records returned from DNS.')
   }
 
-  const primaryIp = addresses[0] ?? null
+  // Prefer IPv4 for geo lookup coverage; fall back to first address.
+  const primaryIp =
+    addresses.find((ip) => IPV4.test(ip)) || addresses[0] || null
   if (!primaryIp) {
     return empty(normalized, notes, 'No usable IP for geolocation.')
   }
@@ -100,6 +104,7 @@ export async function resolveHostGeoClient(
       city: geo.city,
       region: geo.region,
       country: geo.country,
+      countryCode: geo.countryCode,
       timezone: geo.timezone,
       coordinates: geo.coordinates,
       locationUnavailable: !(geo.city || geo.region || geo.country),
@@ -123,10 +128,21 @@ export async function resolveHostGeoClient(
   }
 }
 
-async function resolveDnsA(hostname: string): Promise<string[]> {
+async function resolveDnsAddresses(hostname: string): Promise<string[]> {
+  const [ipv4, ipv6] = await Promise.all([
+    resolveDns(hostname, 'A'),
+    resolveDns(hostname, 'AAAA'),
+  ])
+  return [...ipv4, ...ipv6]
+}
+
+async function resolveDns(
+  hostname: string,
+  type: 'A' | 'AAAA',
+): Promise<string[]> {
   const endpoint = new URL('https://cloudflare-dns.com/dns-query')
   endpoint.searchParams.set('name', hostname)
-  endpoint.searchParams.set('type', 'A')
+  endpoint.searchParams.set('type', type)
 
   const res = await fetch(endpoint.toString(), {
     headers: { Accept: 'application/dns-json' },
@@ -139,8 +155,9 @@ async function resolveDnsA(hostname: string): Promise<string[]> {
     Answer?: Array<{ type: number; data: string }>
   }
 
+  const wantType = type === 'A' ? 1 : 28
   return (data.Answer || [])
-    .filter((row) => row.type === 1 && IPV4.test(row.data))
+    .filter((row) => row.type === wantType && row.data)
     .map((row) => row.data)
 }
 
@@ -148,6 +165,7 @@ async function lookupIpwho(ip: string): Promise<{
   city: string | null
   region: string | null
   country: string | null
+  countryCode: string | null
   timezone: string | null
   coordinates: { latitude: number; longitude: number } | null
   asn: number | null
@@ -167,6 +185,7 @@ async function lookupIpwho(ip: string): Promise<{
     city?: string
     region?: string
     country?: string
+    country_code?: string
     timezone?: { id?: string } | string
     latitude?: number
     longitude?: number
@@ -201,6 +220,7 @@ async function lookupIpwho(ip: string): Promise<{
     city: data.city || null,
     region: data.region || null,
     country: data.country || null,
+    countryCode: data.country_code?.toUpperCase() || null,
     timezone,
     coordinates,
     asn: typeof data.connection?.asn === 'number' ? data.connection.asn : null,
@@ -231,6 +251,7 @@ function empty(
     city: null,
     region: null,
     country: null,
+    countryCode: null,
     timezone: null,
     coordinates: null,
     locationUnavailable: true,

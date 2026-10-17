@@ -37,14 +37,23 @@ export const releases: Release[] = [
       },
       {
         type: 'improvement',
-        text: 'Host analysis now shows network reputation signals (VPN/proxy, CDN/anycast, hosting) from ASN/org heuristics plus ipwho.is flags when available — still cannot reveal a true location behind a VPN.',
+        text: 'Host analysis shows VPN/proxy/CDN reputation for the resolved IP and marks geo untrusted when appropriate — a pasted link still cannot read another person’s device GPS.',
       },
       {
-        type: 'feature',
-        text: 'Security assessment adds a risk score, explicit VPN geo limitation, URL-vs-IP mismatch checks, and compensating investigation steps when true location cannot be recovered.',
+        type: 'improvement',
+        text: 'URL location now copies a Manila-timestamped evidence summary, opens map links for coordinates, and resolves IPv4 plus IPv6 with broader Maps URL parsing.',
+      },
+      {
+        type: 'improvement',
+        text: 'Shows this browser’s language/timezone and flags Accept-Language-style region vs host-IP country mismatches — the same class of VPN hint many sites use.',
+      },
+      {
+        type: 'improvement',
+        text: 'Documents how platforms infer VPNs (IP databases including cloud VMs, cookie ID correlation, third-party beacons, email unsubscribe bait) without running those techniques on visitors.',
       },
     ],
   },
+
   {
     version: '1.2.0',
     date: '10.16.26',

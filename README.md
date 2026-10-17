@@ -28,7 +28,7 @@ Tech stack icons remain in the Stack chapter with favourites filtering.
 
 ## Private URL location (unlisted)
 
-An unlisted cybersecurity helper at [`/private/url-location/`](https://gmjsilmaro.dev/private/url-location/) ships with the same static GitHub Pages deploy. Paste a URL to extract embedded coordinates/place clues and approximate host IP location (browser DNS + public geo lookup). It is not linked from public navigation, is marked `noindex`, and does not log pastes on this site.
+An unlisted cybersecurity helper at [`/private/url-location/`](https://gmjsilmaro.dev/private/url-location/) ships with the same static GitHub Pages deploy. Paste a URL to extract embedded coordinates/place clues and approximate host IP location (browser DNS + public geo lookup), plus Accept-Language-style browser signals and VPN-detection awareness notes. It is not linked from public navigation, is marked `noindex`, and does not log pastes, set tracking cookies, or send probe emails.
 
 ## Local development
 

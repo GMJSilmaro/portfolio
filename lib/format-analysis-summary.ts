@@ -1,0 +1,85 @@
+import type { UrlParseResult } from '@/lib/parse-url-location'
+import type { HostGeoResult } from '@/lib/resolve-host-geo-client'
+import type { BrowserSignals } from '@/lib/browser-signals'
+import { VPN_DETECTION_DISCLAIMER } from '@/lib/vpn-detection-notes'
+
+/** Plain-text summary for clipboard / evidence notes. */
+export function formatAnalysisSummary(
+  url: UrlParseResult,
+  hostGeo: HostGeoResult | null,
+  analyzedAtIso: string,
+  browser?: BrowserSignals,
+  mismatchNotes?: string[],
+): string {
+  const manila = new Intl.DateTimeFormat('en-PH', {
+    timeZone: 'Asia/Manila',
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+  }).format(new Date(analyzedAtIso))
+
+  const lines: string[] = [
+    'URL location analysis',
+    `Analyzed (Asia/Manila): ${manila}`,
+    `URL: ${url.href}`,
+    `Host: ${url.hostname}`,
+  ]
+
+  if (browser) {
+    lines.push(
+      `Browser languages: ${browser.languages.join(', ') || '—'}`,
+      `Browser timezone: ${browser.timezone || '—'}`,
+    )
+  }
+  if (mismatchNotes?.length) {
+    for (const note of mismatchNotes) {
+      lines.push(`Mismatch note: ${note}`)
+    }
+  }
+
+  if (url.coordinates.length) {
+    lines.push('URL coordinates:')
+    for (const c of url.coordinates) {
+      lines.push(`  - ${c.latitude}, ${c.longitude} (${c.source})`)
+    }
+  } else {
+    lines.push('URL coordinates: none')
+  }
+
+  if (url.placeHints.length) {
+    lines.push('Place hints:')
+    for (const h of url.placeHints) {
+      lines.push(`  - ${h.value} (${h.source})`)
+    }
+  }
+
+  if (!hostGeo) {
+    lines.push('Host IP: skipped')
+  } else {
+    lines.push(`Host IP: ${hostGeo.primaryIp || '—'}`)
+    if (hostGeo.resolvedAddresses.length > 1) {
+      lines.push(`All IPs: ${hostGeo.resolvedAddresses.join(', ')}`)
+    }
+    const loc = [hostGeo.city, hostGeo.region, hostGeo.country]
+      .filter(Boolean)
+      .join(', ')
+    lines.push(
+      `Approx. IP location: ${loc || 'unavailable'} [${hostGeo.reputation?.geoTrust || 'unknown'}]`,
+    )
+    if (hostGeo.asn != null || hostGeo.org) {
+      lines.push(
+        `ASN/org: ${hostGeo.asn != null ? `AS${hostGeo.asn}` : '—'} ${hostGeo.org || ''}`.trim(),
+      )
+    }
+    if (hostGeo.reputation) {
+      lines.push(`Reputation: ${hostGeo.reputation.summary}`)
+    }
+  }
+
+  lines.push(
+    'Note: IP geo is approximate. VPN/CDN cannot yield another person\'s device GPS.',
+    'Platforms may also use VPN IP DBs, cookie ID correlation, third-party beacons, and email unsubscribe bait.',
+    VPN_DETECTION_DISCLAIMER,
+  )
+
+  return lines.join('\n')
+}
