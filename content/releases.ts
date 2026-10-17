@@ -39,6 +39,10 @@ export const releases: Release[] = [
         type: 'improvement',
         text: 'Host analysis shows VPN/proxy/CDN reputation for the resolved IP and marks geo untrusted when appropriate — a pasted link still cannot read another person’s device GPS.',
       },
+      {
+        type: 'improvement',
+        text: 'URL location now copies a Manila-timestamped evidence summary, opens map links for coordinates, and resolves IPv4 plus IPv6 with broader Maps URL parsing.',
+      },
     ],
   },
   {

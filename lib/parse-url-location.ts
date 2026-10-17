@@ -24,11 +24,14 @@ export type UrlParseResult = {
 }
 
 const COORD_PAIR =
-  /(-?\d{1,3}(?:\.\d+)?)\s*[,/\s]\s*(-?\d{1,3}(?:\.\d+)?)/
+  /(-?\d{1,3}(?:\.\d+)?)\s*[,/~/\s]\s*(-?\d{1,3}(?:\.\d+)?)/
 
 const GOOGLE_AT = /@(-?\d+\.\d+),(-?\d+\.\d+)/
 const GOOGLE_3D_4D = /!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/
+/** Google sometimes encodes lng then lat as !2d!3d */
+const GOOGLE_2D_3D = /!2d(-?\d+\.\d+)!3d(-?\d+\.\d+)/
 const APPLE_LL = /[?&]ll=(-?\d+\.\d+),(-?\d+\.\d+)/i
+const BING_CP = /[?&]cp=(-?\d+\.\d+)~(-?\d+\.\d+)/i
 const GEO_URI = /^geo:(-?\d+\.\d+),(-?\d+\.\d+)/i
 
 const LAT_KEYS = new Set([
@@ -54,6 +57,7 @@ const LNG_KEYS = new Set([
 const PAIR_KEYS = new Set([
   'll',
   'center',
+  'cp',
   'q',
   'query',
   'destination',
@@ -64,6 +68,7 @@ const PAIR_KEYS = new Set([
   'location',
   'loc',
   'point',
+  'sll',
 ])
 const PLACE_KEYS = new Set([
   'q',
@@ -186,6 +191,29 @@ export function parseUrlLocationClues(rawInput: string): UrlParseResult {
       Number(apple[1]),
       Number(apple[2]),
       'Apple Maps–style ll=lat,lng',
+    )
+  }
+
+  const d2 = href.match(GOOGLE_2D_3D)
+  if (d2) {
+    // !2d is longitude, !3d is latitude
+    pushCoord(
+      coordinates,
+      'Google Maps !2d!3d',
+      Number(d2[2]),
+      Number(d2[1]),
+      'Embedded Google Maps lng/lat pair',
+    )
+  }
+
+  const bing = href.match(BING_CP)
+  if (bing) {
+    pushCoord(
+      coordinates,
+      'Bing cp=',
+      Number(bing[1]),
+      Number(bing[2]),
+      'Bing Maps cp=lat~lng',
     )
   }
 

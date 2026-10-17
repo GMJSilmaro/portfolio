@@ -57,7 +57,7 @@ export async function resolveHostGeoClient(
     addresses = [normalized]
   } else {
     try {
-      addresses = await resolveDnsA(normalized)
+      addresses = await resolveDnsAddresses(normalized)
     } catch {
       return empty(
         normalized,
@@ -68,10 +68,12 @@ export async function resolveHostGeoClient(
   }
 
   if (addresses.length === 0) {
-    return empty(normalized, notes, 'No A records returned from DNS.')
+    return empty(normalized, notes, 'No A/AAAA records returned from DNS.')
   }
 
-  const primaryIp = addresses[0] ?? null
+  // Prefer IPv4 for geo lookup coverage; fall back to first address.
+  const primaryIp =
+    addresses.find((ip) => IPV4.test(ip)) || addresses[0] || null
   if (!primaryIp) {
     return empty(normalized, notes, 'No usable IP for geolocation.')
   }
@@ -123,10 +125,21 @@ export async function resolveHostGeoClient(
   }
 }
 
-async function resolveDnsA(hostname: string): Promise<string[]> {
+async function resolveDnsAddresses(hostname: string): Promise<string[]> {
+  const [ipv4, ipv6] = await Promise.all([
+    resolveDns(hostname, 'A'),
+    resolveDns(hostname, 'AAAA'),
+  ])
+  return [...ipv4, ...ipv6]
+}
+
+async function resolveDns(
+  hostname: string,
+  type: 'A' | 'AAAA',
+): Promise<string[]> {
   const endpoint = new URL('https://cloudflare-dns.com/dns-query')
   endpoint.searchParams.set('name', hostname)
-  endpoint.searchParams.set('type', 'A')
+  endpoint.searchParams.set('type', type)
 
   const res = await fetch(endpoint.toString(), {
     headers: { Accept: 'application/dns-json' },
@@ -139,8 +152,9 @@ async function resolveDnsA(hostname: string): Promise<string[]> {
     Answer?: Array<{ type: number; data: string }>
   }
 
+  const wantType = type === 'A' ? 1 : 28
   return (data.Answer || [])
-    .filter((row) => row.type === 1 && IPV4.test(row.data))
+    .filter((row) => row.type === wantType && row.data)
     .map((row) => row.data)
 }
 

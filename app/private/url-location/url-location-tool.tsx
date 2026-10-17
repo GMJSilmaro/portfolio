@@ -7,11 +7,13 @@ import {
   type HostGeoResult,
 } from '@/lib/resolve-host-geo-client'
 import { signalLabel } from '@/lib/network-reputation'
+import { formatAnalysisSummary } from '@/lib/format-analysis-summary'
 import type { UrlParseResult } from '@/lib/parse-url-location'
 
 type Analysis = {
   url: UrlParseResult
   hostGeo: HostGeoResult | null
+  analyzedAt: string
 }
 
 function formatIpLocation(geo: HostGeoResult): string {
@@ -20,16 +22,30 @@ function formatIpLocation(geo: HostGeoResult): string {
   return parts.length ? parts.join(', ') : 'Unavailable'
 }
 
+function formatManila(iso: string): string {
+  return new Intl.DateTimeFormat('en-PH', {
+    timeZone: 'Asia/Manila',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(new Date(iso))
+}
+
+function mapsHref(lat: number, lng: number): string {
+  return `https://www.google.com/maps?q=${lat},${lng}`
+}
+
 export function UrlLocationTool() {
   const [url, setUrl] = useState('')
   const [result, setResult] = useState<Analysis | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
+  const [copied, setCopied] = useState(false)
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault()
     setError(null)
     setResult(null)
+    setCopied(false)
 
     startTransition(async () => {
       try {
@@ -46,11 +62,31 @@ export function UrlLocationTool() {
           hostGeo = await resolveHostGeoClient(parsed.hostname)
         }
 
-        setResult({ url: parsed, hostGeo })
+        setResult({
+          url: parsed,
+          hostGeo,
+          analyzedAt: new Date().toISOString(),
+        })
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Analysis failed.')
       }
     })
+  }
+
+  async function copySummary() {
+    if (!result) return
+    const text = formatAnalysisSummary(
+      result.url,
+      result.hostGeo,
+      result.analyzedAt,
+    )
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 2000)
+    } catch {
+      setError('Could not copy to clipboard.')
+    }
   }
 
   return (
@@ -66,9 +102,9 @@ export function UrlLocationTool() {
             URL location
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-base">
-            Paste a link to extract coordinates from the URL string and
-            approximate host IP location. VPN/CDN marks IP geo as untrusted. A
-            link cannot read another person&apos;s phone GPS.
+            Paste a suspicious link to extract coordinates from the URL and
+            approximate host IP location (with VPN/CDN warnings). Copy the
+            summary for your evidence notes.
           </p>
         </div>
 
@@ -101,9 +137,20 @@ export function UrlLocationTool() {
             >
               {pending ? 'Analyzing…' : 'Analyze URL'}
             </button>
-            <p className="text-xs text-ink-muted">
-              Client-side only · not in public navigation
-            </p>
+            {url.trim() ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setUrl('')
+                  setResult(null)
+                  setError(null)
+                  setCopied(false)
+                }}
+                className="min-h-11 border border-[color:var(--rule-strong)] px-4 py-2.5 text-sm text-ink"
+              >
+                Clear
+              </button>
+            ) : null}
           </div>
         </form>
 
@@ -130,6 +177,19 @@ export function UrlLocationTool() {
 
         {result ? (
           <div className="mt-8 space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-xs text-ink-muted">
+                Analyzed {formatManila(result.analyzedAt)} (Asia/Manila)
+              </p>
+              <button
+                type="button"
+                onClick={copySummary}
+                className="min-h-10 border border-[color:var(--rule-strong)] bg-panel px-3 py-2 text-sm text-ink hover:border-signal"
+              >
+                {copied ? 'Copied' : 'Copy summary'}
+              </button>
+            </div>
+
             <section>
               <h2 className="font-display text-xl font-medium text-ink">
                 URL clues
@@ -171,14 +231,25 @@ export function UrlLocationTool() {
                   {result.url.coordinates.map((coord) => (
                     <li
                       key={`${coord.source}-${coord.latitude}-${coord.longitude}`}
-                      className="px-4 py-3 text-sm"
+                      className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm"
                     >
-                      <p className="font-mono text-ink">
-                        {coord.latitude.toFixed(6)}, {coord.longitude.toFixed(6)}
-                      </p>
-                      <p className="mt-1 text-xs text-ink-muted">
-                        {coord.source}
-                      </p>
+                      <div>
+                        <p className="font-mono text-ink">
+                          {coord.latitude.toFixed(6)},{' '}
+                          {coord.longitude.toFixed(6)}
+                        </p>
+                        <p className="mt-1 text-xs text-ink-muted">
+                          {coord.source}
+                        </p>
+                      </div>
+                      <a
+                        href={mapsHref(coord.latitude, coord.longitude)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-signal underline-offset-2 hover:underline"
+                      >
+                        Open map
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -211,8 +282,7 @@ export function UrlLocationTool() {
                 Host IP location
               </h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Approximate server/edge location only — not another person&apos;s
-                phone GPS.
+                Approximate server/edge location. VPN/CDN → treat as untrusted.
               </p>
 
               {!result.hostGeo ? (
@@ -287,14 +357,50 @@ export function UrlLocationTool() {
                     </div>
                     <div>
                       <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                        Coordinates
+                        Timezone
                       </dt>
-                      <dd className="mt-1 font-mono text-ink">
-                        {result.hostGeo.coordinates
-                          ? `${result.hostGeo.coordinates.latitude.toFixed(4)}, ${result.hostGeo.coordinates.longitude.toFixed(4)}`
-                          : '—'}
+                      <dd className="mt-1 text-ink">
+                        {result.hostGeo.timezone || '—'}
                       </dd>
                     </div>
+                    <div className="sm:col-span-2">
+                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                        Coordinates
+                      </dt>
+                      <dd className="mt-1 flex flex-wrap items-center gap-3 font-mono text-ink">
+                        {result.hostGeo.coordinates ? (
+                          <>
+                            <span>
+                              {result.hostGeo.coordinates.latitude.toFixed(4)},{' '}
+                              {result.hostGeo.coordinates.longitude.toFixed(4)}
+                            </span>
+                            <a
+                              href={mapsHref(
+                                result.hostGeo.coordinates.latitude,
+                                result.hostGeo.coordinates.longitude,
+                              )}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-sans text-sm text-signal underline-offset-2 hover:underline"
+                            >
+                              Open map
+                            </a>
+                          </>
+                        ) : (
+                          '—'
+                        )}
+                      </dd>
+                    </div>
+                    {result.hostGeo.resolvedAddresses.length > 1 ? (
+                      <div className="sm:col-span-2">
+                        <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+                          All resolved addresses
+                        </dt>
+                        <dd className="mt-1 break-all font-mono text-xs text-ink-soft">
+                          {result.hostGeo.resolvedAddresses.join(', ')}
+                        </dd>
+                      </div>
+                    ) : null}
                   </dl>
                 </>
               )}
