@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/admin/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -15,7 +16,9 @@
 
 # next.js
 /.next/
+/admin/.next/
 /out/
+/admin/out/
 
 # production
 /build
@@ -32,10 +35,14 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+!admin/.env.example
 
 # vercel
 .vercel
+/admin/.vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+admin/next-env.d.ts

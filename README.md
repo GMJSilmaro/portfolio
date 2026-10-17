@@ -26,11 +26,23 @@ Tech stack icons remain in the Stack chapter with favourites filtering.
 - react-icons
 - GitHub Actions
 
+## Private admin (separate deploy)
+
+Owner-only login activity lives in [`admin/`](./admin/) as a **separate** Next.js app for Vercel (Auth.js + Postgres). The public site on GitHub Pages stays a static export — UI, chapters, and navigation are unchanged, and the admin URL is not linked from the public nav or sitemap.
+
+See [admin/README.md](./admin/README.md) for setup, env vars, Neon/Postgres, and Vercel cron.
+
 ## Local development
 
 ```bash
 pnpm install
 pnpm dev
+```
+
+Admin app (separate):
+
+```bash
+cd admin && pnpm install && pnpm dev
 ```
 
 ## Usage rights

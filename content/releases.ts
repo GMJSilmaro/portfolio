@@ -19,6 +19,21 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: '1.3.0',
+    date: '10.17.26',
+    title: 'Private login activity',
+    notes: [
+      {
+        type: 'feature',
+        text: 'Owner-only login activity now lives in a separate private admin app — successful sign-ins, approximate IP location, and optional device coordinates — without changing the public CV Studio.',
+      },
+      {
+        type: 'improvement',
+        text: 'The public portfolio stays on GitHub Pages as a static export; the private admin deploys separately and stays out of public navigation and search indexing.',
+      },
+    ],
+  },
+  {
     version: '1.2.0',
     date: '10.16.26',
     title: 'Editorial living dossier',
