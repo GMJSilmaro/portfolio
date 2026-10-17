@@ -1,6 +1,7 @@
 import type { UrlParseResult } from '@/lib/parse-url-location'
 import type { HostGeoResult } from '@/lib/resolve-host-geo-client'
 import type { BrowserSignals } from '@/lib/browser-signals'
+import { VPN_DETECTION_DISCLAIMER } from '@/lib/vpn-detection-notes'
 
 /** Plain-text summary for clipboard / evidence notes. */
 export function formatAnalysisSummary(
@@ -8,7 +9,7 @@ export function formatAnalysisSummary(
   hostGeo: HostGeoResult | null,
   analyzedAtIso: string,
   browser?: BrowserSignals,
-  mismatchNote?: string | null,
+  mismatchNotes?: string[],
 ): string {
   const manila = new Intl.DateTimeFormat('en-PH', {
     timeZone: 'Asia/Manila',
@@ -29,8 +30,10 @@ export function formatAnalysisSummary(
       `Browser timezone: ${browser.timezone || '—'}`,
     )
   }
-  if (mismatchNote) {
-    lines.push(`Language/IP note: ${mismatchNote}`)
+  if (mismatchNotes?.length) {
+    for (const note of mismatchNotes) {
+      lines.push(`Mismatch note: ${note}`)
+    }
   }
 
   if (url.coordinates.length) {
@@ -74,6 +77,8 @@ export function formatAnalysisSummary(
 
   lines.push(
     'Note: IP geo is approximate. VPN/CDN cannot yield another person\'s device GPS.',
+    'Platforms may also use VPN IP DBs, cookie ID correlation, third-party beacons, and email unsubscribe bait.',
+    VPN_DETECTION_DISCLAIMER,
   )
 
   return lines.join('\n')

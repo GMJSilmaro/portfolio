@@ -59,5 +59,33 @@ export function languageIpMismatchNote(
   if (!languageRegion || !ipCountryCode) return null
   const ip = ipCountryCode.toUpperCase()
   if (languageRegion === ip) return null
-  return `Browser language region (${languageRegion}) differs from host IP country (${ip}). Sites often treat Accept-Language vs IP mismatches as a VPN hint — this compares your browser to the pasted host only.`
+  return `Browser language region (${languageRegion}) differs from host IP country (${ip}). Example class of signal: en-CA language with an Albania IP. This compares your browser to the pasted host only.`
+}
+
+/**
+ * Compare this browser’s IANA timezone to the host IP timezone string.
+ * Coarse signal — many VPN exits advertise a plausible local TZ.
+ */
+export function timezoneIpMismatchNote(
+  browserTimezone: string | null,
+  ipTimezone: string | null | undefined,
+): string | null {
+  if (!browserTimezone || !ipTimezone) return null
+  const a = browserTimezone.trim().toLowerCase()
+  const b = ipTimezone.trim().toLowerCase()
+  if (!a || !b || a === b) return null
+  return `Browser timezone (${browserTimezone}) differs from host IP timezone (${ipTimezone}). Platforms may weigh TZ vs IP together with Accept-Language.`
+}
+
+/** Collect mismatch notes for UI / evidence copy. */
+export function collectMismatchNotes(input: {
+  languageRegion: string | null
+  browserTimezone: string | null
+  ipCountryCode: string | null | undefined
+  ipTimezone: string | null | undefined
+}): string[] {
+  return [
+    languageIpMismatchNote(input.languageRegion, input.ipCountryCode),
+    timezoneIpMismatchNote(input.browserTimezone, input.ipTimezone),
+  ].filter((note): note is string => Boolean(note))
 }

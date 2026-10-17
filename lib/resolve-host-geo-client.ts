@@ -33,7 +33,7 @@ export async function resolveHostGeoClient(
   hostname: string,
 ): Promise<HostGeoResult> {
   const notes: string[] = [
-    'IP location is approximate. CDNs, anycast, VPNs, cloud VMs, and hosting ranges are often listed in commercial VPN/proxy databases.',
+    'IP location is approximate. CDNs, anycast, VPNs, cloud VMs (including AWS EC2), and hosting ranges are often listed in commercial VPN/proxy databases — some services deny access for that alone.',
     'This is not an exact address and is not proof of identity.',
     'VPN/proxy detection is heuristic — it cannot reveal a true location behind a VPN.',
     'Lookups run in your browser via public DNS/geo APIs — nothing is stored by this site.',

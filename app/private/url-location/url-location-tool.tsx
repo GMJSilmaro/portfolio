@@ -9,9 +9,13 @@ import {
 import { signalLabel } from '@/lib/network-reputation'
 import { formatAnalysisSummary } from '@/lib/format-analysis-summary'
 import {
-  languageIpMismatchNote,
+  collectMismatchNotes,
   readBrowserSignals,
 } from '@/lib/browser-signals'
+import {
+  VPN_DETECTION_DISCLAIMER,
+  VPN_DETECTION_NOTES,
+} from '@/lib/vpn-detection-notes'
 import type { UrlParseResult } from '@/lib/parse-url-location'
 
 type Analysis = {
@@ -45,12 +49,14 @@ export function UrlLocationTool() {
   const [pending, startTransition] = useTransition()
   const [copied, setCopied] = useState(false)
   const browserSignals = useMemo(() => readBrowserSignals(), [])
-  const mismatchNote = result?.hostGeo
-    ? languageIpMismatchNote(
-        browserSignals.languageRegion,
-        result.hostGeo.countryCode,
-      )
-    : null
+  const mismatchNotes = result?.hostGeo
+    ? collectMismatchNotes({
+        languageRegion: browserSignals.languageRegion,
+        browserTimezone: browserSignals.timezone,
+        ipCountryCode: result.hostGeo.countryCode,
+        ipTimezone: result.hostGeo.timezone,
+      })
+    : []
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -91,7 +97,7 @@ export function UrlLocationTool() {
       result.hostGeo,
       result.analyzedAt,
       browserSignals,
-      mismatchNote,
+      mismatchNotes,
     )
     try {
       await navigator.clipboard.writeText(text)
@@ -115,9 +121,10 @@ export function UrlLocationTool() {
             URL location
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-base">
-            Paste a suspicious link for URL clues and host IP/VPN signals. Also
-            shows this browser&apos;s language/timezone — the same class of
-            Accept-Language vs IP mismatch sites use to suspect VPNs.
+            Paste a suspicious link for URL clues and host IP/VPN signals.
+            Compares this browser&apos;s language/timezone to the pasted host —
+            the same class of Accept-Language vs IP mismatch (e.g. en-CA with an
+            Albania IP) sites use to suspect VPNs.
           </p>
         </div>
 
@@ -139,11 +146,24 @@ export function UrlLocationTool() {
               </dd>
             </div>
           </dl>
-          <p className="mt-3 text-xs leading-relaxed text-ink-muted">
-            Platforms also use VPN/proxy IP databases (including cloud VMs),
-            cookie IDs across sessions, and email &quot;unsubscribe&quot; links
-            clicked off-VPN. We do not set tracking cookies or send probe
-            emails from this page.
+        </aside>
+
+        <aside className="mb-6 border border-[color:var(--rule)] bg-panel p-4 text-sm sm:p-5">
+          <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
+            How platforms detect VPNs (awareness)
+          </p>
+          <ul className="mt-3 space-y-3">
+            {VPN_DETECTION_NOTES.map((note) => (
+              <li key={note.id}>
+                <p className="font-medium text-ink">{note.title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-ink-soft sm:text-sm">
+                  {note.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-xs leading-relaxed text-ink-muted">
+            {VPN_DETECTION_DISCLAIMER}
           </p>
         </aside>
 
@@ -329,13 +349,17 @@ export function UrlLocationTool() {
                 <p className="mt-3 text-sm text-ink-soft">Skipped for this URL.</p>
               ) : (
                 <>
-                  {mismatchNote ? (
-                    <p
-                      className="mt-4 border border-stamp/40 bg-stamp/5 px-4 py-3 text-sm text-ink"
-                      role="status"
-                    >
-                      {mismatchNote}
-                    </p>
+                  {mismatchNotes.length > 0 ? (
+                    <ul className="mt-4 space-y-2" role="status">
+                      {mismatchNotes.map((note) => (
+                        <li
+                          key={note}
+                          className="border border-stamp/40 bg-stamp/5 px-4 py-3 text-sm text-ink"
+                        >
+                          {note}
+                        </li>
+                      ))}
+                    </ul>
                   ) : null}
 
                   {result.hostGeo.reputation ? (

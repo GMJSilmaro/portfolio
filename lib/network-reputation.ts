@@ -151,7 +151,9 @@ export function classifyNetworkReputation(input: {
   }
   if (apiFlags.hosting === true) {
     signals.add('hosting_or_datacenter')
-    reasons.push('ipwho.is flagged this IP as hosting.')
+    reasons.push(
+      'ipwho.is flagged this IP as hosting (cloud/VPS ranges are often in VPN/proxy databases).',
+    )
   }
 
   if (asn != null && CDN_ASNS.has(asn)) {
@@ -270,7 +272,7 @@ function buildSummary(
     geoTrust === 'untrusted'
       ? 'Treat IP geo as untrusted.'
       : geoTrust === 'limited'
-        ? 'Treat IP geo as limited (hosting region ≠ end user).'
+        ? 'Treat IP geo as limited (hosting/cloud region ≠ end user; AWS EC2 and similar may still be denied as VPN).'
         : 'IP geo may still be approximate.'
 
   return `${parts.join(' · ')}. ${trust} This cannot reveal a true location behind a VPN.`

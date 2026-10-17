@@ -47,8 +47,13 @@ export const releases: Release[] = [
         type: 'improvement',
         text: 'Shows this browser’s language/timezone and flags Accept-Language-style region vs host-IP country mismatches — the same class of VPN hint many sites use.',
       },
+      {
+        type: 'improvement',
+        text: 'Documents how platforms infer VPNs (IP databases including cloud VMs, cookie ID correlation, third-party beacons, email unsubscribe bait) without running those techniques on visitors.',
+      },
     ],
   },
+
   {
     version: '1.2.0',
     date: '10.16.26',
