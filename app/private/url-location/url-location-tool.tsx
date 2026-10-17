@@ -7,16 +7,11 @@ import {
   type HostGeoResult,
 } from '@/lib/resolve-host-geo-client'
 import { signalLabel } from '@/lib/network-reputation'
-import {
-  assessUrlSecurity,
-  type SecurityAssessment,
-} from '@/lib/security-assessment'
 import type { UrlParseResult } from '@/lib/parse-url-location'
 
 type Analysis = {
   url: UrlParseResult
   hostGeo: HostGeoResult | null
-  security: SecurityAssessment
 }
 
 function formatIpLocation(geo: HostGeoResult): string {
@@ -51,8 +46,7 @@ export function UrlLocationTool() {
           hostGeo = await resolveHostGeoClient(parsed.hostname)
         }
 
-        const security = assessUrlSecurity(parsed, hostGeo)
-        setResult({ url: parsed, hostGeo, security })
+        setResult({ url: parsed, hostGeo })
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Analysis failed.')
       }
@@ -61,8 +55,6 @@ export function UrlLocationTool() {
 
   return (
     <main className="relative min-h-screen bg-paper text-ink">
-      {/* Grain is a decorative overlay only — never on the content root
-          (`.bg-dossier-grain` sets opacity: 0.035 and would wash out text). */}
       <div
         className="pointer-events-none absolute inset-0 bg-dossier-grain"
         aria-hidden
@@ -74,10 +66,9 @@ export function UrlLocationTool() {
             URL location
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-base">
-            Paste a link for cybersecurity review. When a host looks like
-            VPN/proxy/CDN, IP city is marked unusable — we cannot recover a real
-            end-user location. The tool then leans on compensating signals
-            (URL clues, ASN/org, protocol/host risks). Nothing is logged here.
+            Paste a link to extract coordinates from the URL string and
+            approximate host IP location. VPN/CDN marks IP geo as untrusted. A
+            link cannot read another person&apos;s phone GPS.
           </p>
         </div>
 
@@ -133,107 +124,20 @@ export function UrlLocationTool() {
 
         {!pending && !error && !result ? (
           <p className="mt-6 border border-dashed border-[color:var(--rule-strong)] px-4 py-8 text-center text-sm text-ink-soft">
-            Empty — paste a URL above to see URL-embedded clues and approximate
-            host IP location.
+            Empty — paste a URL above to analyze it.
           </p>
         ) : null}
 
         {result ? (
           <div className="mt-8 space-y-8">
-            <p className="text-xs leading-relaxed text-ink-muted">
-              Cybersecurity analysis aid only. URL-embedded coordinates and IP
-              geolocation are approximate clues — not exact addresses, not
-              identity proof, and not authorization to access third-party
-              systems.
-            </p>
-
             <section>
               <h2 className="font-display text-xl font-medium text-ink">
-                Security assessment
+                URL clues
               </h2>
-              <p className="mt-1 text-sm text-ink-soft">
-                Risk is heuristic for personal review. VPN detection raises a
-                hard geo limitation instead of inventing a fake “true”
-                location.
-              </p>
-
-              <div className="mt-4 grid gap-3 border border-[color:var(--rule)] bg-panel p-4 sm:grid-cols-3 sm:p-5">
-                <div>
-                  <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                    Risk score
-                  </p>
-                  <p className="mt-1 font-display text-2xl font-medium text-ink">
-                    {result.security.riskScore}
-                    <span className="ml-2 text-sm font-sans font-normal uppercase tracking-[0.12em] text-ink-muted">
-                      {result.security.riskLabel}
-                    </span>
-                  </p>
-                </div>
-                <div className="sm:col-span-2">
-                  <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                    IP geo usable for attribution?
-                  </p>
-                  <p className="mt-1 text-sm text-ink">
-                    {result.security.geoUsable
-                      ? 'Possibly — still approximate, never identity proof.'
-                      : 'No — VPN/proxy/CDN/hosting limitation applies. Use compensating checks.'}
-                  </p>
-                </div>
-              </div>
-
-              {result.security.findings.length > 0 ? (
-                <ul className="mt-4 divide-y divide-[color:var(--rule)] border border-[color:var(--rule)] bg-panel">
-                  {result.security.findings.map((finding) => (
-                    <li key={finding.id} className="px-4 py-3">
-                      <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                        {finding.severity}
-                      </p>
-                      <p className="mt-1 text-sm font-medium text-ink">
-                        {finding.title}
-                      </p>
-                      <p className="mt-1 text-sm text-ink-soft">{finding.detail}</p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-4 text-sm text-ink-soft">
-                  No elevated findings from built-in heuristics.
-                </p>
-              )}
-
-              <div className="mt-4 border border-[color:var(--rule)] bg-panel p-4 sm:p-5">
-                <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                  Compensating checks when geo is limited
-                </p>
-                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm text-ink-soft">
-                  {result.security.compensatingChecks.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="font-display text-xl font-medium text-ink">
-                URL-embedded location clues
-              </h2>
-              <p className="mt-1 text-sm text-ink-soft">
-                Parsed only from the string you pasted — no request to the
-                target site for this section.
-              </p>
-
-              {result.url.warnings.length > 0 ? (
-                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-ink-muted">
-                  {result.url.warnings.map((warning) => (
-                    <li key={warning}>{warning}</li>
-                  ))}
-                </ul>
-              ) : null}
-
-              <dl className="mt-4 grid gap-3 border border-[color:var(--rule)] bg-panel p-5 text-sm sm:grid-cols-2">
+              <dl className="mt-4 grid gap-3 border border-[color:var(--rule)] bg-panel p-4 text-sm sm:grid-cols-2 sm:p-5">
                 <div className="sm:col-span-2">
                   <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                    Normalized URL
+                    URL
                   </dt>
                   <dd className="mt-1 break-all font-mono text-xs text-ink">
                     {result.url.href}
@@ -261,9 +165,7 @@ export function UrlLocationTool() {
                 Coordinates in URL
               </h3>
               {result.url.coordinates.length === 0 ? (
-                <p className="mt-2 text-sm text-ink-soft">
-                  No coordinate pairs detected in the URL.
-                </p>
+                <p className="mt-2 text-sm text-ink-soft">None found.</p>
               ) : (
                 <ul className="mt-3 divide-y divide-[color:var(--rule)] border border-[color:var(--rule)] bg-panel">
                   {result.url.coordinates.map((coord) => (
@@ -275,54 +177,46 @@ export function UrlLocationTool() {
                         {coord.latitude.toFixed(6)}, {coord.longitude.toFixed(6)}
                       </p>
                       <p className="mt-1 text-xs text-ink-muted">
-                        Source: {coord.source}
-                        {coord.note ? ` · ${coord.note}` : ''}
+                        {coord.source}
                       </p>
                     </li>
                   ))}
                 </ul>
               )}
 
-              <h3 className="mt-5 font-display text-lg font-medium text-ink">
-                Place / query hints
-              </h3>
-              {result.url.placeHints.length === 0 ? (
-                <p className="mt-2 text-sm text-ink-soft">
-                  No textual place hints detected.
-                </p>
-              ) : (
-                <ul className="mt-3 divide-y divide-[color:var(--rule)] border border-[color:var(--rule)] bg-panel">
-                  {result.url.placeHints.map((hint) => (
-                    <li
-                      key={`${hint.source}-${hint.value}`}
-                      className="px-4 py-3 text-sm"
-                    >
-                      <p className="text-ink">{hint.value}</p>
-                      <p className="mt-1 text-xs text-ink-muted">
-                        Source: {hint.source}
-                        {hint.note ? ` · ${hint.note}` : ''}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              {result.url.placeHints.length > 0 ? (
+                <>
+                  <h3 className="mt-5 font-display text-lg font-medium text-ink">
+                    Place hints
+                  </h3>
+                  <ul className="mt-3 divide-y divide-[color:var(--rule)] border border-[color:var(--rule)] bg-panel">
+                    {result.url.placeHints.map((hint) => (
+                      <li
+                        key={`${hint.source}-${hint.value}`}
+                        className="px-4 py-3 text-sm text-ink"
+                      >
+                        {hint.value}
+                        <span className="mt-1 block text-xs text-ink-muted">
+                          {hint.source}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
             </section>
 
             <section>
               <h2 className="font-display text-xl font-medium text-ink">
-                Approximate host IP location
+                Host IP location
               </h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Distinct from URL-embedded coordinates. DNS via Cloudflare
-                DNS-over-HTTPS, then approximate geo via ipwho.is — both from
-                your browser.
+                Approximate server/edge location only — not another person&apos;s
+                phone GPS.
               </p>
 
               {!result.hostGeo ? (
-                <p className="mt-3 text-sm text-ink-soft">
-                  Host geo skipped for this URL type (e.g. geo: URI or
-                  localhost).
-                </p>
+                <p className="mt-3 text-sm text-ink-soft">Skipped for this URL.</p>
               ) : (
                 <>
                   {result.hostGeo.reputation ? (
@@ -335,11 +229,7 @@ export function UrlLocationTool() {
                             : 'border-[color:var(--rule)] bg-panel'
                       }`}
                     >
-                      <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                        Network reputation · {result.hostGeo.reputation.confidence}{' '}
-                        confidence
-                      </p>
-                      <p className="mt-2 text-sm font-medium text-ink">
+                      <p className="text-sm font-medium text-ink">
                         {result.hostGeo.reputation.summary}
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2">
@@ -352,11 +242,6 @@ export function UrlLocationTool() {
                           </span>
                         ))}
                       </div>
-                      <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-ink-muted">
-                        {result.hostGeo.reputation.reasons.map((reason) => (
-                          <li key={reason}>{reason}</li>
-                        ))}
-                      </ul>
                     </div>
                   ) : null}
 
@@ -381,10 +266,7 @@ export function UrlLocationTool() {
                       <dd className="mt-1 text-ink">
                         {formatIpLocation(result.hostGeo)}
                         <span className="mt-1 block text-xs text-ink-muted">
-                          Source: {result.hostGeo.source}
-                          {result.hostGeo.locationUnavailable
-                            ? ' · unavailable'
-                            : ''}
+                          {result.hostGeo.source}
                         </span>
                       </dd>
                     </div>
@@ -401,50 +283,16 @@ export function UrlLocationTool() {
                             {result.hostGeo.org}
                           </span>
                         ) : null}
-                        {result.hostGeo.isp &&
-                        result.hostGeo.isp !== result.hostGeo.org ? (
-                          <span className="mt-1 block text-xs text-ink-muted">
-                            ISP: {result.hostGeo.isp}
-                          </span>
-                        ) : null}
                       </dd>
                     </div>
                     <div>
                       <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                        Timezone
-                      </dt>
-                      <dd className="mt-1 text-ink">
-                        {result.hostGeo.timezone || '—'}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                        Approx. coordinates
+                        Coordinates
                       </dt>
                       <dd className="mt-1 font-mono text-ink">
                         {result.hostGeo.coordinates
                           ? `${result.hostGeo.coordinates.latitude.toFixed(4)}, ${result.hostGeo.coordinates.longitude.toFixed(4)}`
                           : '—'}
-                      </dd>
-                    </div>
-                    {result.hostGeo.resolvedAddresses.length > 1 ? (
-                      <div className="sm:col-span-2">
-                        <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                          All resolved addresses
-                        </dt>
-                        <dd className="mt-1 font-mono text-xs text-ink-soft">
-                          {result.hostGeo.resolvedAddresses.join(', ')}
-                        </dd>
-                      </div>
-                    ) : null}
-                    <div className="sm:col-span-2">
-                      <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-ink-muted">
-                        Notes
-                      </dt>
-                      <dd className="mt-1 space-y-1 text-xs text-ink-muted">
-                        {result.hostGeo.notes.map((note) => (
-                          <p key={note}>{note}</p>
-                        ))}
                       </dd>
                     </div>
                   </dl>

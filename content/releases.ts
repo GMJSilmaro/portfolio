@@ -37,11 +37,7 @@ export const releases: Release[] = [
       },
       {
         type: 'improvement',
-        text: 'Host analysis now shows network reputation signals (VPN/proxy, CDN/anycast, hosting) from ASN/org heuristics plus ipwho.is flags when available — still cannot reveal a true location behind a VPN.',
-      },
-      {
-        type: 'feature',
-        text: 'Security assessment adds a risk score, explicit VPN geo limitation, URL-vs-IP mismatch checks, and compensating investigation steps when true location cannot be recovered.',
+        text: 'Host analysis shows VPN/proxy/CDN reputation for the resolved IP and marks geo untrusted when appropriate — a pasted link still cannot read another person’s device GPS.',
       },
     ],
   },
