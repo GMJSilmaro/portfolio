@@ -1,6 +1,13 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
+import {
+  AnimatePresence,
+  motion,
+  useAnimationControls,
+  useReducedMotion,
+} from 'framer-motion'
+import { chapterVariants, dossierEase } from '@/lib/motion'
 import { IdentityRail } from './IdentityRail'
 import { MODE_META, type StudioMode, useStudio } from './StudioContext'
 import { CareerView } from './views/CareerView'
@@ -12,21 +19,45 @@ const CHAPTERS = Object.keys(MODE_META) as StudioMode[]
 
 function Stage() {
   const { mode } = useStudio()
+  const reduceMotion = useReducedMotion()
 
+  let view: React.ReactNode
   switch (mode) {
     case 'profile':
-      return <ProfileView />
+      view = <ProfileView />
+      break
     case 'career':
-      return <CareerView />
+      view = <CareerView />
+      break
     case 'work':
-      return <WorkView />
+      view = <WorkView />
+      break
     case 'stack':
-      return <StackView />
+      view = <StackView />
+      break
     default: {
       const _exhaustive: never = mode
-      return _exhaustive
+      view = _exhaustive
     }
   }
+
+  if (reduceMotion) {
+    return <div key={mode}>{view}</div>
+  }
+
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={mode}
+        variants={chapterVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+      >
+        {view}
+      </motion.div>
+    </AnimatePresence>
+  )
 }
 
 function StudioFooter() {
@@ -119,6 +150,19 @@ function ChapterNav() {
 }
 
 export function StudioShell() {
+  const { enterPulse } = useStudio()
+  const reduceMotion = useReducedMotion()
+  const enterControls = useAnimationControls()
+
+  useEffect(() => {
+    if (reduceMotion || enterPulse === 0) return
+    void enterControls.start({
+      opacity: [0.62, 1],
+      y: [10, 0],
+      transition: { duration: 0.55, ease: dossierEase },
+    })
+  }, [enterPulse, reduceMotion, enterControls])
+
   return (
     <section id="studio" className="bg-white">
       <ChapterNav />
@@ -128,9 +172,14 @@ export function StudioShell() {
           <IdentityRail />
         </div>
 
-        <div id="studio-stage" className="min-w-0">
+        <motion.div
+          id="studio-stage"
+          className="min-w-0"
+          initial={false}
+          animate={enterControls}
+        >
           <Stage />
-        </div>
+        </motion.div>
       </div>
 
       <StudioFooter />

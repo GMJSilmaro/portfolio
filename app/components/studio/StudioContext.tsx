@@ -6,6 +6,8 @@ export type StudioMode = 'profile' | 'career' | 'work' | 'stack'
 
 interface StudioContextValue {
   entered: boolean
+  /** Increments on each Enter CV — drives studio entrance motion */
+  enterPulse: number
   mode: StudioMode
   enter: () => void
   setMode: (mode: StudioMode) => void
@@ -25,10 +27,12 @@ export function useStudio() {
 
 export function StudioProvider({ children }: { children: React.ReactNode }) {
   const [entered, setEntered] = useState(false)
+  const [enterPulse, setEnterPulse] = useState(0)
   const [mode, setModeState] = useState<StudioMode>('profile')
 
   const enter = useCallback(() => {
     setEntered(true)
+    setEnterPulse((n) => n + 1)
     window.requestAnimationFrame(() => {
       document.getElementById('studio')?.scrollIntoView({
         behavior: prefersReducedMotion() ? 'auto' : 'smooth',
@@ -51,8 +55,8 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const value = useMemo(
-    () => ({ entered, mode, enter, setMode }),
-    [entered, mode, enter, setMode]
+    () => ({ entered, enterPulse, mode, enter, setMode }),
+    [entered, enterPulse, mode, enter, setMode]
   )
 
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState, useTransition } from 'react'
+import Link from 'next/link'
 import { parseUrlLocationClues } from '@/lib/parse-url-location'
 import {
   resolveHostGeoClient,
@@ -510,9 +511,9 @@ export function UrlLocationTool() {
         ) : null}
 
         <p className="mt-10 text-center text-xs text-ink-muted">
-          <a href="/" className="underline-offset-2 hover:underline">
+          <Link href="/" className="underline-offset-2 hover:underline">
             ← Back to CV Studio
-          </a>
+          </Link>
         </p>
       </div>
     </main>
