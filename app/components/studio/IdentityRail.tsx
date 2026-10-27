@@ -1,8 +1,10 @@
 'use client'
 
 import React from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Download, Github, Mail } from 'lucide-react'
 import { useOverflowYWhenNeeded } from '@/lib/use-overflow-y'
+import { dossierEase } from '@/lib/motion'
 import { MODE_META, type StudioMode, useStudio } from './StudioContext'
 
 const CHAPTERS = Object.keys(MODE_META) as StudioMode[]
@@ -10,6 +12,7 @@ const CHAPTERS = Object.keys(MODE_META) as StudioMode[]
 export function IdentityRail() {
   const { mode, setMode } = useStudio()
   const { ref, overflowY } = useOverflowYWhenNeeded<HTMLElement>()
+  const reduceMotion = useReducedMotion()
 
   return (
     <aside
@@ -37,14 +40,28 @@ export function IdentityRail() {
             const item = MODE_META[key]
             const active = mode === key
             return (
-              <li key={key}>
+              <li key={key} className="relative">
+                {active && !reduceMotion ? (
+                  <motion.span
+                    layoutId="identity-chapter-active"
+                    className="absolute inset-0 bg-white shadow-[inset_3px_0_0_0_var(--signal)]"
+                    transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+                    aria-hidden
+                  />
+                ) : null}
+                {active && reduceMotion ? (
+                  <span
+                    className="absolute inset-0 bg-white shadow-[inset_3px_0_0_0_var(--signal)]"
+                    aria-hidden
+                  />
+                ) : null}
                 <button
                   type="button"
                   onClick={() => setMode(key)}
                   aria-current={active ? 'page' : undefined}
-                  className={`flex min-h-11 w-full items-center gap-3 px-2.5 text-left transition-colors duration-200 ${
+                  className={`relative z-10 flex min-h-11 w-full items-center gap-3 px-2.5 text-left transition-colors duration-200 ${
                     active
-                      ? 'bg-white text-ink shadow-[inset_3px_0_0_0_var(--signal)]'
+                      ? 'text-ink'
                       : 'text-ink-muted hover:bg-white/80 hover:text-ink'
                   }`}
                 >
@@ -61,7 +78,12 @@ export function IdentityRail() {
         </ul>
       </nav>
 
-      <div className="mt-8 space-y-1 border-t border-[color:var(--rule)] pt-4">
+      <motion.div
+        className="mt-8 space-y-1 border-t border-[color:var(--rule)] pt-4"
+        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.12, ease: dossierEase }}
+      >
         <a
           href="mailto:gmjsilmaro03@gmail.com"
           className="flex min-h-11 items-center gap-2 text-sm text-ink-soft transition-colors hover:text-signal"
@@ -87,7 +109,7 @@ export function IdentityRail() {
           <Download className="h-4 w-4 shrink-0" aria-hidden />
           Download resume
         </a>
-      </div>
+      </motion.div>
     </aside>
   )
 }

@@ -1,59 +1,66 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { dossierEase } from '@/lib/motion'
+import { cn } from '@/lib/utils'
 
 interface RevealProps {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
+  children: React.ReactNode
+  delay?: number
+  className?: string
 }
 
 export const Reveal: React.FC<RevealProps> = ({ children, delay = 0, className = '' }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
-    const element = ref.current;
+    const element = ref.current
 
-    if (
-      !element ||
-      typeof IntersectionObserver === 'undefined' ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      setIsVisible(true);
-      return;
+    if (!element || typeof IntersectionObserver === 'undefined' || reduceMotion) {
+      setIsVisible(true)
+      return
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
+          setIsVisible(true)
+          observer.unobserve(entry.target)
         }
       },
       { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
-    );
+    )
 
-    observer.observe(element);
+    observer.observe(element)
 
-    // Safety net: never leave content invisible if the observer never fires.
-    const fallback = window.setTimeout(() => setIsVisible(true), 2000);
+    const fallback = window.setTimeout(() => setIsVisible(true), 2000)
 
     return () => {
-      observer.disconnect();
-      window.clearTimeout(fallback);
-    };
-  }, []);
+      observer.disconnect()
+      window.clearTimeout(fallback)
+    }
+  }, [reduceMotion])
+
+  if (reduceMotion) {
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    )
+  }
 
   return (
-    <div
+    <motion.div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-      } ${className}`}
-      style={{ transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
+      className={cn(className)}
+      initial={{ opacity: 0, y: 18 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+      transition={{ duration: 0.55, delay: delay / 1000, ease: dossierEase }}
     >
       {children}
-    </div>
-  );
-};
+    </motion.div>
+  )
+}
