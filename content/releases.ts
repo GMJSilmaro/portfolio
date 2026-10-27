@@ -29,7 +29,7 @@ export const releases: Release[] = [
       },
       {
         type: 'improvement',
-        text: 'The “Open for consulting” light pulses, and a brighter mesh layer boosts depth when your device supports it; reduced-motion still keeps things calm.',
+        text: 'The “Open for consulting” light pulses, and a brighter mesh layer boosts depth when your device supports it. Motion still runs (slower) even if your phone has Reduce Motion on.',
       },
     ],
   },
