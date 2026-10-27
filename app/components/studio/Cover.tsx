@@ -9,6 +9,7 @@ import {
   coverImageVariants,
   coverItemVariants,
 } from '@/lib/motion'
+import { CoverMeshBackground } from './CoverMeshBackground'
 import { useStudio } from './StudioContext'
 
 export function Cover() {
@@ -22,11 +23,12 @@ export function Cover() {
       className="grid bg-ink text-paper lg:min-h-[34rem] lg:grid-cols-[minmax(0,1.22fr)_minmax(0,1fr)]"
     >
       <div className="relative flex flex-col justify-between gap-8 overflow-hidden px-8 py-8 sm:py-10 lg:px-12 lg:py-12">
-        {/* Subtle signal atmosphere — Cover ink panel only */}
+        {/* CSS wash always present; Paper Shaders mesh animates on top when motion is allowed */}
         <div
           className="pointer-events-none absolute inset-0 bg-cover-atmosphere"
           aria-hidden
         />
+        <CoverMeshBackground />
         <div className="pointer-events-none absolute inset-0 opacity-[0.06] bg-dossier-grain" aria-hidden />
 
         <motion.div

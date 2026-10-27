@@ -19,6 +19,22 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: '1.3.2',
+    date: '10.27.26',
+    title: 'Animated cover atmosphere',
+    notes: [
+      {
+        type: 'improvement',
+        text: 'The cover ink panel now carries a soft drifting mesh animation tinted in dossier greens — living atmosphere behind GMJ., without changing the layout.',
+      },
+      {
+        type: 'improvement',
+        text: 'When you prefer reduced motion, the animated mesh stays off and the calm static wash remains.',
+      },
+    ],
+  },
+
+  {
     version: '1.3.1',
     date: '10.23.26',
     title: 'Dossier motion polish',
