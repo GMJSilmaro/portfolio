@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import { MeshGradient } from '@paper-design/shaders-react'
-import { useReducedMotion } from 'framer-motion'
 
 /** High-contrast dossier greens — readable motion on dark ink */
 const COVER_MESH_COLORS = [
@@ -11,15 +10,14 @@ const COVER_MESH_COLORS = [
   '#22c59a',
   '#17856a',
   '#0a1f1a',
-  '#3d9b7a',
+  '#5eeab0',
 ]
 
 /**
  * Optional WebGL boost on top of the CSS aurora.
- * Skips when reduced-motion is on, or WebGL is unavailable.
+ * Skips only when WebGL is unavailable — CSS aurora remains the visible baseline.
  */
 export function CoverMeshBackground() {
-  const reduceMotion = useReducedMotion()
   const [canWebGl, setCanWebGl] = useState(false)
 
   useEffect(() => {
@@ -35,17 +33,17 @@ export function CoverMeshBackground() {
     }
   }, [])
 
-  if (reduceMotion || !canWebGl) return null
+  if (!canWebGl) return null
 
   return (
-    <div className="pointer-events-none absolute inset-0 opacity-80 mix-blend-screen" aria-hidden>
+    <div className="pointer-events-none absolute inset-0 opacity-75 mix-blend-screen" aria-hidden>
       <MeshGradient
         colors={COVER_MESH_COLORS}
-        speed={0.85}
-        distortion={0.85}
-        swirl={0.45}
-        grainMixer={0.2}
-        grainOverlay={0.1}
+        speed={1.1}
+        distortion={0.9}
+        swirl={0.5}
+        grainMixer={0.25}
+        grainOverlay={0.12}
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
       />
     </div>
