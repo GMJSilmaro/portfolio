@@ -9,6 +9,7 @@ import {
   coverImageVariants,
   coverItemVariants,
 } from '@/lib/motion'
+import { CoverAtmosphere } from './CoverAtmosphere'
 import { CoverMeshBackground } from './CoverMeshBackground'
 import { useStudio } from './StudioContext'
 
@@ -20,17 +21,21 @@ export function Cover() {
     <section
       id="cover"
       aria-labelledby="cover-heading"
-      className="grid bg-ink text-paper lg:min-h-[34rem] lg:grid-cols-[minmax(0,1.22fr)_minmax(0,1fr)]"
+      className="relative grid overflow-hidden bg-ink text-paper lg:min-h-[34rem] lg:grid-cols-[minmax(0,1.22fr)_minmax(0,1fr)]"
     >
-      <div className="relative flex flex-col justify-between gap-8 overflow-hidden px-8 py-8 sm:py-10 lg:px-12 lg:py-12">
-        {/* CSS wash always present; Paper Shaders mesh animates on top when motion is allowed */}
+      {/* Full-bleed motion layer — desktop + mobile */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <CoverAtmosphere />
+        <CoverMeshBackground />
+        <div className="absolute inset-0 opacity-[0.05] bg-dossier-grain" />
+        {/* Keep portrait readable on large screens */}
         <div
-          className="pointer-events-none absolute inset-0 bg-cover-atmosphere"
+          className="absolute inset-y-0 right-0 hidden w-[42%] bg-gradient-to-l from-ink/55 via-ink/20 to-transparent lg:block"
           aria-hidden
         />
-        <CoverMeshBackground />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.06] bg-dossier-grain" aria-hidden />
+      </div>
 
+      <div className="relative z-10 flex flex-col justify-between gap-8 px-8 py-8 sm:py-10 lg:px-12 lg:py-12">
         <motion.div
           className="relative flex flex-col justify-between gap-8"
           variants={coverContainerVariants}
@@ -41,8 +46,8 @@ export function Cover() {
             variants={coverItemVariants}
             className="flex flex-wrap items-center gap-x-4 gap-y-2"
           >
-            <span className="inline-flex min-h-11 items-center gap-2 border border-white/20 bg-white/5 px-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_12px_rgba(23,133,106,0.8)]" />
+            <span className="inline-flex min-h-11 items-center gap-2 border border-white/20 bg-white/5 px-3 backdrop-blur-[2px]">
+              <span className="cover-status-dot" aria-hidden />
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-paper/85">
                 Open for consulting
               </span>
@@ -97,7 +102,7 @@ export function Cover() {
       </div>
 
       <motion.div
-        className="relative min-h-[18rem] sm:min-h-[22rem] lg:min-h-0"
+        className="relative z-10 min-h-[18rem] sm:min-h-[22rem] lg:min-h-0"
         variants={coverImageVariants}
         initial={reduceMotion ? false : 'hidden'}
         animate="show"
@@ -112,6 +117,11 @@ export function Cover() {
             className="object-cover object-[42%_18%] sm:object-[40%_16%] lg:object-[38%_14%]"
           />
         </div>
+        {/* Soft aurora bleed over portrait edge on mobile stack */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-ink/70 to-transparent lg:hidden"
+          aria-hidden
+        />
       </motion.div>
     </section>
   )

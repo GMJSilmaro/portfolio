@@ -19,6 +19,22 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: '1.3.3',
+    date: '10.27.26',
+    title: 'Visible cover motion on every screen',
+    notes: [
+      {
+        type: 'improvement',
+        text: 'The cover now runs a clearly visible green aurora across the full hero — desktop and phone — so the atmosphere is obvious the moment you land.',
+      },
+      {
+        type: 'improvement',
+        text: 'The “Open for consulting” light pulses, and a brighter mesh layer boosts depth when your device supports it; reduced-motion still keeps things calm.',
+      },
+    ],
+  },
+
+  {
     version: '1.3.2',
     date: '10.27.26',
     title: 'Animated cover & studio polish',
