@@ -95,6 +95,13 @@ body {
     mix-blend-mode: multiply;
   }
 
+  /* Soft signal wash on Cover ink panel only — keeps dossier tokens */
+  .bg-cover-atmosphere {
+    background:
+      radial-gradient(ellipse 80% 55% at 12% 18%, rgba(23, 133, 106, 0.22), transparent 58%),
+      radial-gradient(ellipse 55% 45% at 88% 92%, rgba(13, 110, 86, 0.12), transparent 55%);
+  }
+
   .dossier-kicker {
     @apply mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-signal;
   }

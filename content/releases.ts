@@ -19,6 +19,26 @@ export interface Release {
  */
 export const releases: Release[] = [
   {
+    version: '1.3.1',
+    date: '10.23.26',
+    title: 'Dossier motion polish',
+    notes: [
+      {
+        type: 'improvement',
+        text: 'The cover settles in with a calmer staggered entrance, and a soft green atmosphere sits behind the ink panel — same GMJ. dossier, just a bit more intentional.',
+      },
+      {
+        type: 'improvement',
+        text: 'Enter CV scrolls into the studio with a light lift-in, and switching Profile, Career, Work, or Stack crossfades without changing the chapter layout.',
+      },
+      {
+        type: 'improvement',
+        text: 'Motion respects reduced-motion preferences so the experience stays still when you ask the system for less animation.',
+      },
+    ],
+  },
+
+  {
     version: '1.3.0',
     date: '10.17.26',
     title: 'Private URL location tool',
