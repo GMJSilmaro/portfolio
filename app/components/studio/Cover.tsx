@@ -49,18 +49,20 @@ export function Cover() {
             <span className="inline-flex min-h-11 items-center gap-2 border border-white/20 bg-white/5 px-3 backdrop-blur-[2px]">
               <MotionConfig reducedMotion="never">
                 <motion.span
-                  className="inline-block h-2 w-2 shrink-0 rounded-full bg-[#22c59a]"
+                  className="relative inline-flex h-2.5 w-2.5 shrink-0 items-center justify-center"
                   aria-hidden
-                  animate={{
-                    scale: [1, 1.35, 1],
-                    boxShadow: [
-                      '0 0 0 0 rgba(34,197,154,0.9)',
-                      '0 0 0 12px rgba(34,197,154,0)',
-                      '0 0 0 0 rgba(34,197,154,0)',
-                    ],
-                  }}
-                  transition={{ duration: 1.3, repeat: Infinity, ease: 'easeOut' }}
-                />
+                >
+                  <motion.span
+                    className="absolute inline-block h-2.5 w-2.5 rounded-full bg-[#22c59a]/40"
+                    animate={{ scale: [1, 2.4], opacity: [0.7, 0] }}
+                    transition={{ duration: 1.1, repeat: Infinity, ease: 'easeOut' }}
+                  />
+                  <motion.span
+                    className="relative inline-block h-2.5 w-2.5 rounded-full bg-[#22c59a]"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+                </motion.span>
               </MotionConfig>
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-paper/85">
                 Open for consulting
