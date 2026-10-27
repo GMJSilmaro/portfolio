@@ -21,7 +21,7 @@ export const releases: Release[] = [
   {
     version: '1.3.2',
     date: '10.27.26',
-    title: 'Animated cover atmosphere',
+    title: 'Animated cover & studio polish',
     notes: [
       {
         type: 'improvement',
@@ -30,6 +30,14 @@ export const releases: Release[] = [
       {
         type: 'improvement',
         text: 'When you prefer reduced motion, the animated mesh stays off and the calm static wash remains.',
+      },
+      {
+        type: 'improvement',
+        text: 'Career, Work, and Stack chapters settle in with staggered lists; project cards and stack tiles lift gently on hover.',
+      },
+      {
+        type: 'improvement',
+        text: 'Chapter navigation on desktop and mobile slides the active marker smoothly, and project dialogs open and close with a calmer fade.',
       },
     ],
   },
