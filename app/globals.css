@@ -95,11 +95,76 @@ body {
     mix-blend-mode: multiply;
   }
 
-  /* Soft signal wash on Cover ink panel only — keeps dossier tokens */
+  /* Base wash — kept under the animated aurora */
   .bg-cover-atmosphere {
     background:
-      radial-gradient(ellipse 80% 55% at 12% 18%, rgba(23, 133, 106, 0.22), transparent 58%),
-      radial-gradient(ellipse 55% 45% at 88% 92%, rgba(13, 110, 86, 0.12), transparent 55%);
+      radial-gradient(ellipse 90% 70% at 15% 20%, rgba(23, 133, 106, 0.38), transparent 58%),
+      radial-gradient(ellipse 70% 55% at 85% 85%, rgba(45, 212, 168, 0.22), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(13, 110, 86, 0.18), transparent 60%);
+  }
+
+  /* Visible CSS aurora — primary motion on mobile + desktop */
+  .cover-aurora {
+    position: absolute;
+    inset: -20%;
+  }
+
+  .cover-aurora__blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(48px);
+    will-change: transform, opacity;
+    mix-blend-mode: screen;
+  }
+
+  .cover-aurora__blob--a {
+    top: 4%;
+    left: -10%;
+    width: min(32rem, 88vw);
+    height: min(32rem, 88vw);
+    background: rgba(34, 197, 154, 0.72);
+    animation: coverBlobA 3.2s ease-in-out infinite alternate;
+  }
+
+  .cover-aurora__blob--b {
+    right: -10%;
+    bottom: -4%;
+    width: min(28rem, 80vw);
+    height: min(28rem, 80vw);
+    background: rgba(13, 110, 86, 0.78);
+    animation: coverBlobB 4s ease-in-out infinite alternate;
+  }
+
+  .cover-aurora__blob--c {
+    top: 36%;
+    left: 22%;
+    width: min(22rem, 62vw);
+    height: min(22rem, 62vw);
+    background: rgba(94, 234, 180, 0.58);
+    animation: coverBlobC 2.6s ease-in-out infinite alternate;
+  }
+
+  .cover-aurora__sheen {
+    position: absolute;
+    inset: -30% -40%;
+    background: linear-gradient(
+      115deg,
+      transparent 32%,
+      rgba(125, 240, 200, 0.28) 48%,
+      transparent 64%
+    );
+    animation: coverSheen 2.8s ease-in-out infinite;
+  }
+
+  .cover-status-dot {
+    display: inline-block;
+    height: 0.5rem;
+    width: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: #22c59a;
+    box-shadow: 0 0 0 0 rgba(34, 197, 154, 0.85);
+    animation: coverStatusPulse 1.2s ease-out infinite;
   }
 
   .dossier-kicker {
@@ -130,9 +195,92 @@ body {
   }
 }
 
+@keyframes coverBlobA {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.92);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(28%, 30%, 0) scale(1.4);
+    opacity: 1;
+  }
+}
+
+@keyframes coverBlobB {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(-32%, -24%, 0) scale(1.45);
+    opacity: 1;
+  }
+}
+
+@keyframes coverBlobC {
+  0% {
+    transform: translate3d(-8%, 12%, 0) scale(0.88);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(22%, -26%, 0) scale(1.38);
+    opacity: 1;
+  }
+}
+
+@keyframes coverSheen {
+  0% {
+    transform: translateX(-28%) rotate(8deg);
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(32%) rotate(8deg);
+    opacity: 0.2;
+  }
+}
+
+@keyframes coverStatusPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 154, 0.9);
+    transform: scale(1);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(34, 197, 154, 0);
+    transform: scale(1.25);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 154, 0);
+    transform: scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up {
     animation: none;
+  }
+
+  /* Keep cover atmosphere moving — slower — so the hero still feels alive */
+  .cover-aurora__blob--a {
+    animation-duration: 9s;
+  }
+
+  .cover-aurora__blob--b {
+    animation-duration: 11s;
+  }
+
+  .cover-aurora__blob--c {
+    animation-duration: 8s;
+  }
+
+  .cover-aurora__sheen {
+    animation-duration: 10s;
+  }
+
+  .cover-status-dot {
+    animation-duration: 2.4s;
   }
 }
 

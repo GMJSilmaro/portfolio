@@ -1,37 +1,50 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MeshGradient } from '@paper-design/shaders-react'
-import { useReducedMotion } from 'framer-motion'
 
-/** Dossier ink / signal palette — calm AI mesh, not purple marketing glow */
+/** High-contrast dossier greens — readable motion on dark ink */
 const COVER_MESH_COLORS = [
-  '#0a1210',
-  '#14181f',
+  '#061410',
   '#0d6e56',
+  '#22c59a',
   '#17856a',
-  '#1e3a32',
+  '#0a1f1a',
+  '#5eeab0',
 ]
 
 /**
- * Animated WebGL mesh behind the Cover ink panel (Paper Shaders).
- * Falls back to CSS atmosphere when reduced motion is preferred.
+ * Optional WebGL boost on top of the CSS aurora.
+ * Skips only when WebGL is unavailable — CSS aurora remains the visible baseline.
  */
 export function CoverMeshBackground() {
-  const reduceMotion = useReducedMotion()
+  const [canWebGl, setCanWebGl] = useState(false)
 
-  if (reduceMotion) return null
+  useEffect(() => {
+    try {
+      const canvas = document.createElement('canvas')
+      const gl =
+        canvas.getContext('webgl2') ||
+        canvas.getContext('webgl') ||
+        canvas.getContext('experimental-webgl')
+      setCanWebGl(Boolean(gl))
+    } catch {
+      setCanWebGl(false)
+    }
+  }, [])
+
+  if (!canWebGl) return null
 
   return (
-    <div className="pointer-events-none absolute inset-0 opacity-[0.55]" aria-hidden>
+    <div className="pointer-events-none absolute inset-0 opacity-75 mix-blend-screen" aria-hidden>
       <MeshGradient
         colors={COVER_MESH_COLORS}
-        speed={0.18}
-        distortion={0.55}
-        swirl={0.22}
-        grainMixer={0.12}
-        grainOverlay={0.08}
-        style={{ width: '100%', height: '100%' }}
+        speed={1.1}
+        distortion={0.9}
+        swirl={0.5}
+        grainMixer={0.25}
+        grainOverlay={0.12}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
       />
     </div>
   )

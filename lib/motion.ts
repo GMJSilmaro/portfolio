@@ -37,16 +37,16 @@ export const coverImageVariants: Variants = {
 }
 
 export const chapterVariants: Variants = {
-  initial: { opacity: 0, y: 14 },
+  initial: { opacity: 0, y: 22 },
   animate: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: dossierEase },
+    transition: { duration: 0.5, ease: dossierEase },
   },
   exit: {
     opacity: 0,
-    y: -8,
-    transition: { duration: 0.22, ease: dossierEase },
+    y: -14,
+    transition: { duration: 0.28, ease: dossierEase },
   },
 }
 
