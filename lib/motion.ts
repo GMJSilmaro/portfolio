@@ -49,3 +49,44 @@ export const chapterVariants: Variants = {
     transition: { duration: 0.22, ease: dossierEase },
   },
 }
+
+export const listContainerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.07,
+      delayChildren: 0.04,
+    },
+  },
+}
+
+export const listItemVariants: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: dossierEase },
+  },
+}
+
+export const modalBackdropVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.22 } },
+  exit: { opacity: 0, transition: { duration: 0.18 } },
+}
+
+export const modalPanelVariants: Variants = {
+  hidden: { opacity: 0, y: 16, scale: 0.985 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.35, ease: dossierEase },
+  },
+  exit: {
+    opacity: 0,
+    y: 10,
+    scale: 0.99,
+    transition: { duration: 0.2, ease: dossierEase },
+  },
+}

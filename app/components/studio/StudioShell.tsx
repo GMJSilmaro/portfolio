@@ -106,6 +106,7 @@ function StudioFooter() {
 
 function ChapterNav() {
   const { mode, setMode } = useStudio()
+  const reduceMotion = useReducedMotion()
 
   return (
     <div
@@ -135,12 +136,25 @@ function ChapterNav() {
               type="button"
               onClick={() => setMode(key)}
               aria-current={active ? 'page' : undefined}
-              className={`flex min-h-11 min-w-0 flex-col items-center justify-center px-1 py-1.5 transition-colors ${
-                active ? 'bg-ink text-paper' : 'bg-transparent text-ink-muted'
+              className={`relative flex min-h-11 min-w-0 flex-col items-center justify-center px-1 py-1.5 transition-colors ${
+                active ? 'text-paper' : 'bg-transparent text-ink-muted'
               }`}
             >
-              <span className="font-mono text-[9px] tracking-[0.14em]">{item.code}</span>
-              <span className="truncate font-display text-[11px] font-medium">{item.label}</span>
+              {active && !reduceMotion ? (
+                <motion.span
+                  layoutId="mobile-chapter-active"
+                  className="absolute inset-0 bg-ink"
+                  transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+                  aria-hidden
+                />
+              ) : null}
+              {active && reduceMotion ? (
+                <span className="absolute inset-0 bg-ink" aria-hidden />
+              ) : null}
+              <span className="relative z-10 font-mono text-[9px] tracking-[0.14em]">{item.code}</span>
+              <span className="relative z-10 truncate font-display text-[11px] font-medium">
+                {item.label}
+              </span>
             </button>
           )
         })}

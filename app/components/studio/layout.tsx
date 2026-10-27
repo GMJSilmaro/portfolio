@@ -81,14 +81,18 @@ interface TechTileProps {
 
 export function TechTile({ name, color, icon: Icon, favorite = false }: TechTileProps) {
   return (
-    <div className="relative flex min-h-[92px] flex-col items-center justify-center gap-2 border border-[color:var(--rule)] bg-white px-2 py-3 text-center transition-colors duration-200 hover:border-signal/40">
+    <div className="group relative flex min-h-[92px] flex-col items-center justify-center gap-2 border border-[color:var(--rule)] bg-white px-2 py-3 text-center transition-[border-color,box-shadow] duration-200 hover:border-signal/40 hover:shadow-[0_10px_28px_-18px_rgba(13,110,86,0.45)]">
       {favorite ? (
         <Heart
           className="absolute right-2 top-2 h-3.5 w-3.5 fill-rose-500 text-rose-500"
           aria-hidden
         />
       ) : null}
-      <Icon className="h-7 w-7 shrink-0" style={{ color }} aria-hidden />
+      <Icon
+        className="h-7 w-7 shrink-0 transition-transform duration-300 motion-safe:group-hover:scale-110"
+        style={{ color }}
+        aria-hidden
+      />
       <span className="line-clamp-2 w-full text-[11px] font-medium leading-tight text-ink-soft">
         {name}
       </span>

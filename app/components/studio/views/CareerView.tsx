@@ -1,21 +1,31 @@
 'use client'
 
 import React from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { experiences } from '@/app/data/experience'
+import { listContainerVariants, listItemVariants } from '@/lib/motion'
 import { Reveal } from '../../ui/reveal'
 import { Chapter, ChapterHeader } from '../layout'
 
 export function CareerView() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <Chapter>
       <Reveal>
         <ChapterHeader kicker="Career" title="A continuous record of roles and delivery." />
       </Reveal>
 
-      <ol className="border-t border-[color:var(--rule)]">
+      <motion.ol
+        className="border-t border-[color:var(--rule)]"
+        variants={listContainerVariants}
+        initial={reduceMotion ? false : 'hidden'}
+        animate="show"
+      >
         {experiences.map((job) => (
-          <li
+          <motion.li
             key={`${job.company}-${job.role}-${job.period}`}
+            variants={listItemVariants}
             className="border-b border-[color:var(--rule)] py-8"
           >
             <div className="grid gap-3 md:grid-cols-[9.5rem_minmax(0,1fr)] md:gap-8">
@@ -50,9 +60,9 @@ export function CareerView() {
                 </ul>
               </div>
             </div>
-          </li>
+          </motion.li>
         ))}
-      </ol>
+      </motion.ol>
     </Chapter>
   )
 }
