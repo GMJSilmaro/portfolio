@@ -140,7 +140,10 @@ export const Modal: React.FC<ModalProps> = ({
   return createPortal(
     <AnimatePresence>
       {isOpen ? (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6">
+        <div
+          key="dossier-modal"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6"
+        >
           <motion.button
             type="button"
             aria-label="Close dialog backdrop"
