@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
-import { motion, useReducedMotion } from 'framer-motion'
+import { MotionConfig, motion, useReducedMotion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import {
   coverContainerVariants,
@@ -47,7 +47,21 @@ export function Cover() {
             className="flex flex-wrap items-center gap-x-4 gap-y-2"
           >
             <span className="inline-flex min-h-11 items-center gap-2 border border-white/20 bg-white/5 px-3 backdrop-blur-[2px]">
-              <span className="cover-status-dot" aria-hidden />
+              <MotionConfig reducedMotion="never">
+                <motion.span
+                  className="inline-block h-2 w-2 shrink-0 rounded-full bg-[#22c59a]"
+                  aria-hidden
+                  animate={{
+                    scale: [1, 1.35, 1],
+                    boxShadow: [
+                      '0 0 0 0 rgba(34,197,154,0.9)',
+                      '0 0 0 12px rgba(34,197,154,0)',
+                      '0 0 0 0 rgba(34,197,154,0)',
+                    ],
+                  }}
+                  transition={{ duration: 1.3, repeat: Infinity, ease: 'easeOut' }}
+                />
+              </MotionConfig>
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-paper/85">
                 Open for consulting
               </span>
